@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지역별 체험단 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+/* HEADER */
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.main-nav{display:flex;align-items:center;gap:2px;flex:1;}
+.nav-link{font-size:13px;font-weight:500;color:var(--text-muted);padding:7px 11px;border-radius:8px;transition:var(--transition);white-space:nowrap;text-decoration:none;}
+.nav-link:hover{color:var(--text);background:var(--nav-active-bg);}
+.nav-link.active{color:var(--brand-primary);background:rgba(255,71,87,.08);font-weight:700;}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.mode-btn,.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;transition:var(--transition);color:var(--text);}
+.mode-btn:hover,.admin-btn:hover{background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.3);}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:8px 16px 16px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:13px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid var(--border);text-decoration:none;display:block;}
+.mobile-menu .m-cta-btn{background:var(--brand-gradient);color:#fff !important;padding:13px;border-radius:50px;font-weight:700 !important;font-size:15px;margin-top:8px;text-align:center;box-shadow:0 4px 16px rgba(255,71,87,.35);border:none;display:block;}
+/* COMMON */
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--brand-gradient);color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:50px;transition:var(--transition);box-shadow:0 4px 20px rgba(255,71,87,.35);text-decoration:none;white-space:nowrap;border:none;cursor:pointer;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:14px;padding:11px 22px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;cursor:pointer;}
+.btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;white-space:nowrap;}
+.badge-red{background:rgba(255,71,87,.15);color:var(--brand-primary);}
+.badge-green{background:rgba(46,213,115,.15);color:#2ED573;}
+.badge-orange{background:rgba(255,165,2,.15);color:#FFA502;}
+.badge-blue{background:rgba(84,160,255,.15);color:#54A0FF;}
+.tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-family:var(--font-display);font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.1;color:var(--text);}
+.section-title span{color:var(--brand-primary);}
+/* PAGE HERO */
+.page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
+.page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px;color:var(--text);}
+.page-title span{color:var(--brand-primary);}
+.page-desc{font-size:14px;color:var(--text-muted);line-height:1.7;}
+/* SEC */
+.sec{max-width:1280px;margin:0 auto;padding:40px 20px 64px;}
+/* CAMP CARD */
+.camp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);text-decoration:none;display:block;}
+.camp-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);border-color:rgba(255,71,87,.2);}
+.camp-img{width:100%;height:185px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden;}
+.camp-badges{position:absolute;top:10px;left:10px;display:flex;gap:5px;z-index:1;}
+.camp-d{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;color:#fff;}
+.camp-body{padding:14px;}
+.camp-region{font-size:10px;color:var(--text-muted);margin-bottom:5px;}
+.camp-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.3;}
+.camp-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.camp-meta{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);}
+.camp-reward{font-size:12px;font-weight:700;color:#2ED573;}
+.camp-slots{font-size:11px;color:var(--text-muted);}
+.camp-bar{height:3px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden;}
+.camp-bar-fill{height:100%;background:var(--brand-gradient);border-radius:2px;}
+/* FOOTER */
+.site-footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:40px 0 20px;margin-top:60px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.footer-top{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;transition:var(--transition);}
+.footer-col a:hover{color:var(--brand-primary);}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;gap:24px;}.footer-links{grid-template-columns:repeat(2,1fr);}.footer-bottom{flex-direction:column;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="../../index.html" class="nav-link">홈</a>
+      <a href="campaigns.html" class="nav-link ">체험단 모집</a>
+      <a href="regions.html" class="nav-link active">지역별</a>
+      <a href="categories.html" class="nav-link ">카테고리</a>
+      <a href="review.html" class="nav-link ">리뷰 현황</a>
+      <a href="notice.html" class="nav-link ">공지사항</a>
+      <a href="advertiser.html" class="nav-link ">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+      <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
+      <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
+      <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="../../index.html">🏠 홈</a>
+    <a href="campaigns.html">🎯 체험단 모집</a>
+    <a href="regions.html">📍 지역별</a>
+    <a href="categories.html">🗂️ 카테고리</a>
+    <a href="review.html">⭐ 리뷰 현황</a>
+    <a href="notice.html">📢 공지사항</a>
+    <a href="advertiser.html">🏪 사장님</a>
+    <a href="../admin/admin-dashboard.html">⚙️ 관리자</a>
+    <a href="login.html">🔑 로그인</a>
+    <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
+  </div>
+</header>
+<style>
+.region-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 32px;}
+.rtab{padding:9px 18px;border-radius:50px;font-size:13px;font-weight:600;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);cursor:pointer;transition:var(--transition);}
+.rtab:hover{color:var(--text);}
+.rtab.active{background:var(--brand-gradient);color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(255,71,87,.3);}
+.rsec{margin-bottom:48px;}
+.rsec-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.rsec-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.15);flex-shrink:0;}
+.rsec-name{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--text);}
+.rsec-cnt{font-size:12px;color:var(--text-muted);margin-left:auto;background:var(--bg-card);border:1px solid var(--border);padding:4px 12px;border-radius:50px;}
+@media(max-width:768px){.grid4{grid-template-columns:repeat(2,1fr) !important;}}
+@media(max-width:480px){.grid4{grid-template-columns:1fr !important;}}
+</style>
+<div class="page-hero"><div class="page-hero-inner">
+  <div class="page-badge">📍 지역별 탐색</div>
+  <h1 class="page-title">내 근처 <span>체험단</span> 찾기</h1>
+  <p class="page-desc">전국 주요 도시별 캠페인을 한눈에 확인하세요.</p>
+</div></div>
+<div class="sec">
+  <div class="region-tabs">
+    <button class="rtab active" onclick="showRegion('all',this)">전체</button>
+    <button class="rtab" onclick="showRegion('seoul',this)">🏙️ 서울</button>
+    <button class="rtab" onclick="showRegion('gyeonggi',this)">🌆 경기·인천</button>
+    <button class="rtab" onclick="showRegion('busan',this)">🌊 부산</button>
+    <button class="rtab" onclick="showRegion('daegu',this)">🍲 대구</button>
+    <button class="rtab" onclick="showRegion('jeju',this)">🍊 제주</button>
+    <button class="rtab" onclick="showRegion('jeonju',this)">🏯 전주</button>
+    <button class="rtab" onclick="showRegion('gangwon',this)">⛷️ 강원</button>
+    <button class="rtab" onclick="showRegion('online',this)">📦 배송형</button>
+  </div>
+
+  <div class="rsec" id="r-seoul">
+    <div class="rsec-header"><div class="rsec-ico">🏙️</div><div class="rsec-name">서울</div><span class="rsec-cnt">38개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#1a0a10,#2a1018);">🍣<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-5</div></div><div class="camp-body"><div class="camp-region">📍 강남구 · 역삼동</div><div class="camp-name">스시 오모 — 오마카세 코스</div><div class="camp-desc">15만원 상당 2인 오마카세 코스 무료 체험. 블로그 리뷰 작성.</div><div class="camp-meta"><span class="camp-reward">✅ 15만원 상당</span><span class="camp-slots">24/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:80%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a1210,#0e1e18);">☕<div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">📍 마포구 · 홍대입구</div><div class="camp-name">카페 루미오 시그니처 음료</div><div class="camp-desc">감성 카페 루미오 음료 2잔 + 디저트 1종 체험. 인스타 피드 포스팅.</div><div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">8/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#12080a,#1e0c10);">🥩<div class="camp-badges"><span class="badge badge-red">마감임박</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-2</div></div><div class="camp-body"><div class="camp-region">📍 서초구 · 방배동</div><div class="camp-name">한우 프리미엄 '우진각'</div><div class="camp-desc">1++ 등급 한우 세트 3인 9만원 상당 무료. 방배동 핫플레이스.</div><div class="camp-meta"><span class="camp-reward">✅ 9만원 상당</span><span class="camp-slots">19/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:95%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0c1a,#10122a);">💆<div class="camp-badges"><span class="badge badge-blue">클립</span><span class="badge badge-orange">원고료</span></div><div class="camp-d">D-10</div></div><div class="camp-body"><div class="camp-region">📍 강남구 · 청담동</div><div class="camp-name">클리어 스킨랩 피부 케어</div><div class="camp-desc">청담동 프리미엄 피부샵 1회 체험 + 원고료 3만원. 네이버 클립 리뷰.</div><div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩30,000</span><span class="camp-slots">5/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:33%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-gyeonggi">
+    <div class="rsec-header"><div class="rsec-ico">🌆</div><div class="rsec-name">경기 · 인천</div><span class="rsec-cnt">14개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#1a0e0a,#281814);">🍕<div class="camp-badges"><span class="badge badge-green">블로그</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-9</div></div><div class="camp-body"><div class="camp-region">📍 수원시 · 행궁동</div><div class="camp-name">수원 화덕피자 '킬른' 체험단</div><div class="camp-desc">정통 나폴리 화덕피자 2판 + 음료. 수원 행궁동 감성 이탈리안.</div><div class="camp-meta"><span class="camp-reward">✅ 7만원 상당</span><span class="camp-slots">9/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:45%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0e18,#10162a);">🧖<div class="camp-badges"><span class="badge badge-blue">클립</span><span class="badge badge-orange">원고료</span></div><div class="camp-d">D-11</div></div><div class="camp-body"><div class="camp-region">📍 분당구 · 서현동</div><div class="camp-name">분당 프리미엄 스파 '소울' 체험단</div><div class="camp-desc">아로마 테라피 90분 + 원고료 4만원. 분당 서현 프리미엄 웰니스.</div><div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩40,000</span><span class="camp-slots">4/10명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0e1208,#18200e);">☕<div class="camp-badges"><span class="badge badge-blue">인스타</span></div><div class="camp-d">D-13</div></div><div class="camp-body"><div class="camp-region">📍 인천 · 송도</div><div class="camp-name">송도 루프탑 카페 '그라운드' 체험단</div><div class="camp-desc">인천 송도 바다뷰 루프탑 음료 2잔 + 디저트. 인스타 감성 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 4만원 상당</span><span class="camp-slots">11/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:44%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#14080a,#22101a);">🍖<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-7</div></div><div class="camp-body"><div class="camp-region">📍 일산 · 호수공원</div><div class="camp-name">일산 웨스턴 스테이크하우스 체험단</div><div class="camp-desc">호수공원 근처 스테이크 2인 코스. 블로그 + 인스타 동시 작성 우대.</div><div class="camp-meta"><span class="camp-reward">✅ 11만원 상당</span><span class="camp-slots">6/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-busan">
+    <div class="rsec-header"><div class="rsec-ico">🌊</div><div class="rsec-name">부산</div><span class="rsec-cnt">11개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0e1a,#0e1424);">🍷<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-6</div></div><div class="camp-body"><div class="camp-region">📍 부산 · 해운대구</div><div class="camp-name">테라스 해운대 오션뷰 와인바</div><div class="camp-desc">해운대 루프탑 와인 1병 + 치즈플래터. 야경 감성 사진 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 8만원 상당</span><span class="camp-slots">18/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:72%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a1412,#0e2018);">🦞<div class="camp-badges"><span class="badge badge-green">블로그</span></div><div class="camp-d">D-9</div></div><div class="camp-body"><div class="camp-region">📍 부산 · 남포동</div><div class="camp-name">부산 씨푸드하우스 '오션' 체험단</div><div class="camp-desc">랍스터 + 새우 그릴 세트 2인. 부산 명물 해산물 레스토랑.</div><div class="camp-meta"><span class="camp-reward">✅ 12만원 상당</span><span class="camp-slots">7/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:47%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#14100e,#201814);">🍖<div class="camp-badges"><span class="badge badge-blue">클립</span></div><div class="camp-d">D-13</div></div><div class="camp-body"><div class="camp-region">📍 부산 · 서면</div><div class="camp-name">서면 돼지국밥 '원조 할매' 체험단</div><div class="camp-desc">부산 정통 돼지국밥 2인 + 수육 무료. 클립 영상 리뷰 제출.</div><div class="camp-meta"><span class="camp-reward">✅ 2만원 상당</span><span class="camp-slots">11/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:44%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0e0c1a,#16122a);">🧖<div class="camp-badges"><span class="badge badge-orange">원고료</span><span class="badge badge-blue">인스타</span></div><div class="camp-d">D-11</div></div><div class="camp-body"><div class="camp-region">📍 부산 · 해운대</div><div class="camp-name">해운대 스파 & 웰니스 '블루' 체험단</div><div class="camp-desc">해운대 프리미엄 스파 체험 + 원고료 4만원. 릴스 + 블로그 작성.</div><div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩40,000</span><span class="camp-slots">2/10명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:20%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-daegu">
+    <div class="rsec-header"><div class="rsec-ico">🍲</div><div class="rsec-name">대구</div><span class="rsec-cnt">7개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0e140a,#161e0e);">🥗<div class="camp-badges"><span class="badge badge-blue">클립</span></div><div class="camp-d">D-14</div></div><div class="camp-body"><div class="camp-region">📍 대구 · 수성구</div><div class="camp-name">그린테이블 비건 브런치 카페</div><div class="camp-desc">수성구 비건 브런치 풀코스 체험. 클립 및 블로그 동시 작성 우대.</div><div class="camp-meta"><span class="camp-reward">✅ 5만원 상당</span><span class="camp-slots">3/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:20%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#14100a,#22180e);">🍜<div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">📍 대구 · 동성로</div><div class="camp-name">동성로 프리미엄 라멘 '하카타야' 체험단</div><div class="camp-desc">대구 핫플 라멘 2그릇 + 교자 무료. 인스타 포스팅 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 4만원 상당</span><span class="camp-slots">8/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0c18,#10122a);">☕<div class="camp-badges"><span class="badge badge-green">블로그</span></div><div class="camp-d">D-6</div></div><div class="camp-body"><div class="camp-region">📍 대구 · 봉산동</div><div class="camp-name">봉산문화거리 감성 카페 '무드' 체험단</div><div class="camp-desc">대구 예술 거리 카페 음료 2잔 + 굿즈 증정. 블로그 리뷰.</div><div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">12/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:60%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#12080e,#1e1020);">💆<div class="camp-badges"><span class="badge badge-orange">원고료</span><span class="badge badge-blue">클립</span></div><div class="camp-d">D-10</div></div><div class="camp-body"><div class="camp-region">📍 대구 · 범어동</div><div class="camp-name">범어동 프리미엄 헤어샵 '살롱드' 체험단</div><div class="camp-desc">두피 케어 + 트리트먼트 체험 + 원고료 3만원. 클립 영상 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩30,000</span><span class="camp-slots">5/12명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:42%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-jeju">
+    <div class="rsec-header"><div class="rsec-ico">🍊</div><div class="rsec-name">제주</div><span class="rsec-cnt">9개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#141a0a,#1e2a0e);">🥩<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">📍 제주 · 제주시</div><div class="camp-name">제주 흑돼지 '한라장' 체험단</div><div class="camp-desc">제주 명물 흑돼지 삼겹+목살 2인 세트 무료. 오마카세급 서비스.</div><div class="camp-meta"><span class="camp-reward">✅ 6만원 상당</span><span class="camp-slots">13/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:65%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0e1410,#16200e);">🌿<div class="camp-badges"><span class="badge badge-blue">인스타</span></div><div class="camp-d">D-16</div></div><div class="camp-body"><div class="camp-region">📍 제주 · 서귀포</div><div class="camp-name">서귀포 비건 레스토랑 '그린섬' 체험단</div><div class="camp-desc">제주 유기농 재료 비건 코스 체험. 인스타 피드 + 스토리 업로드.</div><div class="camp-meta"><span class="camp-reward">✅ 4만원 상당</span><span class="camp-slots">5/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:33%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0e14,#10161e);">☕<div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-12</div></div><div class="camp-body"><div class="camp-region">📍 제주 · 애월</div><div class="camp-name">애월 오션뷰 카페 '파란제주' 체험단</div><div class="camp-desc">제주 애월 바다 전망 카페. 음료 2잔 + 제주 감귤 디저트.</div><div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">17/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:57%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0e18,#0e1424);">🐟<div class="camp-badges"><span class="badge badge-green">블로그</span><span class="badge badge-red">HOT</span></div><div class="camp-d">D-5</div></div><div class="camp-body"><div class="camp-region">📍 제주 · 성산</div><div class="camp-name">성산 신선 회 맛집 '제주바다' 체험단</div><div class="camp-desc">성산 일출봉 근처 제주 방어 특선 2인 코스. 블로그 리뷰 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 9만원 상당</span><span class="camp-slots">8/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:53%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-jeonju">
+    <div class="rsec-header"><div class="rsec-ico">🏯</div><div class="rsec-name">전주</div><span class="rsec-cnt">6개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#101410,#181e18);">🍵<div class="camp-badges"><span class="badge badge-green">블로그</span></div><div class="camp-d">D-15</div></div><div class="camp-body"><div class="camp-region">📍 전주 · 한옥마을</div><div class="camp-name">전주 전통 한옥 찻집 '선향' 체험단</div><div class="camp-desc">전주 한옥마을 내 전통 찻집. 차 3종 + 한과 세트 무료 체험.</div><div class="camp-meta"><span class="camp-reward">✅ 2만원 상당</span><span class="camp-slots">9/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:45%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#14100e,#201814);">🥢<div class="camp-badges"><span class="badge badge-green">블로그</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-10</div></div><div class="camp-body"><div class="camp-region">📍 전주 · 풍남동</div><div class="camp-name">전주 비빔밥 전문점 '미향' 체험단</div><div class="camp-desc">전주 3대 비빔밥 가게. 전통 비빔밥 + 모주 1잔 2인 무료 체험.</div><div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">14/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:56%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-gangwon">
+    <div class="rsec-header"><div class="rsec-ico">⛷️</div><div class="rsec-name">강원</div><span class="rsec-cnt">5개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0e0a0a,#1a1010);">🍖<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-7</div></div><div class="camp-body"><div class="camp-region">📍 강원 · 속초</div><div class="camp-name">속초 대게 & 로브스터 '해변식당' 체험단</div><div class="camp-desc">속초 신선 대게 + 로브스터 2인 세트. 동해 바다뷰 식사.</div><div class="camp-meta"><span class="camp-reward">✅ 15만원 상당</span><span class="camp-slots">4/10명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a100e,#0e1814);">🏔️<div class="camp-badges"><span class="badge badge-blue">인스타</span></div><div class="camp-d">D-11</div></div><div class="camp-body"><div class="camp-region">📍 강원 · 강릉</div><div class="camp-name">강릉 서퍼비치 앞 카페 '웨이브' 체험단</div><div class="camp-desc">강릉 경포 앞 서프 감성 카페. 시그니처 커피 + 크로플 세트.</div><div class="camp-meta"><span class="camp-reward">✅ 2만 5천원 상당</span><span class="camp-slots">16/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:53%"></div></div></div></a></div>
+  </div>
+
+  <div class="rsec" id="r-online">
+    <div class="rsec-header"><div class="rsec-ico">📦</div><div class="rsec-name" style="color:#2ED573;">배송형 (전국)</div><span class="rsec-cnt">12개 캠페인</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a100e,#0e1a16);">🫐<div class="camp-badges"><span class="badge badge-orange">신규</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-10</div></div><div class="camp-body"><div class="camp-region">📦 전국 배송형</div><div class="camp-name">제주 유기농 과일 선물세트 체험단</div><div class="camp-desc">제주산 유기농 블루베리 + 한라봉 구성. 택배 배송. 블로그 리뷰.</div><div class="camp-meta"><span class="camp-reward">✅ 4만원 상당</span><span class="camp-slots">9/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:30%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#10100a,#1a1a0e);">🍯<div class="camp-badges"><span class="badge badge-green">블로그</span></div><div class="camp-d">D-14</div></div><div class="camp-body"><div class="camp-region">📦 전국 배송형</div><div class="camp-name">국산 천연 꿀 프리미엄 세트 체험단</div><div class="camp-desc">500ml 아카시아꿀 + 피부 보습 밀크 구성. 블로그 + 인스타.</div><div class="camp-meta"><span class="camp-reward">✅ 5만원 상당</span><span class="camp-slots">14/40명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:35%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0a0c18,#10122a);">🧴<div class="camp-badges"><span class="badge badge-orange">원고료</span><span class="badge badge-blue">인스타</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">📦 전국 배송형</div><div class="camp-name">프리미엄 스킨케어 '모어 글로우' 체험단</div><div class="camp-desc">10종 풀 스킨케어 세트 배송. 원고료 5만원 + 체험 키트.</div><div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩50,000</span><span class="camp-slots">6/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:30%"></div></div></div></a><a href="campaign-detail.html" class="camp-card"><div class="camp-img" style="background:linear-gradient(135deg,#0e1410,#16200e);">🌿<div class="camp-badges"><span class="badge badge-blue">클립</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-12</div></div><div class="camp-body"><div class="camp-region">📦 전국 배송형</div><div class="camp-name">유기농 차 브랜드 '녹우당' 체험단</div><div class="camp-desc">국산 유기농 녹차·홍차·허브티 세트. 클립 영상 리뷰 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">22/50명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:44%"></div></div></div></a></div>
+  </div>
+</div>
+<script>
+function showRegion(id, el) {
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  var secs = ['seoul','gyeonggi','busan','daegu','jeju','jeonju','gangwon','online'];
+  secs.forEach(function(s) {
+    var el2 = document.getElementById('r-'+s);
+    if (el2) el2.style.display = (id==='all' || id===s) ? '' : 'none';
+  });
+}
+</script>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="../../index.html" class="logo" style="margin-bottom:10px;"><div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div><span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">GROW BEE</span></a>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.7;max-width:200px;">전국 맛집·카페·뷰티 체험단 플랫폼</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>체험단</h4><a href="campaigns.html">전체 캠페인</a><a href="regions.html">지역별</a><a href="categories.html">카테고리</a><a href="review.html">리뷰 현황</a></div>
+        <div class="footer-col"><h4>광고주</h4><a href="advertiser.html">캠페인 등록</a><a href="advertiser.html">요금 안내</a><a href="faq.html">FAQ</a></div>
+        <div class="footer-col"><h4>고객센터</h4><a href="notice.html">공지사항</a><a href="faq.html">자주 묻는 질문</a><a href="contact.html">1:1 문의</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
+  </div>
+</footer>
+<script>
+function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}
+(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());
+</script>
+</body></html>

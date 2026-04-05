@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.main-nav{display:flex;align-items:center;gap:2px;flex:1;}
+.nav-link{font-size:13px;font-weight:500;color:var(--text-muted);padding:7px 11px;border-radius:8px;transition:var(--transition);white-space:nowrap;text-decoration:none;}
+.nav-link:hover{color:var(--text);background:var(--nav-active-bg);}
+.nav-link.active{color:var(--brand-primary);background:rgba(255,71,87,.08);font-weight:700;}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.mode-btn,.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;transition:var(--transition);}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:8px 16px 16px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:13px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid var(--border);text-decoration:none;display:block;}
+.mobile-menu .m-cta-btn{background:var(--brand-gradient);color:#fff;padding:13px;border-radius:50px;font-weight:700;font-size:15px;margin-top:8px;text-align:center;box-shadow:0 4px 16px rgba(255,71,87,.35);border:none;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--brand-gradient);color:#fff;font-weight:700;font-size:13px;padding:9px 18px;border-radius:50px;transition:var(--transition);box-shadow:0 4px 16px rgba(255,71,87,.3);text-decoration:none;white-space:nowrap;}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:13px;padding:8px 16px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;}
+.btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
+.page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 50% 60% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
+.page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(26px,5vw,42px);font-weight:800;line-height:1.1;margin-bottom:10px;color:var(--text);}
+.page-title span{color:var(--brand-primary);}
+.page-desc{font-size:14px;color:var(--text-muted);line-height:1.7;}
+.sec{padding:40px 0 60px;max-width:1280px;margin:0 auto;padding-left:20px;padding-right:20px;}
+.section-title{font-family:var(--font-display);font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.1;color:var(--text);}
+.section-title span{color:var(--brand-primary);}
+.tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition);box-shadow:var(--shadow);}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);border-color:rgba(255,71,87,.2);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;}
+.badge-red{background:rgba(255,71,87,.15);color:var(--brand-primary);}
+.badge-green{background:rgba(46,213,115,.15);color:#2ED573;}
+.badge-orange{background:rgba(255,165,2,.15);color:#FFA502;}
+.badge-blue{background:rgba(84,160,255,.15);color:#54A0FF;}
+.camp-img{width:100%;height:185px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden;}
+.camp-badges{position:absolute;top:10px;left:10px;display:flex;gap:5px;}
+.camp-d{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;color:#fff;}
+.camp-body{padding:14px;}
+.camp-region{font-size:10px;color:var(--text-muted);margin-bottom:5px;}
+.camp-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.3;}
+.camp-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.camp-meta{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);}
+.camp-reward{font-size:12px;font-weight:700;color:#2ED573;}
+.camp-slots{font-size:11px;color:var(--text-muted);}
+.camp-bar{height:3px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden;}
+.camp-bar-fill{height:100%;background:var(--brand-gradient);border-radius:2px;}
+.site-footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:40px 0 20px;margin-top:60px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.footer-top{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;transition:var(--transition);}
+.footer-col a:hover{color:var(--brand-primary);}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
+.footer-bottom-links{display:flex;gap:14px;}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;gap:24px;}.footer-links{grid-template-columns:repeat(2,1fr);}.footer-bottom{flex-direction:column;}.grid-4{grid-template-columns:repeat(2,1fr)!important;}.grid-3{grid-template-columns:repeat(2,1fr)!important;}}
+@media(max-width:480px){.grid-4{grid-template-columns:1fr!important;}.grid-3{grid-template-columns:1fr!important;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="../../index.html" class="nav-link">홈</a>
+      <a href="campaigns.html" class="nav-link ">체험단 모집</a>
+      <a href="regions.html" class="nav-link ">지역별</a>
+      <a href="categories.html" class="nav-link ">카테고리</a>
+      <a href="review.html" class="nav-link ">리뷰 현황</a>
+      <a href="notice.html" class="nav-link ">공지사항</a>
+      <a href="advertiser.html" class="nav-link ">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+      <a href="login.html" class="btn-outline">로그인</a>
+      <a href="signup.html" class="btn-primary">무료 가입</a>
+      <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="../../index.html">🏠 홈</a>
+    <a href="campaigns.html">🎯 체험단 모집</a>
+    <a href="regions.html">📍 지역별</a>
+    <a href="categories.html">🗂️ 카테고리</a>
+    <a href="review.html">⭐ 리뷰 현황</a>
+    <a href="notice.html">📢 공지사항</a>
+    <a href="advertiser.html">🏪 사장님</a>
+    <a href="../admin/admin-dashboard.html">⚙️ 관리자</a>
+    <a href="login.html">🔑 로그인</a>
+    <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
+  </div>
+</header>
+<style>
+.auth-page{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:32px 16px 48px;}
+.auth-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:40px 36px;width:100%;max-width:440px;box-shadow:var(--shadow-card);}
+.auth-logo-ico{width:52px;height:52px;border-radius:14px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 20px rgba(255,71,87,.35);}
+.auth-logo-ico svg{width:28px;height:28px;}
+.auth-title{font-family:var(--font-display);font-size:24px;font-weight:800;text-align:center;color:var(--text);margin-bottom:6px;}
+.auth-sub{font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:28px;}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase;}
+.form-input{width:100%;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:13px 16px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:var(--transition);}
+.form-input:focus{border-color:rgba(255,71,87,.5);}
+.form-input::placeholder{color:var(--text-muted);}
+.submit-btn{width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;margin-top:6px;box-shadow:0 4px 20px rgba(255,71,87,.35);cursor:pointer;border:none;transition:var(--transition);}
+.submit-btn:hover{transform:translateY(-2px);}
+.divider{position:relative;text-align:center;margin:20px 0;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
+.divider::before{left:0;}.divider::after{right:0;}
+.divider span{font-size:12px;color:var(--text-muted);background:var(--bg-card);padding:0 12px;position:relative;}
+.social-btn{width:100%;padding:13px;border-radius:50px;font-size:13px;font-weight:600;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:var(--transition);margin-bottom:8px;background:transparent;color:var(--text);}
+.social-kakao{border-color:rgba(254,229,0,.4);background:rgba(254,229,0,.08);color:#7d6200;}
+.social-naver{border-color:rgba(3,199,90,.3);background:rgba(3,199,90,.08);color:#027a36;}
+.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--text-muted);}
+.auth-footer a{color:var(--brand-primary);font-weight:700;text-decoration:none;}
+.remember-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:12px;color:var(--text-muted);}
+.remember-row a{color:var(--brand-primary);}
+@media(max-width:480px){.auth-box{padding:28px 20px;}}
+</style>
+<div class="auth-page">
+  <div class="auth-box">
+    <div style="text-align:center;margin-bottom:22px;">
+      <div class="auth-logo-ico"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+    </div>
+    <h1 class="auth-title">다시 만나서 반가워요</h1>
+    <p class="auth-sub">GROW BEE 계정으로 로그인하세요</p>
+    <div class="form-group"><label class="form-label">이메일</label><input class="form-input" type="email" placeholder="hello@growbee.kr"></div>
+    <div class="form-group"><label class="form-label">비밀번호</label><input class="form-input" type="password" placeholder="비밀번호 입력"></div>
+    <div class="remember-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" style="accent-color:var(--brand-primary);"> 로그인 상태 유지</label><a href="#">비밀번호 찾기</a></div>
+    <button class="submit-btn" onclick="location.href='../../index.html'">로그인</button>
+    <div class="divider"><span>또는</span></div>
+    <button class="social-btn social-kakao">🟡 카카오로 로그인</button>
+    <button class="social-btn social-naver">🟢 네이버로 로그인</button>
+    <div class="auth-footer">아직 계정이 없으신가요? <a href="signup.html">무료 가입</a></div>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="../../index.html" class="logo" style="margin-bottom:10px;text-decoration:none;">
+          <div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+          <span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">GROW BEE</span>
+        </a>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.7;max-width:220px;margin-top:8px;">전국 맛집·카페·뷰티 체험단 플랫폼</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>체험단</h4><a href="campaigns.html">전체 캠페인</a><a href="regions.html">지역별</a><a href="categories.html">카테고리</a><a href="review.html">리뷰 현황</a></div>
+        <div class="footer-col"><h4>광고주</h4><a href="advertiser.html">캠페인 등록</a><a href="advertiser.html">요금 안내</a><a href="faq.html">FAQ</a></div>
+        <div class="footer-col"><h4>고객센터</h4><a href="notice.html">공지사항</a><a href="faq.html">FAQ</a><a href="contact.html">1:1 문의</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div class="footer-bottom-links"><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div></div>
+  </div>
+</footer>
+<script>
+function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');if(b)b.textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}}
+(function(){{if(localStorage.getItem('growbee-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}}}());
+</script>
+</body></html>

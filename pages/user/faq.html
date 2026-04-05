@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자주 묻는 질문 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.main-nav{display:flex;align-items:center;gap:2px;flex:1;}
+.nav-link{font-size:13px;font-weight:500;color:var(--text-muted);padding:7px 11px;border-radius:8px;transition:var(--transition);white-space:nowrap;text-decoration:none;}
+.nav-link:hover{color:var(--text);background:var(--nav-active-bg);}
+.nav-link.active{color:var(--brand-primary);background:rgba(255,71,87,.08);font-weight:700;}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.mode-btn,.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;transition:var(--transition);color:var(--text);}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:8px 16px 16px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:13px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid var(--border);text-decoration:none;display:block;}
+.mobile-menu .m-cta-btn{background:var(--brand-gradient);color:#fff !important;padding:13px;border-radius:50px;font-weight:700 !important;font-size:15px;margin-top:8px;text-align:center;box-shadow:0 4px 16px rgba(255,71,87,.35);border:none;display:block;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--brand-gradient);color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:50px;transition:var(--transition);box-shadow:0 4px 20px rgba(255,71,87,.35);text-decoration:none;white-space:nowrap;border:none;cursor:pointer;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:14px;padding:11px 22px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;cursor:pointer;}
+.btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
+.tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
+.page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px;color:var(--text);}
+.page-title span{color:var(--brand-primary);}
+.page-desc{font-size:14px;color:var(--text-muted);line-height:1.7;}
+.sec{max-width:1280px;margin:0 auto;padding:40px 20px 64px;}
+.site-footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:40px 0 20px;margin-top:60px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.footer-top{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;}
+.footer-col a:hover{color:var(--brand-primary);}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="../../index.html" class="nav-link">홈</a>
+      <a href="campaigns.html" class="nav-link ">체험단 모집</a>
+      <a href="regions.html" class="nav-link ">지역별</a>
+      <a href="categories.html" class="nav-link ">카테고리</a>
+      <a href="review.html" class="nav-link ">리뷰 현황</a>
+      <a href="notice.html" class="nav-link ">공지사항</a>
+      <a href="advertiser.html" class="nav-link ">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
+      <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
+      <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
+  </div>
+</header>
+
+<div class="page-hero"><div class="page-hero-inner">
+  <div class="page-badge">❓ FAQ</div>
+  <h1 class="page-title">자주 묻는 <span>질문</span></h1>
+  <p class="page-desc">궁금한 점을 빠르게 찾아보세요. 추가 문의는 1:1 문의를 이용해주세요.</p>
+</div></div>
+<div class="sec" style="max-width:800px;">
+  <div style="font-size:12px;font-weight:700;color:var(--brand-primary);margin-bottom:12px;letter-spacing:.5px;">🧑‍💻 리뷰어 (체험단 신청자)</div>
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    그로우비 체험단은 어떻게 신청하나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">회원가입 후 원하는 캠페인 페이지에서 [신청하기] 버튼을 클릭하면 됩니다. 신청 시 채널 URL과 팔로워/방문자 정보가 자동 첨부되며, 마감일 이후 2영업일 내에 선정 결과를 이메일로 안내해드립니다.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    체험단 선정 기준은 무엇인가요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">팔로워 수, 블로그 일방문자 수, 이전 리뷰 완료율, 콘텐츠 품질 등을 종합 평가합니다. 단순히 팔로워가 많은 계정보다 꾸준히 활동하고 완료율이 높은 리뷰어를 우선 선정합니다.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    리뷰 제출 기한을 넘기면 어떻게 되나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">방문일 기준 7일 이내에 리뷰를 제출해야 합니다. 기한 내 미제출 시 '미완료' 처리되며, 미완료 누적 시 신청이 제한될 수 있습니다. 불가피한 사정이 있는 경우 고객센터로 미리 연락해주세요.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    원고료는 언제 지급되나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">원고료 지급 캠페인의 경우, 리뷰 URL 제출 후 검수 완료(보통 2-3영업일)부터 영업일 기준 5일 이내에 등록하신 계좌로 입금됩니다.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    채널이 여러 개인 경우 모두 등록할 수 있나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">네, 블로그·인스타·유튜브·네이버 클립 등 여러 채널을 마이페이지에서 등록할 수 있습니다. 각 캠페인별로 요구하는 채널이 다르니 등록 시 확인해주세요.</div>
+</div>
+  <div style="font-size:12px;font-weight:700;color:var(--brand-primary);margin:28px 0 12px;letter-spacing:.5px;">🏪 광고주 (사장님)</div>
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    캠페인 등록 비용은 얼마인가요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">스타터 플랜 월 49,900원부터 시작합니다. 플랜에 따라 동시 운영 캠페인 수, 모집 인원 한도, 노출 우선순위가 달라집니다. 광고주 페이지에서 자세한 요금표를 확인하세요.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    체험단 리뷰어 선정은 누가 하나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">기본적으로 GROW BEE 시스템이 자동으로 적합한 리뷰어를 선정합니다. 그로스 이상 플랜 사용 시 사장님이 신청자 목록을 직접 확인하고 선정하는 기능을 사용하실 수 있습니다.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    리뷰가 마음에 들지 않으면 삭제 요청이 가능한가요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">체험단 리뷰는 실제 경험에 기반한 콘텐츠로, 단순히 마음에 들지 않는다는 이유로는 삭제 요청이 어렵습니다. 단, 허위 사실·욕설 등 계약 조건 위반 내용은 고객센터를 통해 이의 제기가 가능합니다.</div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
+  <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
+    등록한 캠페인을 중간에 수정할 수 있나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
+  </div>
+  <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">모집 기간 중에는 일부 항목(모집 인원, 방문 가능 기간 등) 수정이 가능합니다. 단, 혜택 내용과 리뷰 조건은 선정 후 변경이 제한될 수 있습니다. 관리자 페이지에서 직접 수정하시거나 고객센터에 문의해주세요.</div>
+</div>
+  <div style="margin-top:36px;background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.2);border-radius:var(--radius-lg);padding:24px;text-align:center;">
+    <div style="font-size:24px;margin-bottom:10px;">💬</div>
+    <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">원하는 답변을 찾지 못하셨나요?</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">1:1 문의를 통해 빠르게 도움받으세요.</div>
+    <a href="contact.html" class="btn-primary" style="font-size:14px;padding:12px 28px;">1:1 문의하기</a>
+  </div>
+</div>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-top">
+    <div><a href="../../index.html" class="logo" style="margin-bottom:10px;text-decoration:none;"><div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div><span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">GROW BEE</span></a><p style="font-size:12px;color:var(--text-muted);line-height:1.7;">전국 맛집·카페·뷰티 체험단 플랫폼</p></div>
+    <div class="footer-links"><div class="footer-col"><h4>체험단</h4><a href="campaigns.html">전체 캠페인</a><a href="regions.html">지역별</a><a href="categories.html">카테고리</a></div><div class="footer-col"><h4>광고주</h4><a href="advertiser.html">캠페인 등록</a><a href="faq.html">FAQ</a></div><div class="footer-col"><h4>고객센터</h4><a href="notice.html">공지사항</a><a href="contact.html">1:1 문의</a></div></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
+</div></footer>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+</body></html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 대시보드 — GROW BEE</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+/* Force night mode for admin */
+body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--border:rgba(255,255,255,0.08);--text:#F0F0F0;--text-muted:#999;--shadow:0 4px 24px rgba(0,0,0,.5);--shadow-card:0 8px 40px rgba(0,0,0,.6);--header-bg:rgba(13,13,13,0.95);--nav-active-bg:rgba(255,255,255,0.06); }
+
+.admin-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.admin-sidebar {
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  padding: 0;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-logo-mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--brand-gradient);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-logo-mark svg { width: 18px; height: 18px; }
+.sidebar-logo-text { font-family: var(--font-display); font-size: 14px; font-weight: 800; color: #F0F0F0; }
+.sidebar-logo-sub { font-size: 10px; color: #888; font-weight: 600; letter-spacing: 0.5px; }
+.sidebar-section { padding: 16px 10px 8px; }
+.sidebar-section-label { font-size: 10px; font-weight: 700; color: #666; letter-spacing: 1px; text-transform: uppercase; padding: 0 8px; margin-bottom: 6px; }
+.sidebar-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 13px; font-weight: 500; color: #999;
+  transition: var(--transition); cursor: pointer;
+  text-decoration: none; margin-bottom: 2px;
+}
+.sidebar-link:hover { background: rgba(255,255,255,.05); color: #f0f0f0; }
+.sidebar-link.active { background: rgba(255,71,87,.12); color: var(--brand-primary); font-weight: 700; }
+.sidebar-link span.ico { font-size: 15px; flex-shrink: 0; }
+.sidebar-badge {
+  margin-left: auto; background: var(--brand-primary);
+  color: #fff; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 50px;
+}
+
+.admin-main { background: var(--bg); overflow-y: auto; }
+.admin-topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(13,13,13,.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.admin-topbar-left { display: flex; align-items: center; gap: 12px; }
+.admin-page-title { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: #F0F0F0; }
+.admin-topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-btn {
+  padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 600;
+  background: rgba(255,255,255,.06); border: 1px solid var(--border);
+  color: #ccc; cursor: pointer; transition: var(--transition); text-decoration: none;
+}
+.topbar-btn:hover { color: #f0f0f0; background: rgba(255,255,255,.1); }
+.topbar-exit { color: var(--brand-primary); border-color: rgba(255,71,87,.3); background: rgba(255,71,87,.08); }
+
+.admin-content { padding: 28px; }
+.content-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: #F0F0F0; margin-bottom: 4px; }
+.content-sub { font-size: 13px; color: #777; margin-bottom: 28px; }
+
+/* KPI CARDS */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.kpi-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 22px 20px;
+  position: relative; overflow: hidden;
+}
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand-gradient); }
+.kpi-card.green::before { background: linear-gradient(135deg,#2ED573,#7BED9F); }
+.kpi-card.blue::before { background: linear-gradient(135deg,#54A0FF,#70c1f7); }
+.kpi-card.orange::before { background: linear-gradient(135deg,#FFA502,#FFD176); }
+.kpi-label { font-size: 12px; color: #888; margin-bottom: 10px; font-weight: 600; }
+.kpi-val { font-family: var(--font-display); font-size: 30px; font-weight: 800; color: #F0F0F0; line-height: 1; margin-bottom: 6px; }
+.kpi-val em { color: var(--brand-primary); font-style: normal; }
+.kpi-val.green em { color: #2ED573; }
+.kpi-val.blue em { color: #54A0FF; }
+.kpi-val.orange em { color: #FFA502; }
+.kpi-change { font-size: 12px; font-weight: 600; }
+.kpi-up { color: #2ED573; }
+.kpi-dn { color: var(--brand-primary); }
+
+/* ADMIN GRID */
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.admin-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 22px;
+}
+.admin-card-title { font-size: 15px; font-weight: 700; color: #F0F0F0; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+.admin-card-title a { font-size: 12px; font-weight: 600; color: var(--brand-primary); }
+
+/* TABLE */
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-table th { font-size: 11px; font-weight: 700; color: #666; text-align: left; padding: 0 0 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.admin-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.04); color: #ccc; vertical-align: middle; }
+.admin-table tr:last-child td { border: none; }
+.admin-table td:first-child { color: #e0e0e0; font-weight: 600; }
+
+/* STATUS BADGES */
+.s-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 50px; white-space: nowrap; }
+.s-active { background: rgba(46,213,115,.15); color: #2ED573; }
+.s-review { background: rgba(255,165,2,.15); color: #FFA502; }
+.s-done { background: rgba(255,255,255,.08); color: #888; }
+.s-pending { background: rgba(84,160,255,.15); color: #54A0FF; }
+
+/* BAR */
+.bar-wrap { height: 5px; background: rgba(255,255,255,.07); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.bar-fill { height: 100%; background: var(--brand-gradient); border-radius: 3px; }
+.bar-fill.green { background: linear-gradient(135deg,#2ED573,#7BED9F); }
+
+/* RECENT ACTIVITY */
+.activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.activity-item:last-child { border: none; }
+.activity-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-primary); flex-shrink: 0; margin-top: 5px; }
+.activity-dot.green { background: #2ED573; }
+.activity-dot.blue { background: #54A0FF; }
+.activity-txt { font-size: 13px; color: #ccc; line-height: 1.5; flex: 1; }
+.activity-txt strong { color: #f0f0f0; }
+.activity-time { font-size: 11px; color: #666; white-space: nowrap; margin-top: 2px; }
+
+@media(max-width:768px) {
+  .admin-wrap { grid-template-columns: 1fr; }
+  .admin-sidebar { display: none; }
+  .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  .admin-grid-2 { grid-template-columns: 1fr; }
+  .admin-content { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity="0.9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="sidebar-logo-text">GROW BEE</div><div class="sidebar-logo-sub">ADMIN</div></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">메인</div>
+      <a href="admin-dashboard.html" class="sidebar-link active"><span class="ico">📊</span> 대시보드</a>
+      <a href="admin-campaigns.html" class="sidebar-link"><span class="ico">📋</span> 캠페인 관리 <span class="sidebar-badge">84</span></a>
+      <a href="#" class="sidebar-link"><span class="ico">✍️</span> 리뷰 검수 <span class="sidebar-badge">12</span></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">회원</div>
+      <a href="admin-members.html" class="sidebar-link"><span class="ico">👥</span> 회원 관리</a>
+      <a href="#" class="sidebar-link"><span class="ico">🏪</span> 광고주 관리</a>
+      <a href="#" class="sidebar-link"><span class="ico">💰</span> 정산 관리</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">콘텐츠</div>
+      <a href="#" class="sidebar-link"><span class="ico">📢</span> 공지사항</a>
+      <a href="#" class="sidebar-link"><span class="ico">❓</span> 문의 관리 <span class="sidebar-badge">5</span></a>
+      <a href="#" class="sidebar-link"><span class="ico">🔔</span> 알림 발송</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">시스템</div>
+      <a href="#" class="sidebar-link"><span class="ico">⚙️</span> 시스템 설정</a>
+      <a href="#" class="sidebar-link"><span class="ico">📈</span> 통계 리포트</a>
+      <a href="../../index.html" class="sidebar-link"><span class="ico">🏠</span> 사이트 보기</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <span class="admin-page-title">대시보드</span>
+        <span style="font-size:12px;color:#666;">2025년 1월 30일 · 오전 9:00 업데이트</span>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="admin-campaigns.html" class="topbar-btn">+ 캠페인 등록</a>
+        <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div class="content-title">안녕하세요, 관리자님 👋</div>
+      <div class="content-sub">오늘도 GROW BEE를 운영해주셔서 감사합니다.</div>
+
+      <!-- KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">총 회원 수</div>
+          <div class="kpi-val">12,<em>847</em></div>
+          <div class="kpi-change kpi-up">↑ 이번 주 +284명</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">진행 중 캠페인</div>
+          <div class="kpi-val green">8<em>4</em></div>
+          <div class="kpi-change kpi-up">↑ 이번 주 +12개</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-label">이번 달 리뷰 수</div>
+          <div class="kpi-val blue">2,<em>847</em></div>
+          <div class="kpi-change kpi-up">↑ 전월 대비 +18%</div>
+        </div>
+        <div class="kpi-card orange">
+          <div class="kpi-label">이번 달 매출</div>
+          <div class="kpi-val orange">28.<em>4</em>M</div>
+          <div class="kpi-change kpi-up">↑ 전월 대비 +22%</div>
+        </div>
+      </div>
+
+      <!-- 2 COLUMN -->
+      <div class="admin-grid-2">
+        <div class="admin-card">
+          <div class="admin-card-title">최근 캠페인 <a href="admin-campaigns.html">전체보기 →</a></div>
+          <table class="admin-table">
+            <thead><tr><th>캠페인명</th><th>광고주</th><th>지역</th><th>상태</th></tr></thead>
+            <tbody>
+              <tr><td>스시 오모 오마카세</td><td>오모레스토랑</td><td>강남</td><td><span class="s-badge s-active">진행중</span></td></tr>
+              <tr><td>카페 루미오 음료</td><td>루미오카페</td><td>마포</td><td><span class="s-badge s-active">진행중</span></td></tr>
+              <tr><td>한우 우진각</td><td>우진각</td><td>서초</td><td><span class="s-badge s-review">검토중</span></td></tr>
+              <tr><td>클리어 스킨랩</td><td>클리어뷰티</td><td>강남</td><td><span class="s-badge s-active">진행중</span></td></tr>
+              <tr><td>테라스 해운대</td><td>해운대비치</td><td>부산</td><td><span class="s-badge s-done">마감</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title">지역별 캠페인 현황</div>
+          <table class="admin-table">
+            <thead><tr><th>지역</th><th>캠페인</th><th>비율</th></tr></thead>
+            <tbody>
+              <tr><td>서울</td><td style="color:#ccc;">38개</td><td style="width:120px;"><div class="bar-wrap"><div class="bar-fill" style="width:76%"></div></div></td></tr>
+              <tr><td>경기·인천</td><td style="color:#ccc;">14개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:28%"></div></div></td></tr>
+              <tr><td>부산</td><td style="color:#ccc;">11개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:22%"></div></div></td></tr>
+              <tr><td>제주</td><td style="color:#ccc;">9개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:18%"></div></div></td></tr>
+              <tr><td>대구</td><td style="color:#ccc;">7개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:14%"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW -->
+      <div class="admin-grid-2">
+        <div class="admin-card">
+          <div class="admin-card-title">최근 리뷰 제출 <a href="#">전체보기 →</a></div>
+          <table class="admin-table">
+            <thead><tr><th>리뷰어</th><th>캠페인</th><th>채널</th><th>제출일</th><th>상태</th></tr></thead>
+            <tbody>
+              <tr><td>foodie_kimj</td><td>스시 오모</td><td>블로그</td><td style="color:#888;">01.28</td><td><span class="s-badge s-active">승인</span></td></tr>
+              <tr><td>cafe_tour_lee</td><td>카페 루미오</td><td>인스타</td><td style="color:#888;">01.25</td><td><span class="s-badge s-active">승인</span></td></tr>
+              <tr><td>meat_hunter_pk</td><td>한우 우진각</td><td>블로그</td><td style="color:#888;">01.22</td><td><span class="s-badge s-review">검토중</span></td></tr>
+              <tr><td>beauty_choi</td><td>스킨랩</td><td>클립</td><td style="color:#888;">01.20</td><td><span class="s-badge s-active">승인</span></td></tr>
+              <tr><td>ramen_jeong</td><td>라멘 호시</td><td>인스타</td><td style="color:#888;">01.18</td><td><span class="s-badge s-review">검토중</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-title">실시간 활동 로그</div>
+          <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-txt"><strong>새 캠페인 등록</strong> — 나폴리 화덕피자 '체스토' (강남구)</div><div class="activity-time">방금 전</div></div></div>
+          <div class="activity-item"><div class="activity-dot green"></div><div><div class="activity-txt"><strong>리뷰 제출</strong> — foodie_kimj · 스시 오모</div><div class="activity-time">5분 전</div></div></div>
+          <div class="activity-item"><div class="activity-dot blue"></div><div><div class="activity-txt"><strong>신규 회원가입</strong> — cafe_hana (인스타그램)</div><div class="activity-time">12분 전</div></div></div>
+          <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-txt"><strong>캠페인 신청</strong> — 카페 루미오 (8번째 신청자)</div><div class="activity-time">23분 전</div></div></div>
+          <div class="activity-item"><div class="activity-dot green"></div><div><div class="activity-txt"><strong>정산 완료</strong> — beauty_choi · ₩30,000</div><div class="activity-time">1시간 전</div></div></div>
+          <div class="activity-item"><div class="activity-dot blue"></div><div><div class="activity-txt"><strong>광고주 가입</strong> — 르블랑 스파 (신사동)</div><div class="activity-time">2시간 전</div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캠페인 상세 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.main-nav{display:flex;align-items:center;gap:2px;flex:1;}
+.nav-link{font-size:13px;font-weight:500;color:var(--text-muted);padding:7px 11px;border-radius:8px;transition:var(--transition);white-space:nowrap;text-decoration:none;}
+.nav-link:hover{color:var(--text);background:var(--nav-active-bg);}
+.nav-link.active{color:var(--brand-primary);background:rgba(255,71,87,.08);font-weight:700;}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.mode-btn,.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;transition:var(--transition);color:var(--text);}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:8px 16px 16px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:13px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid var(--border);text-decoration:none;display:block;}
+.mobile-menu .m-cta-btn{background:var(--brand-gradient);color:#fff !important;padding:13px;border-radius:50px;font-weight:700 !important;font-size:15px;margin-top:8px;text-align:center;box-shadow:0 4px 16px rgba(255,71,87,.35);border:none;display:block;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--brand-gradient);color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:50px;transition:var(--transition);box-shadow:0 4px 20px rgba(255,71,87,.35);text-decoration:none;white-space:nowrap;border:none;cursor:pointer;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:14px;padding:11px 22px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;cursor:pointer;}
+.btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
+.tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
+.page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px;color:var(--text);}
+.page-title span{color:var(--brand-primary);}
+.page-desc{font-size:14px;color:var(--text-muted);line-height:1.7;}
+.sec{max-width:1280px;margin:0 auto;padding:40px 20px 64px;}
+.site-footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:40px 0 20px;margin-top:60px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.footer-top{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;}
+.footer-col a:hover{color:var(--brand-primary);}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="../../index.html" class="nav-link">홈</a>
+      <a href="campaigns.html" class="nav-link active">체험단 모집</a>
+      <a href="regions.html" class="nav-link ">지역별</a>
+      <a href="categories.html" class="nav-link ">카테고리</a>
+      <a href="review.html" class="nav-link ">리뷰 현황</a>
+      <a href="notice.html" class="nav-link ">공지사항</a>
+      <a href="advertiser.html" class="nav-link ">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
+      <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
+      <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
+  </div>
+</header>
+
+<div class="sec" style="padding-top:28px;">
+  <a href="campaigns.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:28px;text-decoration:none;transition:.2s;" onmouseover="this.style.color='var(--brand-primary)'" onmouseout="this.style.color='var(--text-muted)'">← 목록으로 돌아가기</a>
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start;">
+    <div>
+      <div style="height:320px;border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;font-size:100px;position:relative;overflow:hidden;margin-bottom:24px;background:linear-gradient(135deg,#1a0a10,#2a1018);">🍣
+        <div style="position:absolute;top:16px;left:16px;display:flex;gap:8px;"><span style="background:rgba(255,71,87,.15);color:var(--brand-primary);font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">HOT</span><span style="background:rgba(46,213,115,.15);color:#2ED573;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">블로그</span></div>
+        <div style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,.75);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;color:#fff;">D-5 마감</div>
+      </div>
+      <div style="display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">📍 서울 강남구 · 역삼동 · 오마카세</div>
+      <h1 style="font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:14px;line-height:1.2;color:var(--text);">스시 오모 — 프리미엄 오마카세 코스 체험단 모집</h1>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+        <span style="font-size:12px;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);padding:5px 12px;border-radius:50px;">📅 방문 가능: 2025.02.01 ~ 02.28</span>
+        <span style="font-size:12px;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);padding:5px 12px;border-radius:50px;">🕐 점심·저녁 가능</span>
+        <span style="font-size:12px;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);padding:5px 12px;border-radius:50px;">👥 2인 기준</span>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:var(--shadow);">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--brand-primary);">✅ 제공 혜택</h3>
+        <ul style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;">
+          <li>• 2인 오마카세 코스 풀코스 (15만원 상당)</li>
+          <li>• 사케 1잔 추가 제공</li>
+          <li>• 주차 2시간 무료</li>
+          <li>• 방문 확인 인증서 제공</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:var(--shadow);">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);">📋 리뷰 작성 조건</h3>
+        <ul style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;">
+          <li>• 네이버 블로그 300자 이상 작성</li>
+          <li>• 사진 10장 이상 (음식, 인테리어, 전경 포함)</li>
+          <li>• 방문 후 <strong style="color:var(--text);">7일 이내</strong> URL 제출 필수</li>
+          <li>• 방문 인증 필수 (영수증 또는 직원 확인)</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow);">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);">📍 매장 정보</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;">
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">주소</div><div style="color:var(--text);">서울특별시 강남구 역삼동 123-45</div></div>
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">교통</div><div style="color:var(--text);">2호선 역삼역 3번 출구 도보 5분</div></div>
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">영업시간</div><div style="color:var(--text);">11:30 ~ 22:00 (월요일 휴무)</div></div>
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">예약</div><div style="color:var(--text);">선정 후 담당자 직접 안내</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 신청 사이드바 -->
+    <div style="background:var(--bg-card);border:1px solid rgba(255,71,87,.25);border-radius:var(--radius-xl);padding:28px;position:sticky;top:84px;box-shadow:var(--shadow-card);">
+      <div style="background:rgba(255,71,87,.06);border-radius:var(--radius-lg);padding:16px;margin-bottom:20px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">총 혜택 금액</div>
+        <div style="font-family:var(--font-display);font-size:30px;font-weight:800;color:#2ED573;">150,000원</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">+ 사케 1잔 포함</div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text-muted);">신청 현황</span><span style="font-weight:700;color:var(--text);">24 / 30명</span></div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:80%;height:100%;background:var(--brand-gradient);border-radius:3px;"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+        <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);">D-5</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">마감까지</div></div>
+        <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);">6명</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">남은 자리</div></div>
+      </div>
+      <button onclick="location.href='signup.html'" style="width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(255,71,87,.35);margin-bottom:10px;">🎯 신청하기</button>
+      <button style="width:100%;background:transparent;color:var(--text);padding:12px;border-radius:50px;font-size:13px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;transition:.2s;">♡ 찜하기</button>
+      <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:14px;line-height:1.7;">선정 결과는 마감일 +2일 이내<br>등록 이메일로 안내됩니다.</div>
+    </div>
+  </div>
+</div>
+<style>@media(max-width:768px){div[style*="grid-template-columns:1fr 320px"]{grid-template-columns:1fr !important;}div[style*="position:sticky;top:84px"]{position:static !important;margin-top:24px;}}</style>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-top">
+    <div><a href="../../index.html" class="logo" style="margin-bottom:10px;text-decoration:none;"><div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div><span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">GROW BEE</span></a><p style="font-size:12px;color:var(--text-muted);line-height:1.7;">전국 맛집·카페·뷰티 체험단 플랫폼</p></div>
+    <div class="footer-links"><div class="footer-col"><h4>체험단</h4><a href="campaigns.html">전체 캠페인</a><a href="regions.html">지역별</a><a href="categories.html">카테고리</a></div><div class="footer-col"><h4>광고주</h4><a href="advertiser.html">캠페인 등록</a><a href="faq.html">FAQ</a></div><div class="footer-col"><h4>고객센터</h4><a href="notice.html">공지사항</a><a href="contact.html">1:1 문의</a></div></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
+</div></footer>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+</body></html>

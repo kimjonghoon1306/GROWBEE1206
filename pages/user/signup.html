@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원가입 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.mode-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;margin-left:auto;cursor:pointer;}
+.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none;}
+
+.auth-page{min-height:calc(100vh - 64px);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px 48px;}
+.auth-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:36px 32px;width:100%;max-width:480px;box-shadow:var(--shadow-card);}
+.auth-logo-wrap{text-align:center;margin-bottom:24px;}
+.auth-logo-ico{width:52px;height:52px;border-radius:14px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 20px rgba(255,71,87,.35);}
+.auth-logo-ico svg{width:28px;height:28px;}
+.auth-title{font-family:var(--font-display);font-size:24px;font-weight:800;text-align:center;color:var(--text);margin-bottom:6px;}
+.auth-sub{font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:28px;}
+
+.type-tabs{display:flex;gap:0;background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;}
+.type-tab{flex:1;padding:10px 8px;border-radius:10px;font-size:13px;font-weight:600;color:var(--text-muted);text-align:center;cursor:pointer;transition:var(--transition);}
+.type-tab.active{background:var(--bg-card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.type-tab.active.reviewer{color:var(--brand-primary);}
+.type-tab.active.advertiser{color:#54A0FF;}
+
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase;}
+.form-input{width:100%;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:13px 16px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:var(--transition);}
+.form-input:focus{border-color:rgba(255,71,87,.5);background:var(--bg-card);}
+.form-input::placeholder{color:var(--text-muted);}
+select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+
+.channel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.channel-btn{background:var(--bg-card2);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:10px 12px;font-size:12px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:var(--transition);text-align:center;}
+.channel-btn.active{border-color:var(--brand-primary);color:var(--brand-primary);background:rgba(255,71,87,.06);}
+
+.agree-section{margin:16px 0;}
+.agree-all{display:flex;align-items:center;gap:10px;padding:13px 14px;background:rgba(255,71,87,.05);border:1px solid rgba(255,71,87,.15);border-radius:var(--radius-md);cursor:pointer;margin-bottom:10px;}
+.agree-all span{font-size:13px;font-weight:700;color:var(--text);}
+.agree-item{display:flex;align-items:center;gap:10px;padding:8px 4px;cursor:pointer;}
+.agree-item span{font-size:12px;color:var(--text-muted);flex:1;}
+.agree-item a{font-size:12px;color:var(--brand-primary);text-decoration:underline;}
+.chk{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);background:var(--bg-card2);appearance:none;cursor:pointer;flex-shrink:0;transition:var(--transition);position:relative;}
+.chk:checked{background:var(--brand-primary);border-color:var(--brand-primary);}
+.chk:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:#fff;font-weight:700;}
+
+.submit-btn{width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;margin-top:8px;box-shadow:0 4px 20px rgba(255,71,87,.35);transition:var(--transition);}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
+
+.divider{position:relative;text-align:center;margin:20px 0;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
+.divider::before{left:0;}.divider::after{right:0;}
+.divider span{font-size:12px;color:var(--text-muted);background:var(--bg-card);padding:0 12px;position:relative;}
+
+.social-btns{display:flex;flex-direction:column;gap:8px;}
+.social-btn{width:100%;padding:13px;border-radius:50px;font-size:13px;font-weight:600;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:var(--transition);color:var(--text);}
+.social-btn:hover{transform:translateY(-1px);}
+.social-kakao{border-color:rgba(254,229,0,.4);background:rgba(254,229,0,.08);color:#7d6200;}
+.social-naver{border-color:rgba(3,199,90,.3);background:rgba(3,199,90,.08);color:#027a36;}
+
+.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--text-muted);}
+.auth-footer a{color:var(--brand-primary);font-weight:700;}
+
+@media(max-width:480px){
+  .auth-box{padding:28px 20px;border-radius:var(--radius-lg);}
+  .channel-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity="0.9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+    <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+  </div>
+</header>
+
+<div class="auth-page">
+  <div class="auth-box">
+    <div class="auth-logo-wrap">
+      <div class="auth-logo-ico"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity="0.9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+    </div>
+    <h1 class="auth-title">GROW BEE 회원가입</h1>
+    <p class="auth-sub">리뷰어 또는 광고주로 시작하세요</p>
+
+    <div class="type-tabs">
+      <div class="type-tab active reviewer" onclick="setType('reviewer',this)">🧑‍💻 리뷰어로 가입</div>
+      <div class="type-tab advertiser" onclick="setType('advertiser',this)">🏪 광고주로 가입</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">이름</label>
+      <input class="form-input" type="text" placeholder="홍길동">
+    </div>
+    <div class="form-group">
+      <label class="form-label">이메일</label>
+      <input class="form-input" type="email" placeholder="hello@growbee.kr">
+    </div>
+    <div class="form-group">
+      <label class="form-label">비밀번호</label>
+      <input class="form-input" type="password" placeholder="8자 이상, 영문+숫자 조합">
+    </div>
+    <div class="form-group">
+      <label class="form-label">비밀번호 확인</label>
+      <input class="form-input" type="password" placeholder="비밀번호를 다시 입력하세요">
+    </div>
+
+    <div id="reviewer-section">
+      <div class="form-group">
+        <label class="form-label">활동 채널 선택 (중복 가능)</label>
+        <div class="channel-grid">
+          <div class="channel-btn active" onclick="this.classList.toggle('active')">📝 네이버 블로그</div>
+          <div class="channel-btn" onclick="this.classList.toggle('active')">📸 인스타그램</div>
+          <div class="channel-btn" onclick="this.classList.toggle('active')">🎬 유튜브</div>
+          <div class="channel-btn" onclick="this.classList.toggle('active')">📹 네이버 클립</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">대표 채널 URL</label>
+        <input class="form-input" type="url" placeholder="https://blog.naver.com/...">
+      </div>
+    </div>
+
+    <div id="advertiser-section" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">매장/업체명</label>
+        <input class="form-input" type="text" placeholder="스시 오모">
+      </div>
+      <div class="form-group">
+        <label class="form-label">업종</label>
+        <select class="form-input">
+          <option>업종 선택</option>
+          <option>식당·맛집</option>
+          <option>카페</option>
+          <option>디저트</option>
+          <option>뷰티·헤어</option>
+          <option>피트니스</option>
+          <option>숙박</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">지역</label>
+        <select class="form-input">
+          <option>지역 선택</option>
+          <option>서울</option>
+          <option>경기·인천</option>
+          <option>부산</option>
+          <option>대구</option>
+          <option>제주</option>
+          <option>전국 (배송형)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="agree-section">
+      <label class="agree-all">
+        <input class="chk" type="checkbox" id="agreeAll" onchange="toggleAll(this)">
+        <span>전체 동의</span>
+      </label>
+      <label class="agree-item"><input class="chk agree-sub" type="checkbox"> <span>[필수] <a href="#">이용약관</a>에 동의합니다</span></label>
+      <label class="agree-item"><input class="chk agree-sub" type="checkbox"> <span>[필수] <a href="#">개인정보처리방침</a>에 동의합니다</span></label>
+      <label class="agree-item"><input class="chk agree-sub" type="checkbox"> <span>[선택] 마케팅 정보 수신에 동의합니다</span></label>
+    </div>
+
+    <button class="submit-btn">가입하기</button>
+
+    <div class="divider"><span>또는 소셜 계정으로 가입</span></div>
+    <div class="social-btns">
+      <button class="social-btn social-kakao">🟡 카카오로 시작하기</button>
+      <button class="social-btn social-naver">🟢 네이버로 시작하기</button>
+    </div>
+
+    <div class="auth-footer">이미 계정이 있으신가요? <a href="login.html">로그인</a></div>
+  </div>
+</div>
+
+<script>
+function setType(type, el) {
+  document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('reviewer-section').style.display = type === 'reviewer' ? '' : 'none';
+  document.getElementById('advertiser-section').style.display = type === 'advertiser' ? '' : 'none';
+}
+function toggleAll(el) {
+  document.querySelectorAll('.agree-sub').forEach(c => c.checked = el.checked);
+}
+function toggleMode() {
+  var isNight = document.body.classList.toggle('night');
+  document.getElementById('modeBtn').textContent = isNight ? '☀️' : '🌙';
+  localStorage.setItem('growbee-mode', isNight ? 'night' : 'day');
+}
+(function() {
+  if (localStorage.getItem('growbee-mode') === 'night') {
+    document.body.classList.add('night');
+    document.getElementById('modeBtn').textContent = '☀️';
+  }
+})();
+</script>
+</body>
+</html>

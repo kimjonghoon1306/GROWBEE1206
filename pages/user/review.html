@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리뷰 현황 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+/* HEADER */
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.main-nav{display:flex;align-items:center;gap:2px;flex:1;}
+.nav-link{font-size:13px;font-weight:500;color:var(--text-muted);padding:7px 11px;border-radius:8px;transition:var(--transition);white-space:nowrap;text-decoration:none;}
+.nav-link:hover{color:var(--text);background:var(--nav-active-bg);}
+.nav-link.active{color:var(--brand-primary);background:rgba(255,71,87,.08);font-weight:700;}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.mode-btn,.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;transition:var(--transition);color:var(--text);}
+.mode-btn:hover,.admin-btn:hover{background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.3);}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:8px 16px 16px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:13px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid var(--border);text-decoration:none;display:block;}
+.mobile-menu .m-cta-btn{background:var(--brand-gradient);color:#fff !important;padding:13px;border-radius:50px;font-weight:700 !important;font-size:15px;margin-top:8px;text-align:center;box-shadow:0 4px 16px rgba(255,71,87,.35);border:none;display:block;}
+/* COMMON */
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--brand-gradient);color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:50px;transition:var(--transition);box-shadow:0 4px 20px rgba(255,71,87,.35);text-decoration:none;white-space:nowrap;border:none;cursor:pointer;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:14px;padding:11px 22px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;cursor:pointer;}
+.btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;white-space:nowrap;}
+.badge-red{background:rgba(255,71,87,.15);color:var(--brand-primary);}
+.badge-green{background:rgba(46,213,115,.15);color:#2ED573;}
+.badge-orange{background:rgba(255,165,2,.15);color:#FFA502;}
+.badge-blue{background:rgba(84,160,255,.15);color:#54A0FF;}
+.tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-family:var(--font-display);font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.1;color:var(--text);}
+.section-title span{color:var(--brand-primary);}
+/* PAGE HERO */
+.page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
+.page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px;color:var(--text);}
+.page-title span{color:var(--brand-primary);}
+.page-desc{font-size:14px;color:var(--text-muted);line-height:1.7;}
+/* SEC */
+.sec{max-width:1280px;margin:0 auto;padding:40px 20px 64px;}
+/* CAMP CARD */
+.camp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);text-decoration:none;display:block;}
+.camp-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);border-color:rgba(255,71,87,.2);}
+.camp-img{width:100%;height:185px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden;}
+.camp-badges{position:absolute;top:10px;left:10px;display:flex;gap:5px;z-index:1;}
+.camp-d{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;color:#fff;}
+.camp-body{padding:14px;}
+.camp-region{font-size:10px;color:var(--text-muted);margin-bottom:5px;}
+.camp-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.3;}
+.camp-desc{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.camp-meta{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);}
+.camp-reward{font-size:12px;font-weight:700;color:#2ED573;}
+.camp-slots{font-size:11px;color:var(--text-muted);}
+.camp-bar{height:3px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden;}
+.camp-bar-fill{height:100%;background:var(--brand-gradient);border-radius:2px;}
+/* FOOTER */
+.site-footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:40px 0 20px;margin-top:60px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.footer-top{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;transition:var(--transition);}
+.footer-col a:hover{color:var(--brand-primary);}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;gap:24px;}.footer-links{grid-template-columns:repeat(2,1fr);}.footer-bottom{flex-direction:column;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="../../index.html" class="nav-link">홈</a>
+      <a href="campaigns.html" class="nav-link ">체험단 모집</a>
+      <a href="regions.html" class="nav-link ">지역별</a>
+      <a href="categories.html" class="nav-link ">카테고리</a>
+      <a href="review.html" class="nav-link active">리뷰 현황</a>
+      <a href="notice.html" class="nav-link ">공지사항</a>
+      <a href="advertiser.html" class="nav-link ">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+      <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
+      <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
+      <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="../../index.html">🏠 홈</a>
+    <a href="campaigns.html">🎯 체험단 모집</a>
+    <a href="regions.html">📍 지역별</a>
+    <a href="categories.html">🗂️ 카테고리</a>
+    <a href="review.html">⭐ 리뷰 현황</a>
+    <a href="notice.html">📢 공지사항</a>
+    <a href="advertiser.html">🏪 사장님</a>
+    <a href="../admin/admin-dashboard.html">⚙️ 관리자</a>
+    <a href="login.html">🔑 로그인</a>
+    <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
+  </div>
+</header>
+
+<div class="page-hero"><div class="page-hero-inner">
+  <div class="page-badge">⭐ 리뷰 현황</div>
+  <h1 class="page-title">실제 <span>리뷰어</span>들의 생생 후기</h1>
+  <p class="page-desc">그로우비 체험단을 통해 작성된 리뷰들을 확인해보세요.</p>
+</div></div>
+<div class="sec">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px;">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--brand-primary);">2,847</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">이번 달 제출 리뷰</div></div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:32px;font-weight:800;color:#2ED573;">4.8</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">평균 만족도 (5점)</div></div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:32px;font-weight:800;color:#FFA502;">98%</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">리뷰 제출 완료율</div></div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:32px;font-weight:800;color:#54A0FF;">12,400</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">누적 리뷰어 수</div></div>
+  </div>
+  <div class="tag-label">LATEST REVIEWS</div>
+  <h2 class="section-title" style="margin-bottom:24px;">최근 <span>제출된</span> 리뷰</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#1a0a10,#2a1018);">🍣</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">f</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">foodie_kimj</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">블로그</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">진짜 강남에서 이 가격에 이런 퀄리티 오마카세는 처음입니다. 셰프님이 직접 설명해주시면서 코스가 진행되는데 식재료 하나하나에 진심이 느껴졌어요. 사케와의 페어링도 완벽했고 서비스도 최상급이었습니다.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.28 · 스시 오모</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0a1210,#0e1e18);">☕</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">c</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">cafe_tour_lee</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">인스타</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">루미오 진짜 인테리어 대박이에요! 시그니처 라벤더 라떼가 너무 예뻐서 사진이 엄청 나온 것 같아요. 디저트도 달달하지 않고 딱 제 취향. 다음에 친구 데리고 다시 오고 싶어요.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.25 · 카페 루미오</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#12080a,#1e0c10);">🥩</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">m</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">meat_hunter_park</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">블로그</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★☆</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">방배동 우진각 진짜 소문대로네요. 1++ 등급 한우를 숯불에 구워먹는 맛이 일품이었습니다. 고기 두께도 두툼하게 썰어주시고 밑반찬도 정갈했어요. 된장찌개도 맛있었고 전체적으로 만족스러운 방문이었습니다.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.22 · 한우 우진각</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0a0a1a,#12102a);">💆</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">b</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">beauty_choi</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">클립</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">클리어 스킨랩은 피부과 느낌의 전문적인 케어를 해주는 곳이에요. 원장님이 직접 피부 상태를 분석해주시고 맞춤 케어를 해주셨는데 끝나고 나서 피부가 촉촉하고 환해진 느낌! 원고료까지 받아서 더 좋았습니다.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.20 · 클리어 스킨랩</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#14100a,#22180e);">🍜</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">r</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">ramen_jeong</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">인스타</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">성수에서 이런 라멘집이 있었다니! 육수가 진하면서도 느끼하지 않아서 국물을 다 마시게 되더라고요. 차슈도 두툼하고 부드럽고 면 쫄깃함도 완벽했습니다. 성수 나들이 코스로 강추합니다.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.18 · 라멘 호시</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0a0e1a,#0e1424);">🍷</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">w</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">wine_han_kr</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">블로그</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">해운대 야경 보면서 와인 한잔은 정말 로맨틱합니다. 루프탑이라 뷰가 압도적이고 와인 리스트도 알차게 구성되어 있어요. 치즈플래터와 함께하니 더 좋았습니다. 부산 여행 필수 코스로 추천합니다!</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.15 · 테라스 해운대</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0e140a,#161e0e);">🥗</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">g</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">greeneater_park</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">클립</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★☆</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">대구에서 이렇게 제대로 된 비건 메뉴를 맛볼 수 있을 줄 몰랐어요. 음식 하나하나 플레이팅도 예쁘고 맛도 있어서 비건이 아닌 저도 완전 반했습니다. 다음에 또 방문하고 싶네요.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.12 · 그린테이블</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#141a0a,#1e2a0e);">🥩</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">j</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">jeju_foodie</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">블로그</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">제주 흑돼지는 정말 육지 돼지고기랑 달라요! 육즙이 넘치고 잡내가 전혀 없어서 너무 맛있었습니다. 한라장 사장님이 직접 구워주시는데 그 정성이 느껴졌고 사이드 메뉴들도 다 맛있었어요.</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.10 · 제주 한라장</div>
+  </div>
+</div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#1a0e0a,#281814);">🍕</div>
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">p</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">pizza_lover_kim</div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">인스타</span>
+    </div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">수원 킬른 화덕피자 진짜 인생피자 발견했어요. 도우가 얇고 바삭한데 가운데는 촉촉하고 토핑도 아낌없이 올려주셔서 너무 맛있었습니다. 분위기도 유럽 감성이라 데이트 코스로 강추!</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.08 · 화덕피자 킬른</div>
+  </div>
+</div></div>
+</div>
+<style>
+@media(max-width:768px){div[style*="grid-template-columns:repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}div[style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr) !important;}}
+@media(max-width:480px){div[style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr !important;}div[style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr) !important;}}
+</style>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="../../index.html" class="logo" style="margin-bottom:10px;"><div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div><span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">GROW BEE</span></a>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.7;max-width:200px;">전국 맛집·카페·뷰티 체험단 플랫폼</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>체험단</h4><a href="campaigns.html">전체 캠페인</a><a href="regions.html">지역별</a><a href="categories.html">카테고리</a><a href="review.html">리뷰 현황</a></div>
+        <div class="footer-col"><h4>광고주</h4><a href="advertiser.html">캠페인 등록</a><a href="advertiser.html">요금 안내</a><a href="faq.html">FAQ</a></div>
+        <div class="footer-col"><h4>고객센터</h4><a href="notice.html">공지사항</a><a href="faq.html">자주 묻는 질문</a><a href="contact.html">1:1 문의</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
+  </div>
+</footer>
+<script>
+function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}
+(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());
+</script>
+</body></html>

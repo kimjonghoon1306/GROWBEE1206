@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>광고주 사장님 페이지 — GROW BEE 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:16px;max-width:1280px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.main-nav{display:flex;align-items:center;gap:2px;flex:1;}
+.nav-link{font-size:13px;font-weight:500;color:var(--text-muted);padding:7px 11px;border-radius:8px;transition:var(--transition);white-space:nowrap;text-decoration:none;}
+.nav-link:hover{color:var(--text);background:var(--nav-active-bg);}
+.nav-link.active{color:var(--brand-primary);background:rgba(255,71,87,.08);font-weight:700;}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.mode-btn,.admin-btn{width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;transition:var(--transition);color:var(--text);}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--bg-surface);border-bottom:1px solid var(--border);padding:8px 16px 16px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{padding:13px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid var(--border);text-decoration:none;display:block;}
+.mobile-menu .m-cta-btn{background:var(--brand-gradient);color:#fff !important;padding:13px;border-radius:50px;font-weight:700 !important;font-size:15px;margin-top:8px;text-align:center;box-shadow:0 4px 16px rgba(255,71,87,.35);border:none;display:block;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--brand-gradient);color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:50px;transition:var(--transition);box-shadow:0 4px 20px rgba(255,71,87,.35);text-decoration:none;white-space:nowrap;border:none;cursor:pointer;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:14px;padding:11px 22px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;cursor:pointer;}
+.btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
+.tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
+.page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
+.page-title{font-family:var(--font-display);font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px;color:var(--text);}
+.page-title span{color:var(--brand-primary);}
+.page-desc{font-size:14px;color:var(--text-muted);line-height:1.7;}
+.sec{max-width:1280px;margin:0 auto;padding:40px 20px 64px;}
+.site-footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:40px 0 20px;margin-top:60px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
+.footer-top{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.footer-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;}
+.footer-col a:hover{color:var(--brand-primary);}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="../../index.html" class="nav-link">홈</a>
+      <a href="campaigns.html" class="nav-link ">체험단 모집</a>
+      <a href="regions.html" class="nav-link ">지역별</a>
+      <a href="categories.html" class="nav-link ">카테고리</a>
+      <a href="review.html" class="nav-link ">리뷰 현황</a>
+      <a href="notice.html" class="nav-link ">공지사항</a>
+      <a href="advertiser.html" class="nav-link active">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
+      <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
+      <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
+  </div>
+</header>
+<style>
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:32px;}
+.price-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px 26px;position:relative;box-shadow:var(--shadow);}
+.price-card.featured{border-color:rgba(255,71,87,.4);box-shadow:0 0 40px rgba(255,71,87,.12);}
+.price-pop{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--brand-gradient);color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:50px;white-space:nowrap;box-shadow:0 4px 12px rgba(255,71,87,.4);}
+.price-name{font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:12px;letter-spacing:.5px;}
+.price-val{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--text);line-height:1;margin-bottom:4px;}
+.price-val.hl{color:var(--brand-primary);}
+.price-val small{font-size:14px;color:var(--text-muted);font-weight:500;}
+.price-period{font-size:12px;color:var(--text-muted);margin-bottom:24px;}
+.price-features{list-style:none;margin-bottom:28px;}
+.price-features li{font-size:13px;color:var(--text-muted);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.price-features li:last-child{border:none;}
+.price-features li::before{content:"✓";color:#2ED573;font-weight:700;flex-shrink:0;}
+.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;}
+.step-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 20px;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand-gradient);}
+.step-n{font-family:var(--font-display);font-size:40px;font-weight:800;color:rgba(255,71,87,.1);line-height:1;margin-bottom:12px;}
+.step-ico{font-size:26px;margin-bottom:10px;}
+.step-t{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.step-d{font-size:12px;color:var(--text-muted);line-height:1.6;}
+@media(max-width:768px){.price-grid{grid-template-columns:1fr;}.step-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.step-grid{grid-template-columns:1fr;}}
+</style>
+<div class="page-hero"><div class="page-hero-inner">
+  <div class="page-badge">🏪 광고주 (사장님)</div>
+  <h1 class="page-title">효과적인 <span>인플루언서</span><br>마케팅, 이제 쉽게</h1>
+  <p class="page-desc">GROW BEE에서 전국 12,400명+ 리뷰어와 직접 연결하세요.<br>복잡한 대행 없이 캠페인 등록부터 리뷰 관리까지.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;">
+    <a href="signup.html" class="btn-primary" style="font-size:15px;padding:14px 28px;">🚀 지금 시작하기 — 무료</a>
+    <a href="faq.html" class="btn-outline" style="font-size:15px;padding:14px 28px;">자주 묻는 질문</a>
+  </div>
+</div></div>
+
+<div style="background:var(--bg-surface);padding:40px 0;">
+  <div class="sec" style="padding-top:0;padding-bottom:0;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--brand-primary);">12,400+</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">등록 리뷰어</div></div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:28px;font-weight:800;color:#2ED573;">97%</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">광고주 만족도</div></div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:28px;font-weight:800;color:#FFA502;">3일</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">평균 캠페인 셋업</div></div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);"><div style="font-family:var(--font-display);font-size:28px;font-weight:800;color:#54A0FF;">98%</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px;">리뷰 완료율</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="tag-label">HOW IT WORKS</div>
+  <h2 style="font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin-bottom:4px;">캠페인 진행 <span style="color:var(--brand-primary);">4단계</span></h2>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:0;">가입부터 리뷰 완료까지 빠르게 진행됩니다</p>
+  <div class="step-grid">
+    <div class="step-card"><div class="step-n">01</div><div class="step-ico">📝</div><div class="step-t">캠페인 등록</div><div class="step-d">매장 정보, 체험 혜택, 리뷰 조건을 입력하고 캠페인을 등록하세요.</div></div>
+    <div class="step-card"><div class="step-n">02</div><div class="step-ico">🎯</div><div class="step-t">리뷰어 모집</div><div class="step-d">GROW BEE가 최적의 리뷰어를 자동 매칭하거나 직접 선정하세요.</div></div>
+    <div class="step-card"><div class="step-n">03</div><div class="step-ico">🍽️</div><div class="step-t">방문 & 체험</div><div class="step-d">선정된 리뷰어가 매장을 방문하고 생생한 콘텐츠를 제작합니다.</div></div>
+    <div class="step-card"><div class="step-n">04</div><div class="step-ico">✅</div><div class="step-t">리뷰 확인</div><div class="step-d">제출된 리뷰 URL을 확인하고 성과를 분석하세요. 완료!</div></div>
+  </div>
+</div>
+
+<div style="background:var(--bg-surface);padding:56px 0;">
+  <div class="sec" style="padding-top:0;padding-bottom:0;">
+    <div class="tag-label">PRICING</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin-bottom:4px;">합리적인 <span style="color:var(--brand-primary);">요금제</span></h2>
+    <p style="font-size:13px;color:var(--text-muted);">언제든지 업그레이드·다운그레이드 가능합니다</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-name">STARTER</div>
+        <div class="price-val">49,900<small>원</small></div>
+        <div class="price-period">월 / VAT 별도</div>
+        <ul class="price-features">
+          <li>캠페인 1개 동시 운영</li>
+          <li>월 모집 인원 최대 10명</li>
+          <li>기본 리뷰어 자동 매칭</li>
+          <li>리뷰 URL 제출 시스템</li>
+          <li>이메일 고객지원</li>
+        </ul>
+        <a href="signup.html" class="btn-outline" style="width:100%;justify-content:center;display:flex;">시작하기</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-pop">⭐ 가장 인기</div>
+        <div class="price-name">GROWTH</div>
+        <div class="price-val hl">129,000<small>원</small></div>
+        <div class="price-period">월 / VAT 별도</div>
+        <ul class="price-features">
+          <li>캠페인 5개 동시 운영</li>
+          <li>월 모집 인원 최대 50명</li>
+          <li>리뷰어 직접 선정 기능</li>
+          <li>신청자 SNS 채널 분석</li>
+          <li>우선 노출 설정</li>
+          <li>카카오 알림톡 발송</li>
+          <li>전담 매니저 배정</li>
+        </ul>
+        <a href="signup.html" class="btn-primary" style="width:100%;justify-content:center;display:flex;">시작하기</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">PRO</div>
+        <div class="price-val">299,000<small>원</small></div>
+        <div class="price-period">월 / VAT 별도</div>
+        <ul class="price-features">
+          <li>캠페인 무제한 운영</li>
+          <li>모집 인원 무제한</li>
+          <li>맞춤 타겟팅 리뷰어 추천</li>
+          <li>상세 성과 리포트</li>
+          <li>메인 페이지 배너 노출</li>
+          <li>전담 팀 운영 지원</li>
+          <li>오프라인 마케팅 연계</li>
+        </ul>
+        <a href="signup.html" class="btn-outline" style="width:100%;justify-content:center;display:flex;">시작하기</a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-top">
+    <div><a href="../../index.html" class="logo" style="margin-bottom:10px;text-decoration:none;"><div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div><span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">GROW BEE</span></a><p style="font-size:12px;color:var(--text-muted);line-height:1.7;">전국 맛집·카페·뷰티 체험단 플랫폼</p></div>
+    <div class="footer-links"><div class="footer-col"><h4>체험단</h4><a href="campaigns.html">전체 캠페인</a><a href="regions.html">지역별</a><a href="categories.html">카테고리</a></div><div class="footer-col"><h4>광고주</h4><a href="advertiser.html">캠페인 등록</a><a href="faq.html">FAQ</a></div><div class="footer-col"><h4>고객센터</h4><a href="notice.html">공지사항</a><a href="contact.html">1:1 문의</a></div></div>
+  </div>
+  <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
+</div></footer>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+</body></html>

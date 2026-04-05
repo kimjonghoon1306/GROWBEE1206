@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원 관리 — GROW BEE Admin</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--border:rgba(255,255,255,0.08);--text:#F0F0F0;--text-muted:#999;--shadow:0 4px 24px rgba(0,0,0,.5);--shadow-card:0 8px 40px rgba(0,0,0,.6);--header-bg:rgba(13,13,13,0.95);--nav-active-bg:rgba(255,255,255,0.06);}
+.admin-wrap{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+.admin-sidebar{background:var(--bg-surface);border-right:1px solid var(--border);padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sidebar-logo-mark{width:30px;height:30px;border-radius:9px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;}
+.sidebar-logo-mark svg{width:16px;height:16px;}
+.sidebar-logo-text{font-family:var(--font-display);font-size:14px;font-weight:800;color:#F0F0F0;}
+.sidebar-logo-sub{font-size:10px;color:#666;font-weight:600;}
+.sidebar-section{padding:14px 10px 6px;}
+.sidebar-section-label{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:500;color:#888;transition:var(--transition);cursor:pointer;text-decoration:none;margin-bottom:2px;}
+.sidebar-link:hover{background:rgba(255,255,255,.05);color:#f0f0f0;}
+.sidebar-link.active{background:rgba(255,71,87,.12);color:var(--brand-primary);font-weight:700;}
+.sidebar-link span.ico{font-size:15px;flex-shrink:0;}
+.sidebar-badge{margin-left:auto;background:var(--brand-primary);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
+.admin-main{background:var(--bg);overflow-y:auto;}
+.admin-topbar{position:sticky;top:0;z-index:10;background:rgba(13,13,13,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.admin-page-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:#F0F0F0;}
+.topbar-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#ccc;cursor:pointer;transition:var(--transition);text-decoration:none;}
+.topbar-btn:hover{color:#f0f0f0;background:rgba(255,255,255,.1);}
+.topbar-exit{color:var(--brand-primary);border-color:rgba(255,71,87,.3);background:rgba(255,71,87,.08);}
+.admin-content{padding:28px;}
+.admin-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:20px;}
+.admin-card-title{font-size:15px;font-weight:700;color:#F0F0F0;margin-bottom:18px;}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px;}
+.admin-table th{font-size:11px;font-weight:700;color:#666;text-align:left;padding:0 0 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.admin-table td{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);color:#ccc;vertical-align:middle;}
+.admin-table tr:last-child td{border:none;}
+.admin-table td:first-child{color:#e0e0e0;font-weight:600;}
+.s-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;white-space:nowrap;}
+.s-active{background:rgba(46,213,115,.15);color:#2ED573;}
+.s-review{background:rgba(255,165,2,.15);color:#FFA502;}
+.s-done{background:rgba(255,255,255,.08);color:#888;}
+.s-pending{background:rgba(84,160,255,.15);color:#54A0FF;}
+.search-bar{display:flex;gap:10px;margin-bottom:20px;}
+.search-input{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 16px;color:#f0f0f0;font-size:13px;font-family:var(--font-display);outline:none;}
+.search-input:focus{border-color:rgba(255,71,87,.4);}
+.search-input::placeholder{color:#666;}
+@media(max-width:768px){.admin-wrap{grid-template-columns:1fr;}.admin-sidebar{display:none;}.admin-content{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="sidebar-logo-text">GROW BEE</div><div class="sidebar-logo-sub">ADMIN</div></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">메인</div>
+      <a href="admin-dashboard.html" class="sidebar-link"><span class="ico">📊</span> 대시보드</a>
+      <a href="admin-campaigns.html" class="sidebar-link "><span class="ico">📋</span> 캠페인 관리 <span class="sidebar-badge">84</span></a>
+      <a href="#" class="sidebar-link"><span class="ico">✍️</span> 리뷰 검수 <span class="sidebar-badge">12</span></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">회원</div>
+      <a href="admin-members.html" class="sidebar-link active"><span class="ico">👥</span> 회원 관리</a>
+      <a href="#" class="sidebar-link"><span class="ico">🏪</span> 광고주 관리</a>
+      <a href="#" class="sidebar-link"><span class="ico">💰</span> 정산 관리</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">콘텐츠</div>
+      <a href="#" class="sidebar-link"><span class="ico">📢</span> 공지사항</a>
+      <a href="#" class="sidebar-link"><span class="ico">❓</span> 문의 관리 <span class="sidebar-badge">5</span></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">시스템</div>
+      <a href="#" class="sidebar-link"><span class="ico">⚙️</span> 시스템 설정</a>
+      <a href="../../index.html" class="sidebar-link"><span class="ico">🏠</span> 사이트 보기</a>
+    </div>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <span class="admin-page-title">회원 관리</span>
+      <div style="display:flex;gap:8px;">
+        <button style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#ccc;cursor:pointer;">📥 CSV 내보내기</button>
+        <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
+      </div>
+    </div>
+    <div class="admin-content">
+<div class="search-bar">
+  <input class="search-input" placeholder="이름, 이메일, 채널명 검색...">
+  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:#ccc;font-size:13px;font-family:inherit;">
+    <option>전체 회원</option><option>리뷰어</option><option>광고주</option>
+  </select>
+  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:#ccc;font-size:13px;font-family:inherit;">
+    <option>전체 등급</option><option>브론즈</option><option>실버</option><option>골드</option><option>플래티넘</option>
+  </select>
+</div>
+<div class="admin-card">
+  <div class="admin-card-title">회원 목록 (12,847명)</div>
+  <table class="admin-table">
+    <thead><tr><th>이름/닉네임</th><th>이메일</th><th>채널</th><th>팔로워</th><th>완료 리뷰</th><th>완료율</th><th>등급</th><th>가입일</th><th>관리</th></tr></thead>
+    <tbody>
+      <tr><td>김그로우 / foodie_kimj</td><td style="color:#888;">kimj@gmail.com</td><td style="color:#ccc;">블로그</td><td style="color:#ccc;">12,400</td><td style="color:#ccc;">24회</td><td style="color:#2ED573;">100%</td><td><span class="s-badge s-active">골드</span></td><td style="color:#888;">24.11.01</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+      <tr><td>이루미 / cafe_tour_lee</td><td style="color:#888;">lumee@naver.com</td><td style="color:#ccc;">인스타</td><td style="color:#ccc;">8,200</td><td style="color:#ccc;">18회</td><td style="color:#2ED573;">100%</td><td><span class="s-badge s-pending">실버</span></td><td style="color:#888;">24.09.15</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+      <tr><td>박미트 / meat_hunter_pk</td><td style="color:#888;">park@kakao.com</td><td style="color:#ccc;">블로그</td><td style="color:#ccc;">5,600</td><td style="color:#ccc;">11회</td><td style="color:#FFA502;">91%</td><td><span class="s-badge s-pending">실버</span></td><td style="color:#888;">24.08.20</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+      <tr><td>최뷰티 / beauty_choi</td><td style="color:#888;">beauty@naver.com</td><td style="color:#ccc;">클립</td><td style="color:#ccc;">3,100</td><td style="color:#ccc;">7회</td><td style="color:#2ED573;">100%</td><td><span class="s-badge s-review">브론즈</span></td><td style="color:#888;">24.12.03</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+      <tr><td>정라멘 / ramen_jeong</td><td style="color:#888;">ramen@gmail.com</td><td style="color:#ccc;">인스타</td><td style="color:#ccc;">22,000</td><td style="color:#ccc;">36회</td><td style="color:#2ED573;">97%</td><td><span style="background:rgba(255,215,0,.15);color:#FFD700;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">플래티넘</span></td><td style="color:#888;">23.06.11</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+    </tbody>
+  </table>
+</div></div>
+  </div>
+</div>
+</body></html>
