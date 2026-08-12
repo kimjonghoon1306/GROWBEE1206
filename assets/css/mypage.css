@@ -116,3 +116,31 @@
   .mp-side { position: static; }
   .main-nav { display: none; }
 }
+
+/* 뒤로가기 버튼 */
+.back-bar { max-width: 1240px; margin: 0 auto; padding: 16px 24px 0; }
+.back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--text-muted); background: var(--bg-card); border: 1.5px solid var(--border-2); border-radius: 999px; padding: 8px 16px 8px 12px; transition: var(--t); cursor: pointer; }
+.back-btn:hover { color: var(--accent-text); border-color: var(--accent); transform: translateX(-2px); }
+.back-btn svg { width: 18px; height: 18px; }
+
+/* ===== 모바일 헤더/사이드바 ===== */
+@media (max-width: 900px) {
+  .header-inner { height: 58px; gap: 10px; padding: 0 16px; }
+  .main-nav { display: none; }
+  .logo-mark, .logo-mark img { width: 34px !important; height: 34px !important; }
+  .logo-main { font-size: 17px; white-space: nowrap; }
+  .logo-sub { display: none; }
+  .header-right { gap: 8px; }
+  /* 검색·낮밤은 숨기고 알림·아바타만 */
+  .header-right .h-ico[aria-label="검색"] { display: none; }
+  .h-ico { width: 38px; height: 38px; }
+  .h-avatar { width: 38px; height: 38px; }
+  .back-bar { padding: 12px 16px 0; }
+  /* 사이드바를 상단 가로 스크롤 대신 접힌 상태로: 프로필만 카드로, 링크는 아래 */
+  .mp-side { position: static; }
+  .mp-wrap { padding: 16px 16px 60px; gap: 20px; }
+}
+@media (max-width: 480px) {
+  .logo-main { font-size: 16px; }
+  .h-ico[aria-label="낮/밤"] { display: none; } /* 아주 좁으면 낮밤도 숨김(마이페이지 안에 있음) */
+}

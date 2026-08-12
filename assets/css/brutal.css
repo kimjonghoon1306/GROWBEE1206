@@ -214,3 +214,9 @@ body.view-compact .camp-name { font-size: 13px !important; }
   body.view-compact [style*="repeat(4,1fr)"], body.view-compact [style*="repeat(4, 1fr)"],
   body.view-compact [style*="repeat(3,1fr)"], body.view-compact [style*="repeat(3, 1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
 }
+
+/* 뒤로가기 버튼(옛 서브페이지) */
+.back-bar { max-width: 1240px; margin: 0 auto; padding: 16px 20px 0; }
+.back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--text-muted); background: var(--bg-card); border: 1.5px solid var(--border-2); border-radius: 999px; padding: 8px 16px 8px 12px; transition: var(--t); cursor: pointer; text-decoration: none; }
+.back-btn:hover { color: var(--accent-text); border-color: var(--accent); }
+.back-btn svg { width: 18px; height: 18px; }

@@ -85,6 +85,8 @@
     </div>
   </div>
 </header>
+<div class="back-bar"><a href="javascript:history.back()" class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>뒤로가기</a></div>
+
 
 <div class="mp-wrap">
   <aside class="mp-side">
@@ -165,7 +167,7 @@
               <span id="copied" class="wg-copied">복사됐어요! 이제 블로그에 붙여넣으세요 👍</span>
             </div>
             <div class="wg-note">
-              <b>이미지는 지금 바로 표시돼요.</b> 클릭 링크는 도메인(<b>feel.온종일.com</b>) 연결 후 자동으로 살아납니다.
+              <b>이미지는 지금 바로 표시돼요.</b> 클릭 링크는 도메인(<b>pick.온종일.com</b>) 연결 후 자동으로 살아납니다.
             </div>
           </div>
         </div>
@@ -211,9 +213,9 @@ function wgTab(i){
 
 /* ===== 위젯 코드 생성 =====
    도메인이 바뀌면 SITE 한 줄만 수정하면 전부 반영됩니다. */
-var SITE = 'https://feel.xn--zk5biyyw.com';  /* = feel.온종일.com */
-var IMG_TALL = 'https://cdn.jsdelivr.net/gh/kimjonghoon1306/GROWBEE1206@main/assets/img/mascot_widget.png';
-var IMG_SQ   = 'https://cdn.jsdelivr.net/gh/kimjonghoon1306/GROWBEE1206@main/assets/img/mascot.png';
+var SITE = 'https://pick.xn--zk5biyyw.com';  /* = pick.온종일.com */
+var IMG_TALL = SITE + '/assets/img/mascot_widget.png';
+var IMG_SQ   = SITE + '/assets/img/mascot.png';
 var wgKind = 'tall';
 function widgetCode(kind){
   var img = kind==='tall' ? IMG_TALL : IMG_SQ;
