@@ -181,6 +181,35 @@
       return await sb.from('campaigns').delete().eq('id', id);
     },
 
+    // ── 광고 팝업 ──
+    // 공개: 지금 노출할 활성 팝업 (RLS가 기간/활성 필터)
+    activePopups: async function () {
+      var r = await sb.from('popups').select('*').order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 관리자: 전체 팝업
+    adminListPopups: async function () {
+      return await sb.from('popups').select('*').order('created_at', { ascending: false });
+    },
+    createPopup: async function (fields) {
+      return await sb.from('popups').insert(fields).select().single();
+    },
+    updatePopup: async function (id, fields) {
+      return await sb.from('popups').update(fields).eq('id', id).select().single();
+    },
+    deletePopup: async function (id) {
+      return await sb.from('popups').delete().eq('id', id);
+    },
+    // 관리자: 팝업 이미지 업로드 → 공개 URL 반환
+    uploadPopupImage: async function (file) {
+      var ext = (file.name.split('.').pop() || 'png').toLowerCase();
+      var path = 'popup_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+      var up = await sb.storage.from('popups').upload(path, file, { cacheControl: '3600', upsert: false });
+      if (up.error) return { error: up.error };
+      var pub = sb.storage.from('popups').getPublicUrl(path);
+      return { url: pub.data.publicUrl };
+    },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);

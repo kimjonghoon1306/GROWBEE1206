@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>캠페인 관리 — 온종일 체험단 Admin</title>
+<title>광고 팝업 — 온종일 체험단 Admin</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
 body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--border:rgba(255,255,255,0.12);--text:#F4F5F8;--text-muted:#AEB4C2;--shadow:0 4px 24px rgba(0,0,0,.35);--shadow-card:0 8px 32px rgba(0,0,0,.4);--header-bg:rgba(27,30,39,0.95);--nav-active-bg:rgba(255,255,255,0.08);}body.light{--bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08);}
@@ -58,7 +58,7 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
     <div class="sidebar-section">
       <div class="sidebar-section-label">메인</div>
       <a href="admin-dashboard.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 13h8V3H3zM13 21h8V3h-8zM3 21h8v-6H3z"/></svg></span> 대시보드</a>
-      <a href="admin-campaigns.html" class="sidebar-link active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h6"/></svg></span> 캠페인 관리 <span class="sidebar-badge">84</span></a>
+      <a href="admin-campaigns.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h6"/></svg></span> 캠페인 관리 <span class="sidebar-badge">84</span></a>
       <a href="#" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M4 20h16M6 16l9-9a2 2 0 0 1 3 3l-9 9-4 1z"/></svg></span> 리뷰 검수 <span class="sidebar-badge">12</span></a>
     </div>
     <div class="sidebar-section">
@@ -69,7 +69,7 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">콘텐츠</div>
-      <a href="admin-popups.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span> 광고 팝업</a>
+      <a href="admin-popups.html" class="sidebar-link active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span> 광고 팝업</a>
       <a href="#" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 11l14-6v14L3 13zM3 11v2M17 8a4 4 0 0 1 0 8"/></svg></span> 공지사항</a>
       <a href="#" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> 문의 관리 <span class="sidebar-badge">5</span></a>
     </div>
@@ -82,28 +82,19 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
   <div class="admin-main">
     <div class="admin-topbar">
       <button class="topbar-btn adm-ham" onclick="admSide()" aria-label="메뉴" style="display:none;width:38px;padding:0;align-items:center;justify-content:center;margin-right:4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-      <span class="admin-page-title">캠페인 관리</span>
+      <span class="admin-page-title">광고 팝업</span>
       <div style="display:flex;gap:8px;">
-        <button id="campNewBtn" onclick="openCampForm()" style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:700;background:var(--brand-gradient);color:#fff;border:none;cursor:pointer;">+ 새 캠페인 등록</button>
+        <button id="popNewBtn" onclick="openPopupForm()" style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:700;background:var(--brand-gradient);color:#fff;border:none;cursor:pointer;">+ 새 팝업 등록</button>
         <button class="topbar-btn" id="admThemeBtn" onclick="admToggle()" title="낮/밤" style="width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;"><svg id="admThemeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
         <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
       </div>
     </div>
     <div class="admin-content">
-<div class="search-bar">
-  <input class="search-input" placeholder="캠페인명, 광고주, 지역 검색...">
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
-    <option>전체 상태</option><option>진행중</option><option>검토중</option><option>마감</option>
-  </select>
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
-    <option>전체 지역</option><option>서울</option><option>부산</option><option>대구</option><option>제주</option>
-  </select>
-</div>
 <div class="admin-card">
-  <div class="admin-card-title">캠페인 목록 <span id="campCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
+  <div class="admin-card-title">광고 팝업 <span id="popCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
   <table class="admin-table">
-    <thead><tr><th>캠페인명</th><th>광고주</th><th>지역</th><th>카테고리</th><th>모집인원</th><th>신청</th><th>마감일</th><th>상태</th><th>관리</th></tr></thead>
-    <tbody id="campBody"><tr><td colspan="9" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
+    <thead><tr><th>팝업</th><th>내용</th><th>노출 기간</th><th>상태</th><th>관리</th></tr></thead>
+    <tbody id="popBody"><tr><td colspan="5" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
   </table>
 </div></div>
   </div>
@@ -131,7 +122,7 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 </script>
 <style>
 .cf-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;}
-.cf-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.cf-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
 .cf-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid var(--border);}
 .cf-title{font-size:17px;font-weight:800;color:var(--text);}
 .cf-x{background:none;border:none;color:var(--text-muted);font-size:24px;line-height:1;cursor:pointer;}
@@ -140,6 +131,9 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 .cf-in{width:100%;background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:14px;font-family:inherit;box-sizing:border-box;}
 textarea.cf-in{resize:vertical;}
 .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;}
+.cf-emoji-quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.cf-emoji-quick button{font-size:18px;background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:8px;padding:4px 8px;cursor:pointer;}
+.cf-prev{margin-top:8px;max-width:100%;max-height:140px;border-radius:10px;display:none;}
 .cf-check{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--text);font-weight:600;cursor:pointer;}
 .cf-check input{width:17px;height:17px;}
 .cf-actions{display:flex;align-items:center;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
@@ -151,120 +145,114 @@ textarea.cf-in{resize:vertical;}
 @media(max-width:540px){.cf-row{grid-template-columns:1fr;}}
 </style>
 <div class="cf-overlay" id="cfOverlay"><div class="cf-card">
-  <div class="cf-head"><div class="cf-title" id="cfTitle">새 캠페인 등록</div><button class="cf-x" onclick="closeCampForm()">&times;</button></div>
+  <div class="cf-head"><div class="cf-title" id="cfTitle">새 팝업 등록</div><button class="cf-x" onclick="closePopupForm()">&times;</button></div>
   <div class="cf-body">
-    <label class="cf-l">캠페인명 *</label><input id="cf-title" class="cf-in" placeholder="예: 스시 오모 오마카세 코스">
+    <label class="cf-l">제목</label><input id="pp-title" class="cf-in" placeholder="예: 신규 회원 이벤트!">
+    <label class="cf-l">내용</label><textarea id="pp-body" class="cf-in" rows="3" placeholder="팝업에 표시할 안내 문구"></textarea>
+    <label class="cf-l">이모티콘</label><input id="pp-emoji" class="cf-in" placeholder="🎉 (선택)">
+    <div class="cf-emoji-quick" id="ppEmojiQuick"></div>
+    <label class="cf-l">이미지 (선택)</label>
+    <input id="pp-file" type="file" accept="image/*" class="cf-in" onchange="ppUpload(this)">
+    <input id="pp-image" type="hidden">
+    <img id="pp-prev" class="cf-prev" alt="">
+    <div id="pp-upmsg" style="font-size:12px;color:var(--text-muted);margin-top:6px;"></div>
+    <label class="cf-l">클릭 시 이동 링크 (선택)</label><input id="pp-link" class="cf-in" placeholder="https:// 또는 pages/user/campaigns.html">
     <div class="cf-row">
-      <div><label class="cf-l">광고주/매장명</label><input id="cf-store" class="cf-in" placeholder="매장 이름"></div>
-      <div><label class="cf-l">지역</label><input id="cf-region" class="cf-in" placeholder="강남구 · 역삼동"></div>
+      <div><label class="cf-l">노출 시작일</label><input id="pp-start" class="cf-in" type="date"></div>
+      <div><label class="cf-l">노출 종료일</label><input id="pp-end" class="cf-in" type="date"></div>
     </div>
-    <div class="cf-row">
-      <div><label class="cf-l">카테고리</label><select id="cf-cat" class="cf-in"><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option><option>배송형</option><option>기타</option></select></div>
-      <div><label class="cf-l">채널</label><select id="cf-channel" class="cf-in"><option>블로그</option><option>인스타</option><option>클립</option></select></div>
-    </div>
-    <div class="cf-row">
-      <div><label class="cf-l">대표 이미지</label><select id="cf-img" class="cf-in"><option value="">없음</option><option value="sushi">sushi</option><option value="cafe">cafe</option><option value="hanwoo">hanwoo</option><option value="skincare">skincare</option><option value="taco">taco</option><option value="ramen">ramen</option><option value="winebar">winebar</option><option value="vegan">vegan</option></select></div>
-      <div><label class="cf-l">상태</label><select id="cf-status" class="cf-in"><option value="active">진행중</option><option value="closed">마감</option></select></div>
-    </div>
-    <div class="cf-row">
-      <div><label class="cf-l">혜택 문구</label><input id="cf-reward" class="cf-in" placeholder="15만원 상당"></div>
-      <div><label class="cf-l">적립 포인트 (리뷰완료 시)</label><input id="cf-points" class="cf-in" type="number" placeholder="10"></div>
-    </div>
-    <div class="cf-row">
-      <div><label class="cf-l">모집 인원</label><input id="cf-cap" class="cf-in" type="number" placeholder="20"></div>
-      <div><label class="cf-l">마감일</label><input id="cf-deadline" class="cf-in" type="date"></div>
-    </div>
-    <label class="cf-l">소개</label><textarea id="cf-desc" class="cf-in" rows="3" placeholder="캠페인 소개 문구"></textarea>
-    <label class="cf-check"><input type="checkbox" id="cf-hot"> 🔥 HOT 뱃지 표시</label>
+    <label class="cf-check"><input type="checkbox" id="pp-active" checked> 활성화 (체크 시 노출)</label>
     <div id="cfMsg" class="cf-msg"></div>
     <div class="cf-actions">
-      <button class="cf-del" id="cfDelBtn" onclick="deleteCampFromForm()" style="display:none;">삭제</button>
+      <button class="cf-del" id="cfDelBtn" onclick="deletePopupFromForm()" style="display:none;">삭제</button>
       <div style="flex:1;"></div>
-      <button class="cf-btn ghost" onclick="closeCampForm()">취소</button>
-      <button class="cf-btn pri" id="cfSaveBtn" onclick="saveCampForm()">저장</button>
+      <button class="cf-btn ghost" onclick="closePopupForm()">취소</button>
+      <button class="cf-btn pri" id="cfSaveBtn" onclick="savePopupForm()">저장</button>
     </div>
   </div>
 </div></div>
 <script>
-function _cesc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
-function _cmd(d){ if(!d) return '-'; var p=String(d).slice(0,10).split('-'); return p[1]+'.'+p[2]; }
-var _editId=null;
-window.__camps={};
-function _v(id){ return (document.getElementById(id).value||'').trim(); }
+function _pesc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function _pd(d){ if(!d) return ''; return String(d).slice(0,10).replace(/-/g,'.'); }
+var _ppId=null; window.__pops={};
+function _pv(id){ return (document.getElementById(id).value||'').trim(); }
 function cfMsg(t,ok){ var m=document.getElementById('cfMsg'); m.style.display='block'; m.textContent=t; m.style.background=ok?'rgba(46,213,115,.12)':'rgba(255,71,87,.12)'; m.style.color=ok?'#2ED573':'var(--brand-primary)'; }
-function openCampForm(id){
-  _editId=id||null;
-  document.getElementById('cfTitle').textContent=_editId?'캠페인 수정':'새 캠페인 등록';
-  document.getElementById('cfDelBtn').style.display=_editId?'inline-block':'none';
+(function(){ var q=document.getElementById('ppEmojiQuick'); if(q){ ['🎉','🔥','🎁','💝','⭐','👍','🐝','📢','💰','🍽️'].forEach(function(e){ var b=document.createElement('button'); b.type='button'; b.textContent=e; b.onclick=function(){ document.getElementById('pp-emoji').value=e; }; q.appendChild(b); }); } })();
+async function ppUpload(inp){
+  var f=inp.files&&inp.files[0]; if(!f) return;
+  var m=document.getElementById('pp-upmsg'); m.textContent='업로드 중…';
+  var r=await OnAuth.uploadPopupImage(f);
+  if(r&&r.error){ m.textContent='업로드 실패: '+r.error.message; return; }
+  document.getElementById('pp-image').value=r.url;
+  var pv=document.getElementById('pp-prev'); pv.src=r.url; pv.style.display='block';
+  m.textContent='업로드 완료';
+}
+function openPopupForm(id){
+  _ppId=id||null;
+  document.getElementById('cfTitle').textContent=_ppId?'팝업 수정':'새 팝업 등록';
+  document.getElementById('cfDelBtn').style.display=_ppId?'inline-block':'none';
   document.getElementById('cfMsg').style.display='none';
-  var c=_editId?window.__camps[_editId]:{};
-  document.getElementById('cf-title').value=c.title||'';
-  document.getElementById('cf-store').value=c.store_name||'';
-  document.getElementById('cf-region').value=c.region||'';
-  document.getElementById('cf-cat').value=c.category||'맛집';
-  document.getElementById('cf-channel').value=c.channel||'블로그';
-  document.getElementById('cf-img').value=c.image_key||'';
-  document.getElementById('cf-status').value=c.status||'active';
-  document.getElementById('cf-reward').value=c.reward_text||'';
-  document.getElementById('cf-points').value=(c.reward_points!=null?c.reward_points:'');
-  document.getElementById('cf-cap').value=(c.capacity!=null?c.capacity:'');
-  document.getElementById('cf-deadline').value=c.deadline?String(c.deadline).slice(0,10):'';
-  document.getElementById('cf-desc').value=c.description||'';
-  document.getElementById('cf-hot').checked=!!c.is_hot;
+  document.getElementById('pp-upmsg').textContent='';
+  var c=_ppId?window.__pops[_ppId]:{};
+  document.getElementById('pp-title').value=c.title||'';
+  document.getElementById('pp-body').value=c.body||'';
+  document.getElementById('pp-emoji').value=c.emoji||'';
+  document.getElementById('pp-image').value=c.image_url||'';
+  document.getElementById('pp-link').value=c.link_url||'';
+  document.getElementById('pp-start').value=c.start_at?String(c.start_at).slice(0,10):'';
+  document.getElementById('pp-end').value=c.end_at?String(c.end_at).slice(0,10):'';
+  document.getElementById('pp-active').checked=(c.is_active!==false);
+  var pv=document.getElementById('pp-prev'); if(c.image_url){ pv.src=c.image_url; pv.style.display='block'; } else { pv.style.display='none'; pv.src=''; }
+  document.getElementById('pp-file').value='';
   document.getElementById('cfOverlay').style.display='flex';
 }
-function closeCampForm(){ document.getElementById('cfOverlay').style.display='none'; }
-async function saveCampForm(){
-  var title=_v('cf-title'); if(!title){ cfMsg('캠페인명을 입력해주세요.'); return; }
-  var fields={ title:title, store_name:_v('cf-store')||null, region:_v('cf-region')||null,
-    category:_v('cf-cat'), channel:_v('cf-channel'), image_key:_v('cf-img')||null,
-    status:_v('cf-status'), reward_text:_v('cf-reward')||null,
-    reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
-    deadline:_v('cf-deadline')||null, description:_v('cf-desc')||null,
-    is_hot:document.getElementById('cf-hot').checked };
+function closePopupForm(){ document.getElementById('cfOverlay').style.display='none'; }
+async function savePopupForm(){
+  var title=_pv('pp-title'), body=_pv('pp-body'), img=_pv('pp-image');
+  if(!title && !body && !img){ cfMsg('제목·내용·이미지 중 하나는 넣어주세요.'); return; }
+  var fields={ title:title||null, body:body||null, emoji:_pv('pp-emoji')||null,
+    image_url:img||null, link_url:_pv('pp-link')||null,
+    start_at:_pv('pp-start')||null, end_at:_pv('pp-end')||null,
+    is_active:document.getElementById('pp-active').checked };
   var btn=document.getElementById('cfSaveBtn'); btn.disabled=true; var o=btn.textContent; btn.textContent='저장 중…';
-  var r=_editId? await OnAuth.updateCampaign(_editId, fields) : await OnAuth.createCampaign(fields);
+  var r=_ppId? await OnAuth.updatePopup(_ppId, fields) : await OnAuth.createPopup(fields);
   btn.disabled=false; btn.textContent=o;
   if(r&&r.error){ cfMsg('저장 실패: '+r.error.message); return; }
-  closeCampForm(); loadCamps();
+  closePopupForm(); loadPops();
 }
-async function deleteCampFromForm(){
-  if(!_editId) return;
-  if(!confirm('이 캠페인을 삭제할까요?\n신청 내역도 함께 삭제됩니다. 되돌릴 수 없어요.')) return;
-  var r=await OnAuth.deleteCampaign(_editId);
+async function deletePopupFromForm(){
+  if(!_ppId) return; if(!confirm('이 팝업을 삭제할까요?')) return;
+  var r=await OnAuth.deletePopup(_ppId);
   if(r&&r.error){ cfMsg('삭제 실패: '+r.error.message); return; }
-  closeCampForm(); loadCamps();
+  closePopupForm(); loadPops();
 }
-function _statusBadge(st){ return st==='active'?'<span class="s-badge s-active">진행중</span>':'<span class="s-badge s-done">마감</span>'; }
-async function loadCamps(){
-  var body=document.getElementById('campBody');
-  var r=await OnAuth.adminListCampaigns();
-  if(r.error){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+_cesc(r.error.message)+'</td></tr>'; return; }
-  var rows=r.data||[]; window.__camps={};
-  document.getElementById('campCount').textContent='('+rows.length+'개)';
-  if(!rows.length){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 캠페인이 없어요. 우측 상단 <b>+ 새 캠페인 등록</b>으로 추가하세요.</td></tr>'; return; }
-  body.innerHTML=rows.map(function(c){ window.__camps[c.id]=c;
-    var hot=c.is_hot?' <span class="s-badge" style="background:rgba(255,71,87,.15);color:#FF5A5F;">HOT</span>':'';
+async function loadPops(){
+  var body=document.getElementById('popBody');
+  var r=await OnAuth.adminListPopups();
+  if(r.error){ body.innerHTML='<tr><td colspan="5" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+_pesc(r.error.message)+'</td></tr>'; return; }
+  var rows=r.data||[]; window.__pops={};
+  document.getElementById('popCount').textContent='('+rows.length+'개)';
+  if(!rows.length){ body.innerHTML='<tr><td colspan="5" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 팝업이 없어요. 우측 상단 <b>+ 새 팝업 등록</b>으로 추가하세요.</td></tr>'; return; }
+  body.innerHTML=rows.map(function(c){ window.__pops[c.id]=c;
+    var thumb=c.image_url?'<img src="'+_pesc(c.image_url)+'" style="width:38px;height:38px;border-radius:8px;object-fit:cover;vertical-align:-12px;margin-right:8px;">':'';
+    var head=(c.emoji?_pesc(c.emoji)+' ':'')+_pesc(c.title||'(제목 없음)');
+    var period=(c.start_at||c.end_at)?((_pd(c.start_at)||'~')+' ~ '+(_pd(c.end_at)||'무기한')):'상시';
+    var st=c.is_active?'<span class="s-badge s-active">노출중</span>':'<span class="s-badge s-done">중지</span>';
     return '<tr>'
-      +'<td>'+_cesc(c.title)+hot+'</td>'
-      +'<td style="color:var(--text-muted);">'+_cesc(c.store_name||'-')+'</td>'
-      +'<td style="color:var(--text-muted);">'+_cesc(c.region||'-')+'</td>'
-      +'<td style="color:var(--text-muted);">'+_cesc(c.category||'-')+'</td>'
-      +'<td style="color:var(--text-muted);">'+(c.capacity||0)+'명</td>'
-      +'<td style="color:var(--text-muted);">'+(c.applied_count||0)+'명</td>'
-      +'<td style="color:var(--text-muted);">'+_cmd(c.deadline)+'</td>'
-      +'<td>'+_statusBadge(c.status)+'</td>'
-      +'<td style="white-space:nowrap;"><a href="#" class="camp-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a> <a href="#" class="camp-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.status==='active'?'마감':'재개')+'</a></td>'
+      +'<td>'+thumb+head+'</td>'
+      +'<td style="color:var(--text-muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_pesc(c.body||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+period+'</td>'
+      +'<td>'+st+'</td>'
+      +'<td style="white-space:nowrap;"><a href="#" class="pop-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a> <a href="#" class="pop-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.is_active?'중지':'노출')+'</a></td>'
       +'</tr>';
   }).join('');
-  body.querySelectorAll('.camp-edit').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); openCampForm(this.getAttribute('data-id')); }); });
-  body.querySelectorAll('.camp-toggle').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); var c=window.__camps[id]; var ns=c.status==='active'?'closed':'active'; if(!confirm(ns==='closed'?'이 캠페인을 마감할까요?':'이 캠페인을 다시 진행중으로 바꿀까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:ns}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
-  // 검색
+  body.querySelectorAll('.pop-edit').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); openPopupForm(this.getAttribute('data-id')); }); });
+  body.querySelectorAll('.pop-toggle').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); var c=window.__pops[id]; var rr=await OnAuth.updatePopup(id,{is_active:!c.is_active}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadPops(); }); });
   var si=document.querySelector('.search-input');
   if(si){ si.oninput=function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display=tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }; }
 }
-document.addEventListener('click',function(e){ if(e.target&&e.target.id==='cfOverlay') closeCampForm(); });
-window.__adminReady = loadCamps;
+document.addEventListener('click',function(e){ if(e.target&&e.target.id==='cfOverlay') closePopupForm(); });
+window.__adminReady = loadPops;
 </script>
 <script>
 document.addEventListener('click',function(e){
