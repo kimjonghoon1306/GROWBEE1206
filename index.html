@@ -463,6 +463,28 @@ carRender();
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/auth.js"></script>
 <script>OnAuth.reflectHeader();</script>
+<script>
+/* 메인 캐러셀을 관리자 등록 광고 슬라이드(DB)로 렌더 */
+(async function(){
+  try{
+    var slides = await OnAuth.activeSlides();
+    if(!slides || !slides.length) return; // 비어있으면 기존 하드코딩 유지
+    function esc(x){return (x==null?'':String(x)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    var html = slides.map(function(s){
+      var badgeCls = s.is_ship ? 'banner-badge ship' : 'banner-badge';
+      var reward = s.reward_text ? '<span class="banner-reward">'+esc(s.reward_text)+'</span>' : '';
+      var badge = s.badge ? '<span class="'+badgeCls+'">'+esc(s.badge)+'</span>' : '';
+      var title = s.title ? '<div class="banner-title">'+esc(s.title)+'</div>' : '';
+      var desc = s.subtitle ? '<div class="banner-desc">'+esc(s.subtitle)+'</div>' : '';
+      return '<a href="'+esc(s.link_url||'#')+'" class="banner"><img src="'+esc(s.image_url||'')+'" alt="">'
+        +'<span class="ad-flag"><span class="ad-dot"></span>AD 추천 광고중</span>'+reward
+        +'<div class="banner-content">'+badge+title+desc+'</div></a>';
+    }).join('');
+    var track=document.getElementById('carTrack');
+    if(track){ track.innerHTML=html; carIndex=0; if(typeof carRender==='function') carRender(); }
+  }catch(e){}
+})();
+</script>
 <script src="assets/js/popup.js" defer></script>
 <script src="assets/js/pwa.js" defer></script>
 </body>

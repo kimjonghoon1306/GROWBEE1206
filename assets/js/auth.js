@@ -210,6 +210,20 @@
       return { url: pub.data.publicUrl };
     },
 
+    // ── 광고 슬라이드 (메인 캐러셀 카드) ──
+    activeSlides: async function () {
+      var r = await sb.from('ad_slides').select('*').eq('is_active', true)
+        .order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    adminListSlides: async function () {
+      return await sb.from('ad_slides').select('*')
+        .order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+    },
+    createSlide: async function (fields) { return await sb.from('ad_slides').insert(fields).select().single(); },
+    updateSlide: async function (id, fields) { return await sb.from('ad_slides').update(fields).eq('id', id).select().single(); },
+    deleteSlide: async function (id) { return await sb.from('ad_slides').delete().eq('id', id); },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);
