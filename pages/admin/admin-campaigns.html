@@ -157,6 +157,9 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 .cf-in{width:100%;background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:14px;font-family:inherit;box-sizing:border-box;}
 textarea.cf-in{resize:vertical;}
 .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;}
+.cf-seg{display:flex;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:6px;}
+.cf-seg-btn{flex:1;background:transparent;border:none;padding:10px;font-size:13px;font-weight:800;color:var(--text-muted);cursor:pointer;}
+.cf-seg-btn.on{background:var(--brand-gradient);color:#fff;}
 .cf-check{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--text);font-weight:600;cursor:pointer;}
 .cf-check input{width:17px;height:17px;}
 .cf-actions{display:flex;align-items:center;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
@@ -194,9 +197,18 @@ textarea.cf-in{resize:vertical;}
     <label class="cf-l">소개</label><textarea id="cf-desc" class="cf-in" rows="3" placeholder="캠페인 소개 문구"></textarea>
     <label class="cf-check"><input type="checkbox" id="cf-hot"> 🔥 HOT 뱃지 표시</label>
     <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);"><div style="font-size:13px;font-weight:800;color:var(--brand-primary);margin-bottom:4px;">리뷰 미션 규칙</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">손님이 리뷰 제출 시 자동으로 검사할 조건이에요.</div></div>
-    <div class="cf-row">
-      <div><label class="cf-l">방문 기한(당첨 후 며칠)</label><input id="cf-visit" class="cf-in" type="number" placeholder="7"></div>
-      <div><label class="cf-l">리뷰 기한(방문 후 며칠)</label><input id="cf-reviewdays" class="cf-in" type="number" placeholder="7"></div>
+    <label class="cf-l">리뷰 기간 방식</label>
+    <div class="cf-seg" id="cf-period-seg">
+      <button type="button" class="cf-seg-btn on" data-p="rel" onclick="cfSetPeriod('rel')">당첨 후 기간(통상 2주)</button>
+      <button type="button" class="cf-seg-btn" data-p="fixed" onclick="cfSetPeriod('fixed')">고정 마감날짜</button>
+    </div>
+    <div id="cf-rel-box" class="cf-row" style="margin-top:8px;">
+      <div><label class="cf-l">방문 기한(당첨 후 며칠)</label><input id="cf-visit" class="cf-in" type="number" placeholder="14"></div>
+      <div><label class="cf-l">리뷰 기한(방문 후 며칠)</label><input id="cf-reviewdays" class="cf-in" type="number" placeholder="14"></div>
+    </div>
+    <div id="cf-fixed-box" class="cf-row" style="margin-top:8px;display:none;">
+      <div><label class="cf-l">방문 마감일</label><input id="cf-visitdl" class="cf-in" type="date"></div>
+      <div><label class="cf-l">리뷰 제출 마감일</label><input id="cf-reviewdl" class="cf-in" type="date"></div>
     </div>
     <label class="cf-l">키워드 세트 (콤마로 구분, 손님이 이 중 1개 골라 반복)</label>
     <input id="cf-keywords" class="cf-in" placeholder="예: 역삼동맛집, 강남오마카세, 역삼오마카세, 강남맛집추천">
@@ -222,6 +234,14 @@ textarea.cf-in{resize:vertical;}
 function _cesc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
 function _cmd(d){ if(!d) return '-'; var p=String(d).slice(0,10).split('-'); return p[1]+'.'+p[2]; }
 var _editId=null;
+var _cfPeriod='rel';
+function cfSetPeriod(pmode){
+  _cfPeriod=pmode;
+  document.querySelectorAll('#cf-period-seg .cf-seg-btn').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-p')===pmode); });
+  var rel=document.getElementById('cf-rel-box'), fx=document.getElementById('cf-fixed-box');
+  if(rel) rel.style.display=(pmode==='rel')?'grid':'none';
+  if(fx) fx.style.display=(pmode==='fixed')?'grid':'none';
+}
 window.__camps={};
 function _v(id){ return (document.getElementById(id).value||'').trim(); }
 function cfMsg(t,ok){ var m=document.getElementById('cfMsg'); m.style.display='block'; m.textContent=t; m.style.background=ok?'rgba(46,213,115,.12)':'rgba(255,71,87,.12)'; m.style.color=ok?'#2ED573':'var(--brand-primary)'; }
@@ -244,8 +264,11 @@ function openCampForm(id){
   document.getElementById('cf-deadline').value=c.deadline?String(c.deadline).slice(0,10):'';
   document.getElementById('cf-desc').value=c.description||'';
   document.getElementById('cf-hot').checked=!!c.is_hot;
-  document.getElementById('cf-visit').value=(c.visit_days!=null?c.visit_days:'');
-  document.getElementById('cf-reviewdays').value=(c.review_days!=null?c.review_days:'');
+  document.getElementById('cf-visit').value=(c.visit_days!=null?c.visit_days:14);
+  document.getElementById('cf-reviewdays').value=(c.review_days!=null?c.review_days:14);
+  document.getElementById('cf-visitdl').value=c.visit_deadline?String(c.visit_deadline).slice(0,10):'';
+  document.getElementById('cf-reviewdl').value=c.review_deadline?String(c.review_deadline).slice(0,10):'';
+  cfSetPeriod((c.visit_deadline||c.review_deadline)?'fixed':'rel');
   document.getElementById('cf-keywords').value=c.keywords||'';
   document.getElementById('cf-kwmin').value=(c.keyword_min!=null?c.keyword_min:5);
   document.getElementById('cf-minchars').value=(c.min_chars!=null?c.min_chars:1000);
@@ -263,7 +286,8 @@ async function saveCampForm(){
     reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
     deadline:_v('cf-deadline')||null, description:_v('cf-desc')||null,
     is_hot:document.getElementById('cf-hot').checked,
-    visit_days:parseInt(_v('cf-visit'),10)||null, review_days:parseInt(_v('cf-reviewdays'),10)||null,
+    visit_days:parseInt(_v('cf-visit'),10)||14, review_days:parseInt(_v('cf-reviewdays'),10)||14,
+    visit_deadline:(_cfPeriod==='fixed'?(_v('cf-visitdl')||null):null), review_deadline:(_cfPeriod==='fixed'?(_v('cf-reviewdl')||null):null),
     keywords:_v('cf-keywords')||null, keyword_min:parseInt(_v('cf-kwmin'),10)||5,
     min_chars:parseInt(_v('cf-minchars'),10)||1000, min_images:parseInt(_v('cf-minimg'),10)||15,
     min_videos:parseInt(_v('cf-minvid'),10)||2, require_banner:document.getElementById('cf-banner').checked };
