@@ -191,9 +191,14 @@ function renderReviews(){
   body.innerHTML=rows.map(function(a){
     var c=a.campaigns||{}, m=a.profiles||{};
     var link=a.review_url?('<a href="'+esc(a.review_url)+'" target="_blank" style="color:var(--brand-primary);font-weight:600;">리뷰 열기 →</a>'):'<span style="color:var(--text-muted);">미제출</span>';
-    var badge='<span class="s-badge '+(SBADGE[a.status]||'s-done')+'">'+(SLABEL[a.status]||a.status)+'</span>';
+    var autoTag='';
+    if(a.auto_passed===true) autoTag=' <span class="s-badge s-active">자동통과</span>';
+    else if(a.auto_passed===false) autoTag=' <span class="s-badge" style="background:rgba(255,71,87,.15);color:var(--brand-primary);">자동미달</span>';
+    if(a.appeal_status==='pending') autoTag+=' <span class="s-badge" style="background:rgba(255,165,2,.18);color:#FFA502;">재검토요청</span>';
+    var badge='<span class="s-badge '+(SBADGE[a.status]||'s-done')+'">'+(SLABEL[a.status]||a.status)+'</span>'+autoTag;
     var acts='';
-    if(a.status==='applied'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="selected">선정</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="rejected">탈락</button>'; }
+    if(a.appeal_status==='pending'){ acts='<button class="rv-appeal-btn rv-act ghost" data-id="'+a.id+'">사유</button><button class="rv-act ok" data-appeal="1" data-id="'+a.id+'">승인</button><button class="rv-act ghost" data-appeal="0" data-id="'+a.id+'">거절</button>'; }
+    else if(a.status==='applied'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="selected">선정</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="rejected">탈락</button>'; }
     else if(a.status==='selected'){ acts='<button class="rv-act ghost" data-id="'+a.id+'" data-to="applied">선정취소</button>'; }
     else if(a.status==='reviewing'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="completed">검수완료(+'+(c.reward_points||0)+'P)</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="selected">반려</button>'; }
     else if(a.status==='completed'){ acts='<span style="color:#2FA46A;font-size:12px;font-weight:700;">지급 완료</span>'; }
@@ -207,8 +212,19 @@ function renderReviews(){
       +'<td style="white-space:nowrap;">'+acts+'</td>'
       +'</tr>';
   }).join('');
+  body.querySelectorAll('.rv-appeal-btn').forEach(function(bn){ bn.addEventListener('click', function(){
+    var a=RV_ALL.filter(function(x){return x.id===bn.getAttribute('data-id');})[0]; if(!a) return;
+    var det=''; if(a.auto_result&&a.auto_result.checks){ var ch=a.auto_result.checks; det='\n\n[자동판정] 글자'+ch.chars.got+'/'+ch.chars.need+', 이미지'+ch.images.got+'/'+ch.images.need+', 영상'+ch.videos.got+'/'+ch.videos.need+(ch.keyword.word?(', 키워드 "'+ch.keyword.word+'" '+ch.keyword.got+'/'+ch.keyword.need):'')+', 배너'+(ch.banner.got?'O':'X'); }
+    alert('[재검토 사유]\n'+(a.appeal_text||'(없음)')+det+'\n\n리뷰: '+(a.review_url||'-'));
+  }); });
   body.querySelectorAll('.rv-act').forEach(function(bn){ bn.addEventListener('click', async function(){
-    var id=this.getAttribute('data-id'), to=this.getAttribute('data-to');
+    var id=this.getAttribute('data-id'), to=this.getAttribute('data-to'), ap=this.getAttribute('data-appeal');
+    if(ap!==null){
+      if(!confirm(ap==='1'?'재검토를 승인하고 포인트를 지급할까요?':'재검토를 거절할까요?')) return;
+      this.disabled=true; var rr=await OnAuth.resolveAppeal(id, ap==='1');
+      if(rr&&rr.ok){ window.__adminReady(); } else { alert((rr&&rr.msg)||'처리 실패'); this.disabled=false; }
+      return;
+    }
     var msg={selected:'이 회원을 선정할까요?',rejected:'이 신청을 탈락 처리할까요?',completed:'리뷰를 검수 완료하고 포인트를 지급할까요?',applied:'상태를 신청중으로 되돌릴까요?'}[to]||'상태를 변경할까요?';
     if(!confirm(msg)) return;
     this.disabled=true;

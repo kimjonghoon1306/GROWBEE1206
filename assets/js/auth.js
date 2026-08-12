@@ -126,9 +126,34 @@
         .eq('user_id', u.id).order('created_at', { ascending: false });
       return (r && !r.error) ? (r.data || []) : [];
     },
-    // 손님: 리뷰 URL 제출 (선정된 캠페인)
+    // 손님: 리뷰 URL 제출 (선정된 캠페인) — 단순 저장(폴백)
     submitReview: async function (appId, url) {
       var r = await sb.rpc('submit_review_url', { p_app: appId, p_url: url });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 손님: 리뷰 자동 판정 (Edge Function이 본문 검사)
+    checkReview: async function (appId, url, keyword) {
+      var sess = await sb.auth.getSession();
+      var token = sess && sess.data && sess.data.session ? sess.data.session.access_token : SUPABASE_ANON;
+      try {
+        var res = await fetch(SUPABASE_URL + '/functions/v1/review-check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'apikey': SUPABASE_ANON },
+          body: JSON.stringify({ app_id: appId, url: url, keyword: keyword || '' })
+        });
+        return await res.json();
+      } catch (e) { return { ok: false, msg: '네트워크 오류: ' + e.message }; }
+    },
+    // 손님: 이의신청(재검토 요청)
+    submitAppeal: async function (appId, text) {
+      var r = await sb.rpc('submit_appeal', { p_app: appId, p_text: text });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 관리자: 이의신청 승인/거절
+    resolveAppeal: async function (appId, approve) {
+      var r = await sb.rpc('resolve_appeal', { p_app: appId, p_approve: !!approve });
       if (r.error) return { ok: false, msg: r.error.message };
       return r.data;
     },

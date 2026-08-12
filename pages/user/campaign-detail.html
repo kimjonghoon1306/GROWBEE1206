@@ -107,13 +107,19 @@
       </div>
 
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:var(--shadow);">
-        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);">리뷰 작성 조건</h3>
-        <ul style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;">
-          <li>• 네이버 블로그 300자 이상 작성</li>
-          <li>• 사진 10장 이상 (음식, 인테리어, 전경 포함)</li>
-          <li>• 방문 후 <strong style="color:var(--text);">7일 이내</strong> URL 제출 필수</li>
-          <li>• 방문 인증 필수 (영수증 또는 직원 확인)</li>
-        </ul>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);">리뷰 미션 (필수 조건)</h3>
+        <ul id="dMission" style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;"></ul>
+        <div id="dKeywords" style="margin-top:10px;"></div>
+      </div>
+
+      <div id="dBannerBox" style="background:rgba(236,58,102,.05);border:1px solid rgba(236,58,102,.25);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:6px;color:var(--brand-primary);">블로그 상단 배너 (필수)</h3>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px;">아래 배너를 <strong style="color:var(--text);">블로그 글 맨 위</strong>에 넣어주세요. 이미지를 길게 눌러 저장하거나, HTML 복사 버튼을 쓰면 돼요.</p>
+        <img id="dBannerImg" src="../../assets/img/review_banner.png" alt="온종일 체험단 배너" style="width:100%;max-width:420px;border-radius:12px;display:block;margin-bottom:12px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" id="dCopyImg" style="background:var(--brand-gradient);color:#fff;border:none;border-radius:50px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;">배너 이미지 복사</button>
+          <button type="button" id="dCopyHtml" style="background:transparent;color:var(--text);border:1.5px solid var(--border);border-radius:50px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;">HTML 코드 복사</button>
+        </div>
       </div>
 
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow);">
@@ -181,6 +187,43 @@
   set('dDday', dday(c.deadline)||'-');
   var pct=c.capacity>0?Math.min(100,Math.round(c.applied_count/c.capacity*100)):0;
   var bar=document.getElementById('dBar'); if(bar) bar.style.width=pct+'%';
+
+  // ── 미션 렌더 ──
+  var ml=document.getElementById('dMission');
+  function li(t){ return '<li>• '+t+'</li>'; }
+  var items=[];
+  if(c.visit_days) items.push('당첨 후 <strong style="color:var(--text);">'+c.visit_days+'일 이내</strong> 방문');
+  if(c.review_days) items.push('방문 후 <strong style="color:var(--text);">'+c.review_days+'일 이내</strong> 리뷰 작성');
+  items.push('최소 <strong style="color:var(--text);">'+(c.min_chars||1000)+'자 이상</strong> 작성');
+  items.push('사진 <strong style="color:var(--text);">'+(c.min_images||15)+'장 이상</strong>');
+  items.push('영상 <strong style="color:var(--text);">'+(c.min_videos||2)+'개 이상</strong>');
+  if(c.keywords) items.push('아래 키워드 중 <strong style="color:var(--text);">1개를 골라 제목·본문에 '+(c.keyword_min||5)+'회 이상</strong> (띄어쓰기까지 동일하게)');
+  if(c.require_banner!==false) items.push('블로그 <strong style="color:var(--text);">상단에 체험단 배너</strong> 삽입');
+  if(ml) ml.innerHTML=items.map(li).join('');
+  // 키워드 칩
+  var kb=document.getElementById('dKeywords');
+  if(kb && c.keywords){
+    var kws=c.keywords.split(',').map(function(x){return x.trim();}).filter(Boolean);
+    kb.innerHTML='<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">키워드 세트 (하나 선택):</div>'
+      + kws.map(function(k){ return '<span style="display:inline-block;background:rgba(236,58,102,.1);color:var(--brand-primary);font-size:13px;font-weight:700;padding:6px 13px;border-radius:50px;margin:0 6px 6px 0;">#'+k+'</span>'; }).join('');
+  }
+  // 배너 필수 아니면 배너박스 숨김
+  if(c.require_banner===false){ var bb=document.getElementById('dBannerBox'); if(bb) bb.style.display='none'; }
+  // 배너 복사
+  var bannerAbs=location.origin+'/assets/img/review_banner.png';
+  var copyImg=document.getElementById('dCopyImg'), copyHtml=document.getElementById('dCopyHtml');
+  if(copyImg) copyImg.onclick=async function(){
+    try{ var blob=await (await fetch('../../assets/img/review_banner.png')).blob();
+      await navigator.clipboard.write([new ClipboardItem({[blob.type]:blob})]);
+      copyImg.textContent='복사됨!'; setTimeout(function(){copyImg.textContent='배너 이미지 복사';},1500);
+    }catch(e){ window.open('../../assets/img/review_banner.png','_blank'); }
+  };
+  if(copyHtml) copyHtml.onclick=async function(){
+    var html='<a href="'+location.origin+'/pages/user/campaign-detail.html?id='+id+'"><img src="'+bannerAbs+'" alt="온종일 체험단" style="max-width:100%;"></a>';
+    try{ await navigator.clipboard.writeText(html); copyHtml.textContent='복사됨!'; setTimeout(function(){copyHtml.textContent='HTML 코드 복사';},1500); }
+    catch(e){ prompt('아래 HTML을 복사하세요', html); }
+  };
+
   var btn=document.getElementById('applyBtn');
   function setBtn(t,d){ btn.textContent=t; btn.disabled=!!d; btn.style.opacity=d?'.55':'1'; btn.style.cursor=d?'default':'pointer'; }
   var closed=(c.status!=='active')||left<=0||dday(c.deadline)==='마감';
