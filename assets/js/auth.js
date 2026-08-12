@@ -135,6 +135,22 @@
       return await sb.from('applications').select('*, campaigns(title), profiles(name,email)')
         .order('created_at', { ascending: false });
     },
+    // 특정 회원의 신청/포인트 (관리자 RLS 통과)
+    memberApplications: async function (userId) {
+      var r = await sb.from('applications').select('*, campaigns(title,reward_text,region)')
+        .eq('user_id', userId).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    memberPointTx: async function (userId) {
+      var r = await sb.from('point_transactions').select('*')
+        .eq('user_id', userId).order('created_at', { ascending: false }).limit(50);
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    setSuspended: async function (userId, on) {
+      var r = await sb.rpc('set_member_suspended', { p_user: userId, p_suspend: !!on });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
 
     signOut: async function () {
       await sb.auth.signOut();
@@ -146,7 +162,7 @@
       return (r && r.data) ? r.data.user : null;
     },
 
-    // 로그인 필요한 페이지 보호: 미로그인 시 로그인 페이지로
+    // 로그인 필요한 페이지 보호: 미로그인 시 로그인 페이지로, 정지 회원은 로그아웃
     requireAuth: async function () {
       var u = await Auth.getUser();
       if (!u) {
@@ -154,6 +170,15 @@
         location.href = 'login.html?next=' + next;
         return null;
       }
+      try {
+        var p = await Auth.getProfile();
+        if (p && p.suspended) {
+          await sb.auth.signOut();
+          alert('이용이 정지된 계정입니다. 고객센터로 문의해주세요.');
+          location.href = 'login.html';
+          return null;
+        }
+      } catch (e) {}
       return u;
     },
 
