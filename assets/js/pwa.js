@@ -29,17 +29,18 @@
     document.body.appendChild(b);
     if (!document.getElementById('pwa-banner-style')) {
       var s = document.createElement('style'); s.id = 'pwa-banner-style';
-      s.textContent = '.pwa-banner{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;'
+      s.textContent = '.pwa-banner{position:fixed;left:12px;right:12px;bottom:16px;z-index:9999;'
         + 'display:flex;align-items:center;gap:12px;background:#fff;color:#2A241F;border:1px solid #ECE5D8;'
-        + 'box-shadow:0 12px 34px rgba(60,42,20,.18);border-radius:16px;padding:12px 14px;max-width:calc(100vw - 32px);'
+        + 'box-shadow:0 12px 34px rgba(60,42,20,.18);border-radius:16px;padding:12px 14px;'
+        + 'max-width:460px;margin:0 auto;box-sizing:border-box;'
         + 'font-family:Pretendard,-apple-system,sans-serif;animation:pwaUp .35s cubic-bezier(.2,.8,.3,1);}'
-        + '@keyframes pwaUp{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}'
-        + '.pwa-banner img{width:40px;height:40px;border-radius:10px;flex-shrink:0}'
-        + '.pwa-banner .pb-txt{font-size:13px;line-height:1.35;font-weight:600}'
-        + '.pwa-banner .pb-txt small{display:block;color:#877E72;font-weight:500;font-size:12px;margin-top:1px}'
-        + '.pwa-banner .pb-btn{background:linear-gradient(135deg,#EE3E6D,#F4743B);color:#fff;border:none;font-weight:700;'
-        + 'font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;white-space:nowrap}'
-        + '.pwa-banner .pb-x{background:none;border:none;color:#aaa;font-size:20px;cursor:pointer;padding:0 4px;line-height:1}';
+        + '@keyframes pwaUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}'
+        + '.pwa-banner img{width:42px;height:42px;border-radius:11px;flex:0 0 42px}'
+        + '.pwa-banner .pb-txt{flex:1 1 auto;min-width:0;font-size:13px;line-height:1.35;font-weight:700;word-break:keep-all}'
+        + '.pwa-banner .pb-txt small{display:block;color:#877E72;font-weight:500;font-size:12px;margin-top:2px;word-break:keep-all}'
+        + '.pwa-banner .pb-btn{flex:0 0 auto;background:linear-gradient(135deg,#EE3E6D,#F4743B);color:#fff;border:none;font-weight:700;'
+        + 'font-size:13px;padding:10px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}'
+        + '.pwa-banner .pb-x{flex:0 0 auto;background:none;border:none;color:#bbb;font-size:22px;cursor:pointer;padding:0 2px;line-height:1}';
       document.head.appendChild(s);
     }
     return b;
