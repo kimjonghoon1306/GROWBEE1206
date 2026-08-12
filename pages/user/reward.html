@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리워드 — 온종일 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<link rel="stylesheet" href="../../assets/css/mypage.css">
+<style>
+.rw-hero { background: linear-gradient(135deg,#EE3E6D 0%,#F4743B 100%); color:#fff; border-radius: 26px; padding: 44px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: center; overflow: hidden; position: relative; margin: 28px 0 34px; }
+.rw-hero::before { content:''; position:absolute; right:-50px; top:-50px; width:240px; height:240px; border-radius:50%; background:rgba(255,255,255,.1); }
+.rw-tag { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #FFE0A3; margin-bottom: 12px; }
+.rw-title { font-family: var(--font-serif); font-size: clamp(26px,3.4vw,40px); font-weight: 700; line-height: 1.3; margin-bottom: 14px; }
+.rw-desc { font-size: 15px; color: rgba(255,255,255,.9); line-height: 1.7; margin-bottom: 22px; }
+.rw-hero img { width: 190px; margin: 0 auto; filter: drop-shadow(0 14px 24px rgba(0,0,0,.2)); position:relative; z-index:1; }
+.rw-btn { display:inline-flex; background:#fff; color:var(--accent); font-weight:800; padding:14px 28px; border-radius:999px; }
+.sec-h { text-align:center; margin: 40px 0 26px; }
+.sec-h .tag-label { display:block; }
+.sec-h h2 { font-family: var(--font-serif); font-size: clamp(22px,3vw,32px); font-weight:700; }
+.rw-card { text-align:center; padding: 30px 22px; }
+.rw-ic { width:60px;height:60px;margin:0 auto 16px;border-radius:18px;background:var(--accent-tint);display:flex;align-items:center;justify-content:center; }
+.rw-ic svg { width:30px;height:30px;color:var(--accent-text); }
+.rw-card h3 { font-size:17px;font-weight:800;margin-bottom:8px; }
+.rw-card p { font-size:13px;color:var(--text-muted);line-height:1.6; }
+.rw-card .pt { display:inline-block;margin-top:12px;font-weight:800;color:var(--accent-text);background:var(--accent-tint);padding:5px 12px;border-radius:999px;font-size:13px; }
+@media (max-width:768px){ .rw-hero{ grid-template-columns:1fr; text-align:center; padding:32px 24px; } .rw-hero img{ width:150px; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo" id="brandLogo">
+      <div class="logo-mark"><img src="../../assets/img/mascot.png" alt="온미"></div>
+      <div class="logo-text"><span class="logo-main">온종일 체험단</span><span class="logo-sub">ONJONGIL EXPERIENCE</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="campaigns.html" class="nav-link">체험단</a>
+      <a href="reward.html" class="nav-link active">리워드</a>
+      <a href="regions.html" class="nav-link">지역별</a>
+      <a href="categories.html" class="nav-link">카테고리</a>
+      <a href="review.html" class="nav-link">스토리</a>
+      <a href="advertiser.html" class="nav-link">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="h-ico" id="modeBtn" onclick="toggleMode()" aria-label="낮/밤"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="mypage.html" class="h-avatar"><img src="../../assets/img/mascot.png" alt="마이페이지"></a>
+    </div>
+  </div>
+</header>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 20px 80px;">
+  <div class="rw-hero">
+    <div style="position:relative;z-index:1;">
+      <div class="rw-tag">ONJONGIL REWARD</div>
+      <div class="rw-title">체험하고 리뷰 쓰면,<br>포인트가 차곡차곡</div>
+      <div class="rw-desc">캠페인 참여·리뷰 등록·친구 초대까지. 모은 포인트는 현금처럼 페이백 받거나 온종일 제휴처에서 바로 사용하세요.</div>
+      <a href="points.html" class="rw-btn">내 포인트 보기 →</a>
+    </div>
+    <img src="../../assets/img/mascot_wave.png" alt="온미">
+  </div>
+
+  <div class="sec-h"><span class="tag-label">EARN</span><h2>이렇게 포인트를 모아요</h2></div>
+  <div class="grid-4">
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M6 16l9-9a2 2 0 0 1 3 3l-9 9-4 1z"/></svg></div><h3>체험 리뷰 작성</h3><p>캠페인 참여 후 리뷰를 등록하면 승인 후 적립돼요.</p><span class="pt">+10 P~</span></div>
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="13" rx="2"/><path d="M4 10h16M9 3v4"/></svg></div><h3>원고료 캠페인</h3><p>원고료 지급 캠페인은 리뷰 승인 시 현금성 포인트 지급.</p><span class="pt">+2,500 P~</span></div>
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-8 0v2M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM20 8v6M23 11h-6" opacity=".9"/></svg></div><h3>친구 초대</h3><p>초대한 친구가 가입하면 보너스 포인트를 드려요.</p><span class="pt">+20 P</span></div>
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3l7 4v5a8 8 0 0 1-7 8 8 8 0 0 1-7-8V7z"/></svg></div><h3>출석 · 미션</h3><p>매일 출석하고 미션을 완료해 포인트를 쌓아요.</p><span class="pt">+1 P~</span></div>
+  </div>
+
+  <div class="sec-h"><span class="tag-label">USE</span><h2>포인트, 이렇게 써요</h2></div>
+  <div class="grid-3">
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></div><h3>현금 출금</h3><p>10,000P 이상이면 계좌로 출금(세금 3.3% 공제 후 지급).</p></div>
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg></div><h3>온종일팜 쇼핑</h3><p>온종일 제휴 쇼핑몰에서 상품 금액의 최대 50%까지 사용.</p></div>
+    <div class="card rw-card"><div class="rw-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16v12H4zM4 7l2-3h12l2 3M9 12a3 3 0 0 0 6 0"/></svg></div><h3>페이백 · 제휴처</h3><p>제휴 매장에서 결제 시 포인트로 페이백 받으세요.</p></div>
+  </div>
+
+  <div style="text-align:center;margin-top:44px;">
+    <a href="campaigns.html" class="btn-primary" style="font-size:16px;padding:16px 36px;">지금 캠페인 신청하고 적립 시작하기</a>
+  </div>
+</div>
+
+<script>
+var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
+if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
+(function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='../admin/admin-dashboard.html';return;}t=setTimeout(function(){if(c===1){location.href='../../index.html';}c=0;},450);});})();
+</script>
+</body>
+</html>

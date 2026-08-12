@@ -8,6 +8,7 @@
 <style>
 /* Force night mode for admin */
 body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--border:rgba(255,255,255,0.08);--text:#F0F0F0;--text-muted:#999;--shadow:0 4px 24px rgba(0,0,0,.5);--shadow-card:0 8px 40px rgba(0,0,0,.6);--header-bg:rgba(13,13,13,0.95);--nav-active-bg:rgba(255,255,255,0.06); }
+body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08); }
 
 .admin-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
 .admin-sidebar {
@@ -28,18 +29,18 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
   flex-shrink: 0;
 }
 .sidebar-logo-mark svg { width: 18px; height: 18px; }
-.sidebar-logo-text { font-family: var(--font-display); font-size: 14px; font-weight: 800; color: #F0F0F0; }
-.sidebar-logo-sub { font-size: 10px; color: #888; font-weight: 600; letter-spacing: 0.5px; }
+.sidebar-logo-text { font-family: var(--font-display); font-size: 14px; font-weight: 800; color:var(--text); }
+.sidebar-logo-sub { font-size: 10px; color:var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
 .sidebar-section { padding: 16px 10px 8px; }
 .sidebar-section-label { font-size: 10px; font-weight: 700; color: #666; letter-spacing: 1px; text-transform: uppercase; padding: 0 8px; margin-bottom: 6px; }
 .sidebar-link {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px; border-radius: 10px;
-  font-size: 13px; font-weight: 500; color: #999;
+  font-size: 13px; font-weight: 500; color:var(--text-muted);
   transition: var(--transition); cursor: pointer;
   text-decoration: none; margin-bottom: 2px;
 }
-.sidebar-link:hover { background: rgba(255,255,255,.05); color: #f0f0f0; }
+.sidebar-link:hover { background: rgba(255,255,255,.05); color:var(--text); }
 .sidebar-link.active { background: rgba(255,71,87,.12); color: var(--brand-primary); font-weight: 700; }
 .sidebar-link span.ico { font-size: 15px; flex-shrink: 0; }
 .sidebar-badge {
@@ -57,18 +58,18 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
   display: flex; align-items: center; justify-content: space-between;
 }
 .admin-topbar-left { display: flex; align-items: center; gap: 12px; }
-.admin-page-title { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: #F0F0F0; }
+.admin-page-title { font-family: var(--font-display); font-size: 18px; font-weight: 800; color:var(--text); }
 .admin-topbar-right { display: flex; align-items: center; gap: 10px; }
 .topbar-btn {
   padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 600;
   background: rgba(255,255,255,.06); border: 1px solid var(--border);
   color: #ccc; cursor: pointer; transition: var(--transition); text-decoration: none;
 }
-.topbar-btn:hover { color: #f0f0f0; background: rgba(255,255,255,.1); }
+.topbar-btn:hover { color:var(--text); background: rgba(255,255,255,.1); }
 .topbar-exit { color: var(--brand-primary); border-color: rgba(255,71,87,.3); background: rgba(255,71,87,.08); }
 
 .admin-content { padding: 28px; }
-.content-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: #F0F0F0; margin-bottom: 4px; }
+.content-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color:var(--text); margin-bottom: 4px; }
 .content-sub { font-size: 13px; color: #777; margin-bottom: 28px; }
 
 /* KPI CARDS */
@@ -82,8 +83,8 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
 .kpi-card.green::before { background: linear-gradient(135deg,#2ED573,#7BED9F); }
 .kpi-card.blue::before { background: linear-gradient(135deg,#54A0FF,#70c1f7); }
 .kpi-card.orange::before { background: linear-gradient(135deg,#FFA502,#FFD176); }
-.kpi-label { font-size: 12px; color: #888; margin-bottom: 10px; font-weight: 600; }
-.kpi-val { font-family: var(--font-display); font-size: 30px; font-weight: 800; color: #F0F0F0; line-height: 1; margin-bottom: 6px; }
+.kpi-label { font-size: 12px; color:var(--text-muted); margin-bottom: 10px; font-weight: 600; }
+.kpi-val { font-family: var(--font-display); font-size: 30px; font-weight: 800; color:var(--text); line-height: 1; margin-bottom: 6px; }
 .kpi-val em { color: var(--brand-primary); font-style: normal; }
 .kpi-val.green em { color: #2ED573; }
 .kpi-val.blue em { color: #54A0FF; }
@@ -98,7 +99,7 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: 22px;
 }
-.admin-card-title { font-size: 15px; font-weight: 700; color: #F0F0F0; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+.admin-card-title { font-size: 15px; font-weight: 700; color:var(--text); margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
 .admin-card-title a { font-size: 12px; font-weight: 600; color: var(--brand-primary); }
 
 /* TABLE */
@@ -112,7 +113,7 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
 .s-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 50px; white-space: nowrap; }
 .s-active { background: rgba(46,213,115,.15); color: #2ED573; }
 .s-review { background: rgba(255,165,2,.15); color: #FFA502; }
-.s-done { background: rgba(255,255,255,.08); color: #888; }
+.s-done { background: rgba(255,255,255,.08); color:var(--text-muted); }
 .s-pending { background: rgba(84,160,255,.15); color: #54A0FF; }
 
 /* BAR */
@@ -127,7 +128,7 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
 .activity-dot.green { background: #2ED573; }
 .activity-dot.blue { background: #54A0FF; }
 .activity-txt { font-size: 13px; color: #ccc; line-height: 1.5; flex: 1; }
-.activity-txt strong { color: #f0f0f0; }
+.activity-txt strong { color:var(--text); }
 .activity-time { font-size: 11px; color: #666; white-space: nowrap; margin-top: 2px; }
 
 @media(max-width:768px) {
@@ -183,6 +184,7 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
       </div>
       <div class="admin-topbar-right">
         <a href="admin-campaigns.html" class="topbar-btn">+ 캠페인 등록</a>
+        <button class="topbar-btn" id="admThemeBtn" onclick="admToggle()" title="낮/밤" style="width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;"><svg id="admThemeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
         <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
       </div>
     </div>
@@ -252,11 +254,11 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
           <table class="admin-table">
             <thead><tr><th>리뷰어</th><th>캠페인</th><th>채널</th><th>제출일</th><th>상태</th></tr></thead>
             <tbody>
-              <tr><td>foodie_kimj</td><td>스시 오모</td><td>블로그</td><td style="color:#888;">01.28</td><td><span class="s-badge s-active">승인</span></td></tr>
-              <tr><td>cafe_tour_lee</td><td>카페 루미오</td><td>인스타</td><td style="color:#888;">01.25</td><td><span class="s-badge s-active">승인</span></td></tr>
-              <tr><td>meat_hunter_pk</td><td>한우 우진각</td><td>블로그</td><td style="color:#888;">01.22</td><td><span class="s-badge s-review">검토중</span></td></tr>
-              <tr><td>beauty_choi</td><td>스킨랩</td><td>클립</td><td style="color:#888;">01.20</td><td><span class="s-badge s-active">승인</span></td></tr>
-              <tr><td>ramen_jeong</td><td>라멘 호시</td><td>인스타</td><td style="color:#888;">01.18</td><td><span class="s-badge s-review">검토중</span></td></tr>
+              <tr><td>foodie_kimj</td><td>스시 오모</td><td>블로그</td><td style="color:var(--text-muted);">01.28</td><td><span class="s-badge s-active">승인</span></td></tr>
+              <tr><td>cafe_tour_lee</td><td>카페 루미오</td><td>인스타</td><td style="color:var(--text-muted);">01.25</td><td><span class="s-badge s-active">승인</span></td></tr>
+              <tr><td>meat_hunter_pk</td><td>한우 우진각</td><td>블로그</td><td style="color:var(--text-muted);">01.22</td><td><span class="s-badge s-review">검토중</span></td></tr>
+              <tr><td>beauty_choi</td><td>스킨랩</td><td>클립</td><td style="color:var(--text-muted);">01.20</td><td><span class="s-badge s-active">승인</span></td></tr>
+              <tr><td>ramen_jeong</td><td>라멘 호시</td><td>인스타</td><td style="color:var(--text-muted);">01.18</td><td><span class="s-badge s-review">검토중</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -274,5 +276,12 @@ body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--
     </div>
   </div>
 </div>
+
+<script>
+var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function admToggle(){var lt=document.body.classList.toggle("light");document.getElementById("admThemeIcon").innerHTML=lt?_sun:_moon;localStorage.setItem("onjongil-admin-theme",lt?"light":"dark");}
+(function(){if(localStorage.getItem("onjongil-admin-theme")==="light"){document.body.classList.add("light");var i=document.getElementById("admThemeIcon");if(i)i.innerHTML=_sun;}})();
+</script>
 </body>
 </html>

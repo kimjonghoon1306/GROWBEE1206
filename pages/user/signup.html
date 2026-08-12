@@ -83,7 +83,7 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
       <div><div class="logo-main">온종일 체험단</div><span class="logo-sub">체험단 플랫폼</span></div>
     </a>
     <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
+    
   </div>
 </header>
 
@@ -208,5 +208,7 @@ function toggleMode() {
   }
 })();
 </script>
+
+<script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-dashboard.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
 </body>
 </html>

@@ -75,7 +75,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="../../index.html" class="logo">
-      <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div class="logo-mark" style="background:transparent;overflow:visible;"><img src="../../assets/img/mascot.png" alt="온미" style="width:38px;height:38px;object-fit:contain;"></div>
       <div><div class="logo-main">온종일 체험단</div><span class="logo-sub">체험단 플랫폼</span></div>
     </a>
     <nav class="main-nav">
@@ -89,7 +89,7 @@
     </nav>
     <div class="header-right">
       <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
+      
       <a href="login.html" class="btn-outline">로그인</a>
       <a href="signup.html" class="btn-primary">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
@@ -125,7 +125,7 @@
     <div class="footer-top">
       <div>
         <a href="../../index.html" class="logo" style="margin-bottom:10px;text-decoration:none;">
-          <div class="logo-mark" style="width:30px;height:30px;"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+          <div class="logo-mark" style="width:30px;height:30px;background:transparent;overflow:visible;"><img src="../../assets/img/mascot.png" alt="온미" style="width:30px;height:30px;object-fit:contain;"></div>
           <span style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text);">온종일 체험단</span>
         </a>
         <p style="font-size:12px;color:var(--text-muted);line-height:1.7;max-width:220px;margin-top:8px;">전국 맛집·카페·뷰티 체험단 플랫폼</p>
@@ -143,4 +143,6 @@
 function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');localStorage.setItem('growbee-mode',n?'night':'day');}}
 (function(){{if(localStorage.getItem('growbee-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');}}}}());
 </script>
+
+<script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-dashboard.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
 </body></html>
