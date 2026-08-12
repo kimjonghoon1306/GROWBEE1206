@@ -167,10 +167,17 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
     <label class="cf-check"><input type="checkbox" id="sf-ship"> 배송형(뱃지 색을 베이지로)</label>
     <label class="cf-l">제목</label><input id="sf-title" class="cf-in" placeholder="청담의 밤을 더 특별하게, 품격 있는 오마카세">
     <label class="cf-l">부제</label><input id="sf-subtitle" class="cf-in" placeholder="[서울 강남] 프리미엄 한우 우진각 — 3인 세트 무료 체험">
-    <label class="cf-l">클릭 시 이동 링크</label><input id="sf-link" class="cf-in" placeholder="pages/user/campaigns.html">
+    <label class="cf-l">캠페인 연결 (고르면 내부 링크 자동 입력)</label>
     <div class="cf-row">
-      <div><label class="cf-l">노출 시작일 (선택)</label><input id="sf-start" class="cf-in" type="date"></div>
-      <div><label class="cf-l">노출 종료일·기한 (선택)</label><input id="sf-end" class="cf-in" type="date"></div>
+      <select id="sf-camp-cat" class="cf-in" onchange="slFillCamps()"><option value="">전체 카테고리</option><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option><option>배송형</option><option>기타</option></select>
+      <select id="sf-camp" class="cf-in" onchange="slPickCamp()"><option value="">— 캠페인 선택 —</option></select>
+    </div>
+    <div style="font-size:12px;color:var(--text-muted);margin:4px 0 0;">캠페인을 고르면 아래 링크가 자동으로 채워져요. 외부 링크는 아래 칸에 직접 입력하세요.</div>
+    <label class="cf-l">클릭 시 이동 링크</label><input id="sf-link" class="cf-in" placeholder="pages/user/campaigns.html">
+    <label class="cf-check" style="margin-top:14px;"><input type="checkbox" id="sf-always" onchange="slToggleAlways()"> 상시 노출 (기간 무제한 — 계속 노출)</label>
+    <div class="cf-row" id="sf-daterow">
+      <div><label class="cf-l">노출 시작일</label><input id="sf-start" class="cf-in" type="date"></div>
+      <div><label class="cf-l">노출 종료일·기한</label><input id="sf-end" class="cf-in" type="date"></div>
     </div>
     <div class="cf-row">
       <div><label class="cf-l">노출 순서 (작을수록 먼저)</label><input id="sf-order" class="cf-in" type="number" placeholder="1"></div>
@@ -187,9 +194,18 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 </div></div>
 <script>
 function _sesc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
-var _slId=null; window.__slides={};
+var _slId=null; window.__slides={}; var _CAMPS=null;
 function _sv(id){ return (document.getElementById(id).value||'').trim(); }
 function cfMsg(t,ok){ var m=document.getElementById('cfMsg'); m.style.display='block'; m.textContent=t; m.style.background=ok?'rgba(46,213,115,.12)':'rgba(255,71,87,.12)'; m.style.color=ok?'#2ED573':'var(--brand-primary)'; }
+async function slLoadCamps(){ if(_CAMPS) return; var r=await OnAuth.adminListCampaigns(); _CAMPS=(r&&r.data)||[]; }
+function slFillCamps(){
+  var cat=document.getElementById('sf-camp-cat').value; var sel=document.getElementById('sf-camp'); var cur=sel.value;
+  var opts='<option value="">\u2014 캠페인 선택 \u2014</option>';
+  (_CAMPS||[]).forEach(function(c){ if(cat && c.category!==cat) return; opts+='<option value="'+c.id+'">['+(c.category||'-')+'] '+_sesc(c.title)+'</option>'; });
+  sel.innerHTML=opts; sel.value=cur;
+}
+function slPickCamp(){ var id=document.getElementById('sf-camp').value; if(id){ document.getElementById('sf-link').value='pages/user/campaign-detail.html?id='+id; } }
+function slToggleAlways(){ var on=document.getElementById('sf-always').checked; var row=document.getElementById('sf-daterow'); if(row) row.style.opacity=on?'.4':'1'; document.getElementById('sf-start').disabled=on; document.getElementById('sf-end').disabled=on; if(on){ document.getElementById('sf-start').value=''; document.getElementById('sf-end').value=''; } }
 async function slUpload(inp){
   var f=inp.files&&inp.files[0]; if(!f) return;
   var m=document.getElementById('sf-upmsg'); m.textContent='업로드 중…';
@@ -198,7 +214,7 @@ async function slUpload(inp){
   document.getElementById('sf-image').value=r.url;
   var pv=document.getElementById('sf-prev'); pv.src=r.url; pv.style.display='block'; m.textContent='업로드 완료';
 }
-function openSlideForm(id){
+async function openSlideForm(id){
   _slId=id||null;
   document.getElementById('cfTitle').textContent=_slId?'광고 수정':'새 광고 등록';
   document.getElementById('cfDelBtn').style.display=_slId?'inline-block':'none';
@@ -217,6 +233,12 @@ function openSlideForm(id){
   document.getElementById('sf-active').checked=(c.is_active!==false);
   var pv=document.getElementById('sf-prev'); if(c.image_url){ pv.src=c.image_url; pv.style.display='block'; } else { pv.style.display='none'; pv.src=''; }
   document.getElementById('sf-file').value='';
+  await slLoadCamps();
+  document.getElementById('sf-camp-cat').value=''; slFillCamps();
+  var _m=(c.link_url||'').match(/campaign-detail\.html\?id=([0-9a-fA-F-]+)/);
+  document.getElementById('sf-camp').value=_m?_m[1]:'';
+  document.getElementById('sf-always').checked=(!c.start_at && !c.end_at);
+  slToggleAlways();
   document.getElementById('cfOverlay').style.display='flex';
 }
 function closeSlideForm(){ document.getElementById('cfOverlay').style.display='none'; }
@@ -225,7 +247,10 @@ async function saveSlideForm(){
   var fields={ image_url:img, badge:_sv('sf-badge')||null, reward_text:_sv('sf-reward')||null,
     is_ship:document.getElementById('sf-ship').checked, title:_sv('sf-title')||null,
     subtitle:_sv('sf-subtitle')||null, link_url:_sv('sf-link')||null,
-    sort_order:parseInt(_sv('sf-order'),10)||0, start_at:_sv('sf-start')||null, end_at:_sv('sf-end')||null, is_active:document.getElementById('sf-active').checked };
+    sort_order:parseInt(_sv('sf-order'),10)||0, is_active:document.getElementById('sf-active').checked };
+  var _always=document.getElementById('sf-always').checked;
+  fields.start_at=_always?null:(_sv('sf-start')||null);
+  fields.end_at=_always?null:(_sv('sf-end')||null);
   var btn=document.getElementById('cfSaveBtn'); btn.disabled=true; var o=btn.textContent; btn.textContent='저장 중…';
   var r=_slId? await OnAuth.updateSlide(_slId, fields) : await OnAuth.createSlide(fields);
   btn.disabled=false; btn.textContent=o;
