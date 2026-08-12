@@ -109,6 +109,30 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
 <div class="search-bar">
   <input class="search-input" placeholder="캠페인명, 회원 이름/이메일 검색...">
 </div>
+
+<!-- 용어 설명 (헷갈림 방지) -->
+<div id="rvGuide" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:16px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="var g=document.getElementById('rvGuideBody');g.style.display=g.style.display==='none'?'block':'none';">
+    <b style="font-size:13px;color:var(--text);">🔎 진행 단계·버튼 뜻 (처음이면 눌러서 확인)</b>
+    <span style="color:var(--text-muted);font-size:12px;">펼치기 ▾</span>
+  </div>
+  <div id="rvGuideBody" style="display:none;margin-top:12px;font-size:13px;line-height:1.9;color:var(--text-muted);">
+    <div style="display:grid;grid-template-columns:88px 1fr;gap:6px 10px;">
+      <span><span class="s-badge s-review">신청중</span></span><span>회원이 캠페인에 <b style="color:var(--text)">신청만 한 상태.</b> 아직 뽑히지 않음.</span>
+      <span><span class="s-badge s-active">선정됨</span></span><span>관리자가 <b style="color:var(--text)">체험단으로 뽑은 상태.</b> 이제 회원이 방문·리뷰 작성.</span>
+      <span><span class="s-badge s-active">리뷰 제출됨</span></span><span>회원이 <b style="color:var(--text)">리뷰 링크를 제출한 상태.</b> 검수 대기 중.</span>
+      <span><span class="s-badge s-done">검수완료</span></span><span>리뷰 확인 완료 → <b style="color:var(--text)">포인트 지급됨.</b> 광고주가 볼 수 있음.</span>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);"><b style="color:var(--text);">버튼 뜻</b><br>
+      <b style="color:#2ED573;">선정</b> = 신청자를 체험단으로 뽑기 &nbsp;·&nbsp;
+      <b style="color:var(--brand-primary);">탈락</b> = 신청자를 안 뽑기(미선정) &nbsp;·&nbsp;
+      <b style="color:#2ED573;">검수완료</b> = 제출된 리뷰 승인+포인트지급 &nbsp;·&nbsp;
+      <b style="color:var(--brand-primary);">반려</b> = 리뷰가 미흡해 다시 쓰라고 돌려보내기(선정 상태로)
+    </div>
+    <div style="margin-top:8px;color:var(--text-muted);">※ 리뷰는 <b style="color:var(--text)">자동으로 검사</b>돼서 통과하면 바로 '리뷰 제출됨'이 돼요. 자동검사가 틀렸다며 <b style="color:var(--text)">회원이 재검토를 요청</b>하면 여기서 <b style="color:var(--text)">승인/거절</b>로 처리합니다.</div>
+  </div>
+</div>
+
 <div id="rvTabs" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
   <button class="rv-tab active" data-f="all">전체 <b>0</b></button>
   <button class="rv-tab" data-f="applied">신청중 <b>0</b></button>
