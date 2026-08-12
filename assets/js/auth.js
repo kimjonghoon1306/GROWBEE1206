@@ -178,9 +178,21 @@
       return r.data;
     },
     listAllApplications: async function () {
-      return await sb.from('applications')
-        .select('*, campaigns(title,region,reward_text,reward_points,image_key), profiles(name,email,phone)')
+      // applications↔profiles FK가 없어 조인 대신 각각 조회 후 결합
+      var appRes = await sb.from('applications')
+        .select('*, campaigns(title,region,reward_text,reward_points,image_key)')
         .order('created_at', { ascending: false });
+      if (appRes.error) return appRes;
+      var rows = appRes.data || [];
+      var ids = [];
+      rows.forEach(function (a) { if (a.user_id && ids.indexOf(a.user_id) < 0) ids.push(a.user_id); });
+      var pmap = {};
+      if (ids.length) {
+        var pr = await sb.from('profiles').select('id,name,email,phone').in('id', ids);
+        (pr.data || []).forEach(function (p) { pmap[p.id] = p; });
+      }
+      rows.forEach(function (a) { a.profiles = pmap[a.user_id] || {}; });
+      return { data: rows, error: null };
     },
     // 특정 회원의 신청/포인트 (관리자 RLS 통과)
     memberApplications: async function (userId) {
