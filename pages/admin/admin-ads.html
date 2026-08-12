@@ -92,9 +92,14 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
     <div class="admin-content">
 <div style="background:rgba(236,58,102,.06);border:1px solid rgba(236,58,102,.18);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--text-muted);">메인 상단 <b>슬라이드 카드</b>에 노출되는 광고예요. 순서·노출 여부를 조절할 수 있어요.</div>
 <div class="admin-card">
-  <div class="admin-card-title">광고 슬라이드 <span id="slCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
+  <div class="admin-card-title" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">광고 슬라이드 <span id="slCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span><span style="flex:1;"></span><span id="slStat" style="font-size:12px;font-weight:700;"></span></div>
+  <div id="slTabs" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+    <button class="sl-tab active" data-f="all">전체 <b>0</b></button>
+    <button class="sl-tab" data-f="on">노출중 <b>0</b></button>
+    <button class="sl-tab" data-f="off">비노출 <b>0</b></button>
+  </div>
   <table class="admin-table">
-    <thead><tr><th>광고</th><th>뱃지</th><th>혜택</th><th>순서</th><th>상태</th><th>관리</th></tr></thead>
+    <thead><tr><th>광고</th><th>뱃지</th><th>노출기간</th><th>순서</th><th>상태</th><th>관리</th></tr></thead>
     <tbody id="slBody"><tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
   </table>
 </div></div>
@@ -140,6 +145,11 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 .cf-btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--text);}
 .cf-del{background:transparent;border:1.5px solid rgba(255,71,87,.4);color:var(--brand-primary);border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;cursor:pointer;}
 .cf-msg{display:none;font-size:13px;font-weight:600;padding:10px 12px;border-radius:10px;margin-top:12px;}
+.sl-tab{background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;}
+.sl-tab.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+.sl-pager{display:flex;justify-content:center;gap:6px;margin-top:20px;}
+.sl-pager button{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);font-size:13px;font-weight:700;cursor:pointer;}
+.sl-pager button.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
 @media(max-width:540px){.cf-row{grid-template-columns:1fr;}}
 </style>
 <div class="cf-overlay" id="cfOverlay"><div class="cf-card">
@@ -158,6 +168,10 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
     <label class="cf-l">제목</label><input id="sf-title" class="cf-in" placeholder="청담의 밤을 더 특별하게, 품격 있는 오마카세">
     <label class="cf-l">부제</label><input id="sf-subtitle" class="cf-in" placeholder="[서울 강남] 프리미엄 한우 우진각 — 3인 세트 무료 체험">
     <label class="cf-l">클릭 시 이동 링크</label><input id="sf-link" class="cf-in" placeholder="pages/user/campaigns.html">
+    <div class="cf-row">
+      <div><label class="cf-l">노출 시작일 (선택)</label><input id="sf-start" class="cf-in" type="date"></div>
+      <div><label class="cf-l">노출 종료일·기한 (선택)</label><input id="sf-end" class="cf-in" type="date"></div>
+    </div>
     <div class="cf-row">
       <div><label class="cf-l">노출 순서 (작을수록 먼저)</label><input id="sf-order" class="cf-in" type="number" placeholder="1"></div>
       <div style="display:flex;align-items:flex-end;"><label class="cf-check" style="margin-top:0;"><input type="checkbox" id="sf-active" checked> 활성화(노출)</label></div>
@@ -198,6 +212,8 @@ function openSlideForm(id){
   document.getElementById('sf-subtitle').value=c.subtitle||'';
   document.getElementById('sf-link').value=c.link_url||'';
   document.getElementById('sf-order').value=(c.sort_order!=null?c.sort_order:'');
+  document.getElementById('sf-start').value=c.start_at?String(c.start_at).slice(0,10):'';
+  document.getElementById('sf-end').value=c.end_at?String(c.end_at).slice(0,10):'';
   document.getElementById('sf-active').checked=(c.is_active!==false);
   var pv=document.getElementById('sf-prev'); if(c.image_url){ pv.src=c.image_url; pv.style.display='block'; } else { pv.style.display='none'; pv.src=''; }
   document.getElementById('sf-file').value='';
@@ -209,7 +225,7 @@ async function saveSlideForm(){
   var fields={ image_url:img, badge:_sv('sf-badge')||null, reward_text:_sv('sf-reward')||null,
     is_ship:document.getElementById('sf-ship').checked, title:_sv('sf-title')||null,
     subtitle:_sv('sf-subtitle')||null, link_url:_sv('sf-link')||null,
-    sort_order:parseInt(_sv('sf-order'),10)||0, is_active:document.getElementById('sf-active').checked };
+    sort_order:parseInt(_sv('sf-order'),10)||0, start_at:_sv('sf-start')||null, end_at:_sv('sf-end')||null, is_active:document.getElementById('sf-active').checked };
   var btn=document.getElementById('cfSaveBtn'); btn.disabled=true; var o=btn.textContent; btn.textContent='저장 중…';
   var r=_slId? await OnAuth.updateSlide(_slId, fields) : await OnAuth.createSlide(fields);
   btn.disabled=false; btn.textContent=o;
@@ -222,30 +238,53 @@ async function deleteSlideFromForm(){
   if(r&&r.error){ cfMsg('삭제 실패: '+r.error.message); return; }
   closeSlideForm(); loadSlides();
 }
+var SL_PAGE=1, SL_FILTER='all', SL_ROWS=[];
+function _sd(d){ return String(d).slice(0,10).replace(/-/g,'.'); }
+function slStatusOf(s){
+  var today=new Date().toISOString().slice(0,10);
+  if(!s.is_active) return {on:false,label:'중지'};
+  if(s.start_at && s.start_at>today) return {on:false,label:'예약'};
+  if(s.end_at && s.end_at<today) return {on:false,label:'기간종료'};
+  return {on:true,label:'노출중'};
+}
 async function loadSlides(){
   var body=document.getElementById('slBody');
   var r=await OnAuth.adminListSlides();
   if(r.error){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+_sesc(r.error.message)+'</td></tr>'; return; }
-  var rows=r.data||[]; window.__slides={};
-  document.getElementById('slCount').textContent='('+rows.length+'개)';
-  if(!rows.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 광고가 없어요. 우측 상단 <b>+ 새 광고 등록</b>으로 추가하세요.</td></tr>'; return; }
-  body.innerHTML=rows.map(function(c){ window.__slides[c.id]=c;
+  SL_ROWS=r.data||[]; window.__slides={}; SL_ROWS.forEach(function(s){window.__slides[s.id]=s;});
+  document.getElementById('slCount').textContent='(전체 '+SL_ROWS.length+'개)';
+  var on=SL_ROWS.filter(function(s){return slStatusOf(s).on;}).length; var off=SL_ROWS.length-on;
+  document.getElementById('slStat').innerHTML='<span style="color:#2ED573;">\u25CF 노출중 '+on+'</span> &nbsp; <span style="color:var(--text-muted);">\u25CF 비노출 '+off+'</span>';
+  document.querySelectorAll('#slTabs .sl-tab').forEach(function(t){ var f=t.getAttribute('data-f'); var n=(f==='all')?SL_ROWS.length:(f==='on'?on:off); var bEl=t.querySelector('b'); if(bEl) bEl.textContent=n; });
+  renderSlidePage();
+}
+function _slFiltered(){ if(SL_FILTER==='all') return SL_ROWS; return SL_ROWS.filter(function(s){ var st=slStatusOf(s); return SL_FILTER==='on'?st.on:!st.on; }); }
+function renderSlidePage(){
+  var rows=_slFiltered(); var PER=10; var pages=Math.max(1,Math.ceil(rows.length/PER));
+  if(SL_PAGE>pages) SL_PAGE=pages; if(SL_PAGE<1) SL_PAGE=1;
+  var body=document.getElementById('slBody'), pager=document.getElementById('slPager');
+  if(!rows.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:34px 0;color:var(--text-muted);">해당하는 광고가 없어요.</td></tr>'; pager.innerHTML=''; return; }
+  var slice=rows.slice((SL_PAGE-1)*PER, SL_PAGE*PER);
+  body.innerHTML=slice.map(function(c){
+    var st=slStatusOf(c);
     var thumb=c.image_url?'<img src="'+_sesc(c.image_url)+'" style="width:52px;height:34px;border-radius:6px;object-fit:cover;vertical-align:-10px;margin-right:8px;">':'';
-    var st=c.is_active?'<span class="s-badge s-active">노출중</span>':'<span class="s-badge s-done">중지</span>';
+    var badge=st.on?'<span class="s-badge s-active">노출중</span>':'<span class="s-badge s-done">'+st.label+'</span>';
+    var period=(c.start_at||c.end_at)?((c.start_at?_sd(c.start_at):'~')+' ~ '+(c.end_at?_sd(c.end_at):'무기한')):'상시';
     return '<tr>'
       +'<td>'+thumb+_sesc(c.title||'(제목 없음)')+'</td>'
       +'<td style="color:var(--text-muted);">'+_sesc(c.badge||'-')+'</td>'
-      +'<td style="color:var(--text-muted);">'+_sesc(c.reward_text||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+period+'</td>'
       +'<td style="color:var(--text-muted);">'+(c.sort_order||0)+'</td>'
-      +'<td>'+st+'</td>'
+      +'<td>'+badge+'</td>'
       +'<td style="white-space:nowrap;"><a href="#" class="sl-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a> <a href="#" class="sl-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.is_active?'중지':'노출')+'</a></td>'
       +'</tr>';
   }).join('');
   body.querySelectorAll('.sl-edit').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); openSlideForm(this.getAttribute('data-id')); }); });
   body.querySelectorAll('.sl-toggle').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); var c=window.__slides[id]; var rr=await OnAuth.updateSlide(id,{is_active:!c.is_active}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadSlides(); }); });
-  var si=document.querySelector('.search-input');
-  if(si){ si.oninput=function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display=tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }; }
+  if(pages<=1){ pager.innerHTML=''; }
+  else { var h=''; for(var i=1;i<=pages;i++){ h+='<button class="'+(i===SL_PAGE?'active':'')+'" data-p="'+i+'">'+i+'</button>'; } pager.innerHTML=h; pager.querySelectorAll('button').forEach(function(bn){ bn.onclick=function(){ SL_PAGE=parseInt(this.getAttribute('data-p'),10); renderSlidePage(); window.scrollTo(0,0); }; }); }
 }
+(function(){ var tabs=document.querySelectorAll('#slTabs .sl-tab'); tabs.forEach(function(t){ t.addEventListener('click',function(){ tabs.forEach(function(x){x.classList.remove('active');}); this.classList.add('active'); SL_FILTER=this.getAttribute('data-f'); SL_PAGE=1; renderSlidePage(); }); }); })();
 document.addEventListener('click',function(e){ if(e.target&&e.target.id==='cfOverlay') closeSlideForm(); });
 window.__adminReady = loadSlides;
 </script>

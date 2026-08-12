@@ -147,7 +147,8 @@
       return r.data;
     },
     listAllApplications: async function () {
-      return await sb.from('applications').select('*, campaigns(title), profiles(name,email)')
+      return await sb.from('applications')
+        .select('*, campaigns(title,region,reward_text,reward_points,image_key), profiles(name,email,phone)')
         .order('created_at', { ascending: false });
     },
     // 특정 회원의 신청/포인트 (관리자 RLS 통과)
@@ -214,7 +215,11 @@
     activeSlides: async function () {
       var r = await sb.from('ad_slides').select('*').eq('is_active', true)
         .order('sort_order', { ascending: true }).order('created_at', { ascending: false });
-      return (r && !r.error) ? (r.data || []) : [];
+      var rows = (r && !r.error) ? (r.data || []) : [];
+      var today = new Date().toISOString().slice(0, 10);
+      return rows.filter(function (s) {
+        return (!s.start_at || s.start_at <= today) && (!s.end_at || s.end_at >= today);
+      });
     },
     adminListSlides: async function () {
       return await sb.from('ad_slides').select('*')
