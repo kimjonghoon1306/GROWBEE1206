@@ -175,8 +175,10 @@
   </div>
 </footer>
 <script>
-function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');localStorage.setItem('onjongil-mode',n?'night':'day');}}
-(function(){{if(localStorage.getItem('onjongil-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');}}}}());
+var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function toggleMode(){var n=document.body.classList.toggle('night');var i=document.getElementById('modeIcon');if(i)i.innerHTML=n?_sun:_moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
+(function(){if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');var i=document.getElementById('modeIcon');if(i)i.innerHTML=_sun;}})();
 </script>
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-login.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>

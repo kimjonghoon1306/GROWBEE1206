@@ -83,16 +83,17 @@
 <div class="mp-card">
 <div class="wg-sec-h" style="margin-bottom:16px;"><span class="n">1</span> 기본정보 수정</div>
 <div class="grid-2" style="gap:16px 20px;">
- <div><label class="form-label">성함</label><input class="form-input" value="김종훈"></div>
- <div><label class="form-label">닉네임</label><input class="form-input" value="tarry"></div>
- <div><label class="form-label">휴대폰 번호</label><input class="form-input" value="010-3917-9653"></div>
+ <div><label class="form-label">성함</label><input id="pf-name" class="form-input" placeholder="이름"></div>
+ <div><label class="form-label">닉네임</label><input id="pf-nick" class="form-input" placeholder="닉네임"></div>
+ <div><label class="form-label">휴대폰 번호</label><input id="pf-phone" class="form-input" type="tel" placeholder="010-1234-5678"></div>
  <div><label class="form-label">출생 연도</label><select class="form-input"><option>1984</option><option>1990</option><option>1995</option></select></div>
  <div><label class="form-label">성별</label>
    <div style="display:flex;gap:10px;"><label class="radio-pill active"><input type="radio" name="g" checked hidden>남성</label><label class="radio-pill"><input type="radio" name="g" hidden>여성</label></div></div>
  <div><label class="form-label">우편번호</label><input class="form-input" value="25236"></div>
  <div style="grid-column:1/-1;"><label class="form-label">주소지</label><input class="form-input" value="강원특별자치도 횡성군 횡성읍 앞들서2로 34" style="margin-bottom:8px;"><input class="form-input" placeholder="상세주소 (동/호수)"></div>
 </div>
-<div style="margin-top:20px;"><button class="btn-primary" style="width:100%;font-size:15px;padding:15px;">기본정보 수정하기</button></div>
+<div id="pf-msg" style="display:none;font-size:13px;font-weight:600;padding:11px 14px;border-radius:10px;margin-top:16px;"></div>
+<div style="margin-top:20px;"><button class="btn-primary" id="pf-btn" onclick="saveBasic()" style="width:100%;font-size:15px;padding:15px;">기본정보 수정하기</button></div>
 </div>
 
 <div class="mp-card" id="detail">
@@ -109,10 +110,10 @@
 <div class="mp-card" id="pw">
 <div class="wg-sec-h" style="margin-bottom:16px;"><span class="n">3</span> 비밀번호 변경</div>
 <div style="max-width:420px;">
-<label class="form-label">기존 비밀번호</label><input class="form-input" type="password" placeholder="기존 비밀번호" style="margin-bottom:12px;">
-<label class="form-label">새 비밀번호</label><input class="form-input" type="password" placeholder="새 비밀번호" style="margin-bottom:12px;">
-<label class="form-label">새 비밀번호 확인</label><input class="form-input" type="password" placeholder="새 비밀번호 재입력" style="margin-bottom:16px;">
-<button class="btn-primary" style="font-size:14px;">비밀번호 변경하기</button>
+<label class="form-label">새 비밀번호</label><input id="pw-new" class="form-input" type="password" placeholder="6자 이상" style="margin-bottom:12px;">
+<label class="form-label">새 비밀번호 확인</label><input id="pw-new2" class="form-input" type="password" placeholder="새 비밀번호 재입력" style="margin-bottom:16px;">
+<div id="pw-msg" style="display:none;font-size:13px;font-weight:600;padding:11px 14px;border-radius:10px;margin-bottom:12px;"></div>
+<button class="btn-primary" id="pw-btn" onclick="savePw()" style="font-size:14px;">비밀번호 변경하기</button>
 </div>
 </div>
 </main></div>
@@ -137,7 +138,45 @@ document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('cli
   var pstr = pts.toLocaleString() + ' P';
   document.querySelectorAll('.mp-point').forEach(function(el){ var svg=el.querySelector('svg'); el.textContent=' '+pstr; if(svg) el.insertBefore(svg, el.firstChild); });
   document.querySelectorAll('.mp-mini').forEach(function(el){ el.textContent = pstr; });
+  // 기본정보 폼 채우기
+  try{ var pr = p || await OnAuth.getProfile();
+    if(pr){
+      if(document.getElementById('pf-name')) document.getElementById('pf-name').value = pr.name||'';
+      if(document.getElementById('pf-nick')) document.getElementById('pf-nick').value = pr.nickname||'';
+      if(document.getElementById('pf-phone')) document.getElementById('pf-phone').value = fmtPhone(pr.phone);
+    }
+  }catch(e){}
 })();
+function fmtPhone(p){ if(!p) return ''; p=(''+p).replace(/[^0-9]/g,''); if(p.length===11) return p.slice(0,3)+'-'+p.slice(3,7)+'-'+p.slice(7); if(p.length===10) return p.slice(0,3)+'-'+p.slice(3,6)+'-'+p.slice(6); return p; }
+function pfMsg(t,ok){var m=document.getElementById('pf-msg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(60,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#2FA46A':'#d61f56';}
+async function saveBasic(){
+  var name=document.getElementById('pf-name').value.trim();
+  var nick=document.getElementById('pf-nick').value.trim();
+  var phone=document.getElementById('pf-phone').value.replace(/[^0-9]/g,'');
+  if(!name) return pfMsg('이름을 입력해주세요.');
+  if(phone && phone.length<10) return pfMsg('휴대폰 번호를 정확히 입력해주세요.');
+  var b=document.getElementById('pf-btn'); b.disabled=true; var o=b.textContent; b.textContent='저장 중...';
+  try{
+    var r=await OnAuth.updateProfile({ name:name, nickname:nick||name, phone:phone });
+    if(r.error){ pfMsg('저장 실패: '+r.error.message); b.disabled=false; b.textContent=o; return; }
+    try{ await OnAuth.client.auth.updateUser({ data:{ name:name, nickname:nick||name, phone:phone } }); }catch(e){}
+    document.querySelectorAll('.mp-name b').forEach(function(el){ el.textContent = nick||name; });
+    pfMsg('기본정보가 저장됐어요!',true); b.disabled=false; b.textContent=o;
+  }catch(e){ pfMsg('오류가 발생했어요.'); b.disabled=false; b.textContent=o; }
+}
+function pwMsg(t,ok){var m=document.getElementById('pw-msg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(60,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#2FA46A':'#d61f56';}
+async function savePw(){
+  var pw=document.getElementById('pw-new').value, pw2=document.getElementById('pw-new2').value;
+  if(pw.length<6) return pwMsg('새 비밀번호는 6자 이상이어야 해요.');
+  if(pw!==pw2) return pwMsg('새 비밀번호가 일치하지 않아요.');
+  var b=document.getElementById('pw-btn'); b.disabled=true; var o=b.textContent; b.textContent='변경 중...';
+  try{
+    var r=await OnAuth.updatePassword(pw);
+    if(r.error){ pwMsg('변경 실패: '+r.error.message); b.disabled=false; b.textContent=o; return; }
+    document.getElementById('pw-new').value=''; document.getElementById('pw-new2').value='';
+    pwMsg('비밀번호가 변경됐어요!',true); b.disabled=false; b.textContent=o;
+  }catch(e){ pwMsg('오류가 발생했어요.'); b.disabled=false; b.textContent=o; }
+}
 window.addEventListener('pageshow', function(ev){ if(ev.persisted){ OnAuth.getUser().then(function(u){ if(!u) location.reload(); }); } });
 function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
 document.addEventListener('DOMContentLoaded',function(){
