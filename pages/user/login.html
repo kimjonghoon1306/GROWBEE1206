@@ -194,8 +194,14 @@ async function doLogin(){
     var r=await OnAuth.signIn(email,pw);
     if(r.error){ liMsg('이메일 또는 비밀번호가 올바르지 않아요.'); btn.disabled=false; btn.textContent=orig; return; }
     liMsg('로그인 성공!',true);
-    setTimeout(function(){ location.href=nextParam(); },500);
+    setTimeout(function(){ location.replace(nextParam()); },400);
   }catch(e){ liMsg('오류가 발생했어요. 다시 시도해주세요.'); btn.disabled=false; btn.textContent=orig; }
 }
+
+(function(){
+  async function checkIn(){ try{ var u=await OnAuth.getUser(); if(u){ location.replace(nextParam()); } }catch(e){} }
+  checkIn();
+  window.addEventListener('pageshow', function(ev){ if(ev.persisted) checkIn(); });
+})();
 </script>
 </body></html>

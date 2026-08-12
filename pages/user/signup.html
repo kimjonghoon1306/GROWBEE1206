@@ -238,9 +238,14 @@ async function doSignup(){
     var r=await OnAuth.signUp(email,pw,{name:name,nickname:name,phone:phoneN});
     if(r.error){ suMsg(r.error.message.indexOf('registered')>=0?'이미 가입된 이메일이에요.':r.error.message); btn.disabled=false; btn.textContent=orig; return; }
     suMsg('가입 완료! 마이페이지로 이동합니다 :)',true);
-    setTimeout(function(){ location.href='mypage.html'; },900);
+    setTimeout(function(){ location.replace('mypage.html'); },700);
   }catch(e){ suMsg('오류가 발생했어요. 잠시 후 다시 시도해주세요.'); btn.disabled=false; btn.textContent=orig; }
 }
+
+(function(){
+  async function checkIn(){ try{ var u=await OnAuth.getUser(); if(u){ location.replace('mypage.html'); } }catch(e){} }
+  window.addEventListener('pageshow', function(ev){ if(ev.persisted) checkIn(); });
+})();
 </script>
 </body>
 </html>

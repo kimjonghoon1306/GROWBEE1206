@@ -259,6 +259,7 @@ renderWidget();
   document.querySelectorAll('.mp-point').forEach(function(el){ var svg=el.querySelector('svg'); el.textContent=' '+pstr; if(svg) el.insertBefore(svg, el.firstChild); });
   document.querySelectorAll('.mp-mini').forEach(function(el){ el.textContent = pstr; });
 })();
+window.addEventListener('pageshow', function(ev){ if(ev.persisted){ OnAuth.getUser().then(function(u){ if(!u) location.reload(); }); } });
 function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.mp-logout, [data-logout]').forEach(function(a){ a.addEventListener('click', onLogout); });
