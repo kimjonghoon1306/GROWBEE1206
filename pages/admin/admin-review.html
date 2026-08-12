@@ -147,16 +147,22 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
 <div class="admin-card">
   <div class="admin-card-title" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">신청·리뷰 목록 <span id="rvCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span><span style="flex:1;"></span><span id="rvAutoStat" style="font-size:12px;font-weight:700;"></span></div>
   <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
-    <button class="rv-view-btn" id="rvViewFlat" onclick="rvSetView('flat')">목록으로 보기</button>
-    <button class="rv-view-btn on" id="rvViewGroup" onclick="rvSetView('group')">캠페인별 모아보기</button>
+    <button class="rv-view-btn on" id="rvViewFlat" onclick="rvSetView('flat')">크게 보기</button>
+    <button class="rv-view-btn" id="rvViewGrid" onclick="rvSetView('grid')">모아보기</button>
     <span style="flex:1;"></span>
-    <span style="font-size:11px;color:var(--text-muted);">캠페인별로 접었다 펼 수 있어요</span>
+    <span style="font-size:11px;color:var(--text-muted);">모아보기 = 이미지 4개씩 한눈에</span>
   </div>
   <table class="admin-table">
     <thead><tr><th>캠페인</th><th>회원</th><th>신청일</th><th>리뷰 링크</th><th>상태</th><th>검수</th></tr></thead>
     <tbody id="rvBody"><tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
   </table>
   <div class="adm-pager" id="rvPager"></div>
+</div>
+<div id="rvCardOv" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none';">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;max-width:440px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+    <div style="display:flex;justify-content:flex-end;padding:12px 14px 0;"><button onclick="document.getElementById('rvCardOv').style.display='none';" style="background:none;border:none;color:var(--text-muted);font-size:22px;cursor:pointer;">&times;</button></div>
+    <div id="rvCardBody" style="padding:0 22px 22px;"></div>
+  </div>
 </div>
   </div>
 </div>
@@ -186,6 +192,16 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 .rv-tab.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
 .rv-view-btn{background:var(--bg-card2,transparent);border:1.5px solid var(--border);border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;}
 .rv-view-btn.on{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+.rv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.rv-card{background:var(--bg-card2,rgba(255,255,255,.03));border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.rv-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.35);border-color:rgba(236,58,102,.35);}
+.rv-card-img{height:96px;background-size:cover;background-position:center;position:relative;}
+.rv-card-flag{position:absolute;top:6px;left:6px;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:50px;}
+.rv-card-b{padding:9px 10px 11px;}
+.rv-card-t{font-size:12px;font-weight:700;color:var(--text);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.rv-card-m{font-size:11px;color:var(--text-muted);margin-top:3px;}
+@media(max-width:900px){.rv-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.rv-grid{grid-template-columns:repeat(2,1fr);}}
 .rv-date{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:9px 12px;color:var(--text);font-size:13px;font-family:inherit;}
 .rv-grp{cursor:pointer;}
 .rv-grp td{background:var(--bg-card2,rgba(255,255,255,.03));font-weight:700;color:var(--text) !important;padding:12px 10px !important;}
@@ -221,10 +237,13 @@ window.__adminReady = async function(){
     '<span style="color:#FFA502;">재검토요청 '+appeal+'</span>';
   renderReviews();
 };
-var RV_VIEW='group', RV_PAGE=1, RV_PER=20, RV_COLLAPSE={};
+var RV_VIEW='flat', RV_PAGE=1, RV_PER=20, RV_COLLAPSE={};
 function rvSetView(v){ RV_VIEW=v; RV_PAGE=1;
   document.getElementById('rvViewFlat').classList.toggle('on',v==='flat');
-  document.getElementById('rvViewGroup').classList.toggle('on',v==='group');
+  document.getElementById('rvViewGrid').classList.toggle('on',v==='grid');
+  // 모아보기(grid)는 테이블 헤더 숨김
+  var thead=document.querySelector('#rvBody').closest('table').querySelector('thead');
+  if(thead) thead.style.display=(v==='grid')?'none':'';
   renderReviews();
 }
 function rvClearDate(){ document.getElementById('rvFrom').value=''; document.getElementById('rvTo').value=''; RV_PAGE=1; renderReviews(); }
@@ -240,6 +259,40 @@ function _rvFiltered(){
     var c=a.campaigns||{}, m=a.profiles||{};
     return ((c.title||'')+(m.name||'')+(m.email||'')).toLowerCase().indexOf(q)>=0;
   });
+}
+async function _rvDoStatus(id,to){
+  var msg={selected:'이 회원을 선정할까요?',rejected:'이 신청을 탈락 처리할까요?',completed:'리뷰를 검수 완료하고 포인트를 지급할까요?',applied:'상태를 되돌릴까요?'}[to]||'상태를 변경할까요?';
+  if(!confirm(msg)) return;
+  var res=await OnAuth.setAppStatus(id,to);
+  if(res&&res.ok){ document.getElementById('rvCardOv').style.display='none'; window.__adminReady(); } else alert((res&&res.msg)||'처리 실패');
+}
+async function _rvDoAppeal(id,ap){
+  if(!confirm(ap?'재검토를 승인하고 포인트를 지급할까요?':'재검토를 거절할까요?')) return;
+  var rr=await OnAuth.resolveAppeal(id,ap);
+  if(rr&&rr.ok){ document.getElementById('rvCardOv').style.display='none'; window.__adminReady(); } else alert((rr&&rr.msg)||'처리 실패');
+}
+function openRvCard(id){
+  var a=RV_ALL.filter(function(x){return x.id===id;})[0]; if(!a) return;
+  var c=a.campaigns||{}, m=a.profiles||{};
+  var IMG='../../assets/img/';
+  var bg=c.image_key?('background-image:url('+IMG+c.image_key+'.jpg);background-size:cover;background-position:center;'):'background:linear-gradient(135deg,#2a1018,#1a0a10);';
+  var link=a.review_url?('<a href="'+esc(a.review_url)+'" target="_blank" style="color:var(--brand-primary);font-weight:700;">📄 제출한 리뷰 열어보기 →</a>'):'<span style="color:var(--text-muted);">리뷰 미제출</span>';
+  var chk=''; if(a.auto_result&&a.auto_result.checks){ var ch=a.auto_result.checks; function ic(o){return o?'<span style="color:#2ED573;">✓</span>':'<span style="color:#FF5A5F;">✗</span>';} chk='<div style="font-size:12px;line-height:1.9;margin-top:8px;color:var(--text-muted);">'+ic(ch.chars.ok)+' 글자 '+ch.chars.got+'/'+ch.chars.need+' &nbsp; '+ic(ch.images.ok)+' 이미지 '+ch.images.got+'/'+ch.images.need+' &nbsp; '+ic(ch.videos.ok)+' 영상 '+ch.videos.got+'/'+ch.videos.need+(ch.keyword&&ch.keyword.word?(' &nbsp; '+ic(ch.keyword.ok)+' 키워드 '+ch.keyword.got+'/'+ch.keyword.need):'')+(ch.rank&&ch.rank.checked?(' &nbsp; 순위 '+(ch.rank.found?ch.rank.rank+'위':'100위밖')):'')+'</div>'; }
+  var acts='';
+  if(a.appeal_status==='pending'){ acts='<button class="rv-act ok" onclick="_rvDoAppeal(\''+a.id+'\',true)">재검토 승인</button><button class="rv-act ghost" onclick="_rvDoAppeal(\''+a.id+'\',false)">거절</button>'; if(a.appeal_text) chk+='<div style="margin-top:8px;padding:8px 10px;background:rgba(255,165,2,.1);border-radius:8px;font-size:12px;color:var(--text);">재검토 사유: '+esc(a.appeal_text)+'</div>'; }
+  else if(a.status==='applied'){ acts='<button class="rv-act ok" onclick="_rvDoStatus(\''+a.id+'\',\'selected\')">선정</button><button class="rv-act ghost" onclick="_rvDoStatus(\''+a.id+'\',\'rejected\')">탈락</button>'; }
+  else if(a.status==='selected'){ acts='<button class="rv-act ghost" onclick="_rvDoStatus(\''+a.id+'\',\'applied\')">선정취소</button>'; }
+  else if(a.status==='reviewing'){ acts='<button class="rv-act ok" onclick="_rvDoStatus(\''+a.id+'\',\'completed\')">검수완료(+'+(c.reward_points||0)+'P)</button><button class="rv-act ghost" onclick="_rvDoStatus(\''+a.id+'\',\'selected\')">반려</button>'; }
+  else if(a.status==='completed'){ acts='<span style="color:#2FA46A;font-weight:700;">✓ 검수완료·포인트 지급됨</span>'; }
+  document.getElementById('rvCardBody').innerHTML=
+    '<div style="height:150px;border-radius:12px;'+bg+'margin-bottom:14px;"></div>'
+    +'<div style="font-size:17px;font-weight:800;color:var(--text);">'+esc(c.title||'-')+'</div>'
+    +'<div style="font-size:13px;color:var(--text-muted);margin-top:2px;">'+esc(c.region||'')+(c.reward_text?(' · '+esc(c.reward_text)):'')+'</div>'
+    +'<div style="margin-top:10px;font-size:13px;"><b style="color:var(--text);">'+esc(m.name||'-')+'</b> <span style="color:var(--text-muted);">'+esc(m.email||'')+'</span></div>'
+    +'<div style="margin-top:6px;"><span class="s-badge '+(SBADGE[a.status]||'s-done')+'">'+(SLABEL[a.status]||a.status)+'</span></div>'
+    +'<div style="margin-top:12px;">'+link+'</div>'+chk
+    +'<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;">'+acts+'</div>';
+  document.getElementById('rvCardOv').style.display='flex';
 }
 function _rvRow(a){
   var c=a.campaigns||{}, m=a.profiles||{};
@@ -292,28 +345,29 @@ function renderReviews(){
   var rows=_rvFiltered();
   document.getElementById('rvCount').textContent='('+rows.length+'건'+(rows.length!==RV_ALL.length?(' / 전체 '+RV_ALL.length):'')+')';
   if(!rows.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:34px 0;color:var(--text-muted);">해당하는 신청이 없어요.</td></tr>'; pager.innerHTML=''; return; }
-  if(RV_VIEW==='group'){
-    // 캠페인별 모아보기: 요약 한 줄 + 접기
-    pager.innerHTML='';
-    var groups={}, order=[];
-    rows.forEach(function(a){ var c=a.campaigns||{}; var k=c.title||'(캠페인 없음)'; if(!groups[k]){ groups[k]=[]; order.push(k); } groups[k].push(a); });
-    var html='';
-    order.forEach(function(k){
-      var list=groups[k];
-      var nApplied=list.filter(function(a){return a.status==='applied';}).length;
-      var nSel=list.filter(function(a){return a.status==='selected';}).length;
-      var nReviewing=list.filter(function(a){return a.status==='reviewing';}).length;
-      var nDone=list.filter(function(a){return a.status==='completed';}).length;
-      var collapsed=RV_COLLAPSE[k];
-      var mini='<span class="rv-grp-mini" style="background:rgba(255,255,255,.08);color:var(--text-muted);">신청 '+list.length+'</span>'
-        +(nReviewing?'<span class="rv-grp-mini" style="background:rgba(255,165,2,.18);color:#FFA502;">검수대기 '+nReviewing+'</span>':'')
-        +(nSel?'<span class="rv-grp-mini" style="background:rgba(46,213,115,.15);color:#2ED573;">선정 '+nSel+'</span>':'')
-        +(nDone?'<span class="rv-grp-mini" style="background:rgba(255,255,255,.08);color:var(--text-muted);">완료 '+nDone+'</span>':'')
-        +(nApplied?'<span class="rv-grp-mini" style="background:rgba(84,160,255,.15);color:#54A0FF;">대기 '+nApplied+'</span>':'');
-      html+='<tr class="rv-grp'+(collapsed?' collapsed':'')+'" data-grp="'+esc(k)+'"><td colspan="6"><span class="chev">▾</span>'+esc(k)+' '+mini+'</td></tr>';
-      if(!collapsed){ html+=list.map(_rvRow).join(''); }
-    });
-    body.innerHTML=html;
+  if(RV_VIEW==='grid'){
+    // 이미지 모아보기: 4열 카드 그리드 + 페이지네이션(24개씩)
+    var GPER=24;
+    var gpages=Math.max(1,Math.ceil(rows.length/GPER));
+    if(RV_PAGE>gpages) RV_PAGE=gpages;
+    var gslice=rows.slice((RV_PAGE-1)*GPER, RV_PAGE*GPER);
+    var IMG='../../assets/img/';
+    var cards=gslice.map(function(a){
+      var c=a.campaigns||{}, m=a.profiles||{};
+      var bg=c.image_key?('background-image:url('+IMG+c.image_key+'.jpg)'):'background:linear-gradient(135deg,#2a1018,#1a0a10)';
+      var sb='<span class="s-badge '+(SBADGE[a.status]||'s-done')+'">'+(SLABEL[a.status]||a.status)+'</span>';
+      var flag=(a.appeal_status==='pending')?'<span class="rv-card-flag" style="background:#FFA502;">재검토</span>':(a.auto_passed===false?'<span class="rv-card-flag" style="background:#FF5A5F;">미달</span>':(a.auto_passed===true?'<span class="rv-card-flag" style="background:#2ED573;">자동통과</span>':''));
+      return '<div class="rv-card" data-id="'+a.id+'"><div class="rv-card-img" style="'+bg+'">'+flag+'</div>'
+        +'<div class="rv-card-b"><div class="rv-card-t">'+esc(c.title||'-')+'</div>'
+        +'<div class="rv-card-m">'+esc(m.name||'-')+'</div>'
+        +'<div style="margin-top:5px;">'+sb+'</div></div></div>';
+    }).join('');
+    body.innerHTML='<tr><td colspan="6" style="padding:0;border:none;"><div class="rv-grid">'+cards+'</div></td></tr>';
+    if(gpages<=1){ pager.innerHTML=''; }
+    else { var gph=''; for(var gi=1;gi<=gpages;gi++){ gph+='<button class="'+(gi===RV_PAGE?'active':'')+'" data-p="'+gi+'">'+gi+'</button>'; } pager.innerHTML=gph; pager.querySelectorAll('button').forEach(function(bn){ bn.onclick=function(){ RV_PAGE=parseInt(this.getAttribute('data-p'),10); renderReviews(); }; }); }
+    // 카드 클릭 → 상세(리뷰 열기 or 검수 액션)
+    body.querySelectorAll('.rv-card').forEach(function(cd){ cd.addEventListener('click',function(){ openRvCard(this.getAttribute('data-id')); }); });
+    return;
   } else {
     // 목록 보기 + 페이지네이션
     var pages=Math.max(1,Math.ceil(rows.length/RV_PER));
