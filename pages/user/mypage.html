@@ -85,7 +85,7 @@
   <!-- MAIN -->
   <main class="mp-main">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px;">
-      <h1 class="mp-title" style="margin-bottom:0;"><b>tarry</b> 님의<br>캠페인 리스트입니다.</h1>
+      <h1 class="mp-title" style="margin-bottom:0;"><b data-user-name>tarry</b> 님의<br>캠페인 리스트입니다.</h1>
       <div class="clock-card">
         <div class="clock-date"><span id="clkDate">–</span><span class="clock-dow" id="clkDow">–</span></div>
         <div class="clock-time" id="clkTime">--:--:--</div>
@@ -94,11 +94,11 @@
 
     <div class="mp-card">
       <div class="flow">
-        <div class="flow-step on"><div class="fs-label">신청한 캠페인</div><div class="fs-num">03</div></div>
+        <div class="flow-step on"><div class="fs-label">신청한 캠페인</div><div class="fs-num" id="fnApplied">00</div></div>
         <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 5l6 7-6 7M13 5l6 7-6 7" opacity=".6"/></svg></div>
-        <div class="flow-step on"><div class="fs-label">선정된 캠페인</div><div class="fs-num">02</div></div>
+        <div class="flow-step on"><div class="fs-label">선정된 캠페인</div><div class="fs-num" id="fnSelected">00</div></div>
         <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 5l6 7-6 7M13 5l6 7-6 7" opacity=".6"/></svg></div>
-        <div class="flow-step"><div class="fs-label">리뷰한 캠페인</div><div class="fs-num">06</div></div>
+        <div class="flow-step"><div class="fs-label">리뷰한 캠페인</div><div class="fs-num" id="fnReviewed">00</div></div>
       </div>
       <div style="display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap;">
         <a href="campaigns.html" class="btn-primary" style="font-size:14px;">새 캠페인 신청하기</a>
@@ -107,40 +107,17 @@
     </div>
 
     <div class="mp-card">
-      <div class="mp-tabs">
-        <div class="mp-tab active">전체 (11)</div>
-        <div class="mp-tab">신청중 (3)</div>
-        <div class="mp-tab">선정됨 (2)</div>
-        <div class="mp-tab">리뷰완료 (6)</div>
+      <div class="mp-tabs" id="appTabs">
+        <div class="mp-tab active" data-f="all">전체 (0)</div>
+        <div class="mp-tab" data-f="applied">신청중 (0)</div>
+        <div class="mp-tab" data-f="selected">선정됨 (0)</div>
+        <div class="mp-tab" data-f="completed">리뷰완료 (0)</div>
       </div>
-
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/sushi.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">검토중</span><div class="rev-name">스시 오모 — 오마카세 코스 체험단</div><div class="rev-meta">강남구 · 신청일 2026.02.28 · 혜택 15만원</div></div>
-        <div class="rev-state">신청중</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/cafe.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">선정</span><div class="rev-name">카페 루미오 — 시그니처 음료 체험단</div><div class="rev-meta">마포구 · 신청일 2026.02.25 · 혜택 3만원</div></div>
-        <div class="rev-state">선정됨</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/skincare.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">선정</span><div class="rev-name">클리어 스킨랩 — 피부 케어 체험단</div><div class="rev-meta">청담동 · 방문일 2026.02.20 · 원고료 3만원</div></div>
-        <div class="rev-state">리뷰 제출 대기</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/hanwoo.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge done">리뷰 완료</span><div class="rev-name">한우 프리미엄 '우진각' 체험단</div><div class="rev-meta">방배동 · 완료일 2026.01.15 · 혜택 9만원</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+10 P</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/ramen.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge done">리뷰 완료</span><div class="rev-name">성수 라멘하우스 '호시' 체험단</div><div class="rev-meta">성수동 · 완료일 2026.01.10 · 혜택 4만원</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+10 P</div>
-      </div>
+      <div id="appList"></div>
+      <div id="appEmpty" style="display:none;text-align:center;padding:48px 0;color:var(--text-muted);"><img src="../../assets/img/mascot.png" alt="온미" style="width:76px;opacity:.6;margin-bottom:10px;"><div>아직 신청한 캠페인이 없어요.</div><a href="campaigns.html" class="btn-primary" style="margin-top:16px;font-size:14px;">캠페인 둘러보기</a></div>
     </div>
   </main>
+
 </div>
 
 <script>
@@ -182,6 +159,54 @@ document.addEventListener('DOMContentLoaded',function(){
     if(tm) tm.textContent = ap+' '+h+':'+mm+':'+ss;
   }
   tick(); setInterval(tick,1000);
+})();
+</script>
+<script>
+(async function(){
+  var u=await OnAuth.getUser(); if(!u) return;
+  var apps=[]; try{ apps=await OnAuth.myApplications(); }catch(e){}
+  var IMG='../../assets/img/';
+  var LABEL={applied:'신청중',selected:'선정됨',reviewing:'리뷰 제출 대기',completed:'리뷰완료',rejected:'미선정'};
+  var BADGE={applied:'검토중',selected:'선정',reviewing:'선정',completed:'리뷰 완료',rejected:'미선정'};
+  function inArr(a,v){return a.indexOf(v)>-1;}
+  var nSelFunnel=apps.filter(function(a){return inArr(['selected','reviewing','completed'],a.status);}).length;
+  var nReviewed=apps.filter(function(a){return a.status==='completed';}).length;
+  setTxt('fnApplied',pad(apps.length)); setTxt('fnSelected',pad(nSelFunnel)); setTxt('fnReviewed',pad(nReviewed));
+  var counts={all:apps.length,
+    applied:apps.filter(function(a){return a.status==='applied';}).length,
+    selected:apps.filter(function(a){return inArr(['selected','reviewing'],a.status);}).length,
+    completed:nReviewed};
+  var NAME={all:'전체',applied:'신청중',selected:'선정됨',completed:'리뷰완료'};
+  var tabs=document.querySelectorAll('#appTabs .mp-tab');
+  tabs.forEach(function(t){var f=t.getAttribute('data-f');t.textContent=NAME[f]+' ('+counts[f]+')';});
+  function esc(x){return (x==null?'':String(x)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmt(d){ if(!d) return ''; return String(d).slice(0,10).replace(/-/g,'.'); }
+  function row(a){
+    var c=a.campaigns||{}; var st=a.status;
+    var badgeCls=(st==='completed')?'rev-badge done':'rev-badge';
+    var right=(st==='completed'&&c.reward_points>0)?'<div class="rev-state" style="color:#2FA46A;">+'+c.reward_points+' P</div>':'<div class="rev-state">'+LABEL[st]+'</div>';
+    var img=c.image_key?('background-image:url('+IMG+c.image_key+'.jpg)'):'';
+    return '<div class="rev-row" data-st="'+st+'">'
+      +'<div class="rev-thumb" style="'+img+'"></div>'
+      +'<div class="rev-info"><span class="'+badgeCls+'">'+BADGE[st]+'</span>'
+      +'<div class="rev-name">'+esc(c.title)+'</div>'
+      +'<div class="rev-meta">'+esc(c.region||'')+' · 신청일 '+fmt(a.created_at)+(c.reward_text?(' · 혜택 '+esc(c.reward_text)):'')+'</div></div>'
+      +right+'</div>';
+  }
+  var listEl=document.getElementById('appList'), emptyEl=document.getElementById('appEmpty');
+  if(!apps.length){ emptyEl.style.display='block'; }
+  else { listEl.innerHTML=apps.map(row).join(''); }
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('active');}); this.classList.add('active');
+    var cur=this.getAttribute('data-f');
+    document.querySelectorAll('#appList .rev-row').forEach(function(r){
+      var st=r.getAttribute('data-st');
+      var show=cur==='all'||(cur==='applied'&&st==='applied')||(cur==='selected'&&inArr(['selected','reviewing'],st))||(cur==='completed'&&st==='completed');
+      r.style.display=show?'':'none';
+    });
+  });});
+  function setTxt(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+  function pad(n){return (n<10?'0':'')+n;}
 })();
 </script>
 <script src="../../assets/js/pwa.js" defer></script>

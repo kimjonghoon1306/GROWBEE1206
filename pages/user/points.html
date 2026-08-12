@@ -80,40 +80,21 @@
 
     <div class="mp-card" style="padding:0;">
       <div class="sum-row">
-        <div class="sum-cell"><div class="sc-label">총 적립</div><div class="sc-num">+2,540<small>P</small></div></div>
-        <div class="sum-cell"><div class="sc-label">총 출금</div><div class="sc-num">-0<small>P</small></div></div>
-        <div class="sum-cell"><div class="sc-label">총 사용</div><div class="sc-num">-60<small>P</small></div></div>
-        <div class="sum-cell hl"><div class="sc-label">현재 포인트</div><div class="sc-num">2,480<small>P</small></div></div>
+        <div class="sum-cell"><div class="sc-label">총 적립</div><div class="sc-num" id="sumEarned">+0<small>P</small></div></div>
+        <div class="sum-cell"><div class="sc-label">총 출금</div><div class="sc-num" id="sumWithdraw">-0<small>P</small></div></div>
+        <div class="sum-cell"><div class="sc-label">총 사용</div><div class="sc-num" id="sumUsed">-0<small>P</small></div></div>
+        <div class="sum-cell hl"><div class="sc-label">현재 포인트</div><div class="sc-num" id="sumCurrent">0<small>P</small></div></div>
       </div>
     </div>
 
     <div class="mp-card">
-      <div class="mp-tabs">
-        <div class="mp-tab active">적립 내역</div>
-        <div class="mp-tab">출금 내역</div>
-        <div class="mp-tab">스토어 구매 내역</div>
+      <div class="mp-tabs" id="ptTabs">
+        <div class="mp-tab active" data-f="earn">적립 내역</div>
+        <div class="mp-tab" data-f="withdraw">출금 내역</div>
+        <div class="mp-tab" data-f="store">스토어 구매 내역</div>
       </div>
-
-      <div class="rev-row">
-        <div class="rev-info"><div class="rev-name">[리워드] 한우 '우진각' 리뷰 적립</div><div class="rev-meta">2026.02.24</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+10 P</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-info"><div class="rev-name">[리워드] 라멘하우스 '호시' 리뷰 적립</div><div class="rev-meta">2026.02.18</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+10 P</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-info"><div class="rev-name">[원고료] 클리어 스킨랩 원고료</div><div class="rev-meta">2026.02.11</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+2,500 P</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-info"><div class="rev-name">[친구초대] 신규 회원 초대 보너스</div><div class="rev-meta">2026.02.03</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+20 P</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-info"><div class="rev-name">[스토어] 온종일팜 5%할인쿠폰 교환</div><div class="rev-meta">2026.01.28</div></div>
-        <div class="rev-state">-60 P</div>
-      </div>
+      <div id="ptList"></div>
+      <div id="ptEmpty" style="display:none;text-align:center;padding:40px 0;color:var(--text-muted);">아직 내역이 없어요.</div>
 
       <div style="margin-top:22px;">
         <a href="#" class="btn-primary" style="width:100%;font-size:15px;padding:16px;">출금 요청하기</a>
@@ -160,6 +141,40 @@ function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.mp-logout, [data-logout]').forEach(function(a){ a.addEventListener('click', onLogout); });
 });
+</script>
+<script>
+(async function(){
+  var tx=[]; try{ tx=await OnAuth.myPointTx(); }catch(e){}
+  var KIND={reward:'리워드',manuscript:'원고료',invite:'친구초대',store:'스토어',withdraw:'출금',admin:'적립'};
+  var earned=0,withdrawn=0,used=0;
+  tx.forEach(function(t){ if(t.amount>0) earned+=t.amount; else if(t.kind==='withdraw') withdrawn+=-t.amount; else used+=-t.amount; });
+  fmtNum('sumEarned','+'+earned.toLocaleString());
+  fmtNum('sumWithdraw','-'+withdrawn.toLocaleString());
+  fmtNum('sumUsed','-'+used.toLocaleString());
+  var cur=earned-withdrawn-used;
+  try{ var p=await OnAuth.getProfile(); if(p&&typeof p.points==='number') cur=p.points; }catch(e){}
+  fmtNum('sumCurrent',cur.toLocaleString());
+  function esc(x){return (x==null?'':String(x)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmt(d){return String(d).slice(0,10).replace(/-/g,'.');}
+  function grp(t){ if(t.amount>0) return 'earn'; if(t.kind==='withdraw') return 'withdraw'; return 'store'; }
+  function row(t){
+    var pos=t.amount>0;
+    var label=t.title||('['+(KIND[t.kind]||'적립')+']');
+    return '<div class="rev-row" data-g="'+grp(t)+'"><div class="rev-info"><div class="rev-name">'+esc(label)+'</div><div class="rev-meta">'+fmt(t.created_at)+'</div></div><div class="rev-state"'+(pos?' style="color:#2FA46A;"':'')+'>'+(pos?'+':'')+t.amount.toLocaleString()+' P</div></div>';
+  }
+  var listEl=document.getElementById('ptList'), emptyEl=document.getElementById('ptEmpty');
+  if(!tx.length){ emptyEl.style.display='block'; } else { listEl.innerHTML=tx.map(row).join(''); }
+  function applyFilter(fk){
+    var any=false;
+    document.querySelectorAll('#ptList .rev-row').forEach(function(r){ var show=r.getAttribute('data-g')===fk; r.style.display=show?'':'none'; if(show)any=true; });
+    emptyEl.style.display=(!tx.length||!any)?'block':'none';
+    emptyEl.textContent = tx.length?'해당 내역이 없어요.':'아직 내역이 없어요.';
+  }
+  var tabs=document.querySelectorAll('#ptTabs .mp-tab');
+  tabs.forEach(function(t){t.addEventListener('click',function(){applyFilter(this.getAttribute('data-f'));});});
+  applyFilter('earn');
+  function fmtNum(id,v){var el=document.getElementById(id);if(el)el.innerHTML=v+'<small>P</small>';}
+})();
 </script>
 <script src="../../assets/js/pwa.js" defer></script>
 </body>

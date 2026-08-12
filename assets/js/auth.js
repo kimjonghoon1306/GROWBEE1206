@@ -80,6 +80,62 @@
       return await sb.from('profiles').update(fields).eq('id', u.id);
     },
 
+    // ── 캠페인 ──────────────────────────────────────────
+    // 모집중 캠페인 목록 (HOT 먼저, 마감 임박순)
+    listCampaigns: async function () {
+      return await sb.from('campaigns').select('*')
+        .eq('status', 'active')
+        .order('is_hot', { ascending: false })
+        .order('deadline', { ascending: true });
+    },
+    getCampaign: async function (id) {
+      var r = await sb.from('campaigns').select('*').eq('id', id).single();
+      return r.data || null;
+    },
+    // 캠페인 신청 (서버 검증: 로그인/중복/마감/정원)
+    applyCampaign: async function (id) {
+      var r = await sb.rpc('apply_campaign', { p_campaign: id });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data; // { ok, msg }
+    },
+    // 내가 이 캠페인에 신청했는지
+    myApplicationFor: async function (id) {
+      var u = await Auth.getUser(); if (!u) return null;
+      var r = await sb.from('applications').select('*').eq('campaign_id', id).eq('user_id', u.id).maybeSingle();
+      return r.data || null;
+    },
+    // 내 신청 목록 (+ 캠페인 정보 조인)
+    myApplications: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('applications').select('*, campaigns(*)')
+        .eq('user_id', u.id).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+
+    // ── 포인트 ──────────────────────────────────────────
+    myPointTx: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('point_transactions').select('*')
+        .eq('user_id', u.id).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+
+    // ── 관리자 ──────────────────────────────────────────
+    grantPoints: async function (userId, amount, title, kind) {
+      var r = await sb.rpc('grant_points', { p_user: userId, p_amount: amount, p_title: title || '관리자 지급', p_kind: kind || 'admin' });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    setAppStatus: async function (appId, status) {
+      var r = await sb.rpc('set_application_status', { p_app: appId, p_status: status });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    listAllApplications: async function () {
+      return await sb.from('applications').select('*, campaigns(title), profiles(name,email)')
+        .order('created_at', { ascending: false });
+    },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);

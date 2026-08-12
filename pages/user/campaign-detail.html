@@ -83,12 +83,13 @@
   <a href="campaigns.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:28px;text-decoration:none;transition:.2s;" onmouseover="this.style.color='var(--brand-primary)'" onmouseout="this.style.color='var(--text-muted)'">← 목록으로 돌아가기</a>
   <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start;">
     <div>
-      <div style="height:360px;border:3px solid var(--ink);border-radius:10px;box-shadow:var(--hard);position:relative;overflow:hidden;margin-bottom:24px;background:url(../../assets/img/sushi.jpg) center/cover;">
+      <div id="dImg" style="height:360px;border:3px solid var(--ink);border-radius:10px;box-shadow:var(--hard);position:relative;overflow:hidden;margin-bottom:24px;background:url(../../assets/img/sushi.jpg) center/cover;">
         <div style="position:absolute;top:16px;left:16px;display:flex;gap:8px;"><span style="background:rgba(255,71,87,.15);color:var(--brand-primary);font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">HOT</span><span style="background:rgba(46,213,115,.15);color:#2ED573;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">블로그</span></div>
         <div style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,.75);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;color:#fff;">D-5 마감</div>
       </div>
-      <div style="display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">서울 강남구 · 역삼동 · 오마카세</div>
-      <h1 style="font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:14px;line-height:1.2;color:var(--text);">스시 오모 — 프리미엄 오마카세 코스 체험단 모집</h1>
+      <div style="display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;" id="dRegion">서울 강남구 · 역삼동 · 오마카세</div>
+      <h1 id="dTitle" style="font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:14px;line-height:1.2;color:var(--text);">스시 오모 — 프리미엄 오마카세 코스 체험단 모집</h1>
+      <p id="dDesc" style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;"></p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
         <span style="font-size:12px;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);padding:5px 12px;border-radius:50px;">방문 가능: 2025.02.01 ~ 02.28</span>
         <span style="font-size:12px;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);padding:5px 12px;border-radius:50px;">점심·저녁 가능</span>
@@ -130,18 +131,18 @@
     <div style="background:var(--bg-card);border:1px solid rgba(255,71,87,.25);border-radius:var(--radius-xl);padding:28px;position:sticky;top:84px;box-shadow:var(--shadow-card);">
       <div style="background:rgba(255,71,87,.06);border-radius:var(--radius-lg);padding:16px;margin-bottom:20px;">
         <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">총 혜택 금액</div>
-        <div style="font-family:var(--font-display);font-size:30px;font-weight:800;color:#2ED573;">150,000원</div>
+        <div id="dReward" style="font-family:var(--font-display);font-size:26px;font-weight:800;color:#2ED573;">150,000원</div>
         <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">+ 사케 1잔 포함</div>
       </div>
       <div style="margin-bottom:16px;">
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text-muted);">신청 현황</span><span style="font-weight:700;color:var(--text);">24 / 30명</span></div>
-        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:80%;height:100%;background:var(--brand-gradient);border-radius:3px;"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:var(--text-muted);">신청 현황</span><span id="dSlots" style="font-weight:700;color:var(--text);">24 / 30명</span></div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div id="dBar" style="width:80%;height:100%;background:var(--brand-gradient);border-radius:3px;"></div></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-        <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);">D-5</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">마감까지</div></div>
-        <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center;"><div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);">6명</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">남은 자리</div></div>
+        <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center;"><div id="dDday" style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);">D-5</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">마감까지</div></div>
+        <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center;"><div id="dLeft" style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);">6명</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">남은 자리</div></div>
       </div>
-      <button onclick="location.href='signup.html'" style="width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(255,71,87,.35);margin-bottom:10px;">신청하기</button>
+      <button id="applyBtn" style="width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(255,71,87,.35);margin-bottom:10px;">신청하기</button>
       <button style="width:100%;background:transparent;color:var(--text);padding:12px;border-radius:50px;font-size:13px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;transition:.2s;"> 찜하기</button>
       <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:14px;line-height:1.7;">선정 결과는 마감일 +2일 이내<br>등록 이메일로 안내됩니다.</div>
     </div>
@@ -158,5 +159,43 @@
 <script>function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('onjongil-mode',n?'night':'day');}(function(){if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());</script>
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-login.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  function dday(dl){ if(!dl) return ''; var t=new Date();t.setHours(0,0,0,0);var d=new Date(dl+'T00:00:00');var n=Math.round((d-t)/86400000);return n<=0?'마감':('D-'+n);}
+  function set(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+  var id=new URLSearchParams(location.search).get('id');
+  if(!id){ location.href='campaigns.html'; return; }
+  var c=null; try{ c=await OnAuth.getCampaign(id);}catch(e){}
+  if(!c){ document.querySelector('.sec').innerHTML='<p style="text-align:center;padding:90px 0;color:var(--text-muted)">캠페인을 찾을 수 없습니다. <a href="campaigns.html" style="color:var(--brand-primary)">목록으로 →</a></p>'; return; }
+  document.title=c.title+' — 온종일 체험단';
+  var img=document.getElementById('dImg'); if(img&&c.image_key) img.style.background='url(../../assets/img/'+c.image_key+'.jpg) center/cover';
+  set('dTitle', c.title+' 체험단 모집');
+  set('dRegion', [c.region,c.category].filter(Boolean).join(' · '));
+  set('dDesc', c.description||'');
+  set('dReward', c.reward_text||'-');
+  var left=Math.max(0,(c.capacity||0)-(c.applied_count||0));
+  set('dSlots', (c.applied_count||0)+' / '+(c.capacity||0)+'명');
+  set('dLeft', left+'명');
+  set('dDday', dday(c.deadline)||'-');
+  var pct=c.capacity>0?Math.min(100,Math.round(c.applied_count/c.capacity*100)):0;
+  var bar=document.getElementById('dBar'); if(bar) bar.style.width=pct+'%';
+  var btn=document.getElementById('applyBtn');
+  function setBtn(t,d){ btn.textContent=t; btn.disabled=!!d; btn.style.opacity=d?'.55':'1'; btn.style.cursor=d?'default':'pointer'; }
+  var closed=(c.status!=='active')||left<=0||dday(c.deadline)==='마감';
+  var mine=null; try{ mine=await OnAuth.myApplicationFor(id);}catch(e){}
+  if(mine) setBtn('신청 완료됨',true); else if(closed) setBtn('모집 마감',true); else setBtn('신청하기',false);
+  btn.onclick=async function(){
+    var u=await OnAuth.getUser();
+    if(!u){ location.href='login.html?next='+encodeURIComponent('campaign-detail.html?id='+id); return; }
+    if(btn.disabled) return;
+    setBtn('신청 중...',true);
+    var res=await OnAuth.applyCampaign(id);
+    if(res&&res.ok){ setBtn('신청 완료됨',true); alert('신청이 완료되었습니다! 선정 결과는 마감 후 안내됩니다.'); }
+    else { alert((res&&res.msg)||'신청에 실패했습니다.'); setBtn('신청하기',false); }
+  };
+})();
+</script>
 <script src="../../assets/js/pwa.js" defer></script>
 </body></html>
