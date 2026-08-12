@@ -111,8 +111,12 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
       <input id="su-email" class="form-input" type="email" placeholder="hello@onjongil.kr">
     </div>
     <div class="form-group">
+      <label class="form-label">휴대폰 번호</label>
+      <input id="su-phone" class="form-input" type="tel" placeholder="010-1234-5678" inputmode="numeric">
+    </div>
+    <div class="form-group">
       <label class="form-label">비밀번호</label>
-      <input id="su-pw" class="form-input" type="password" placeholder="8자 이상, 영문+숫자 조합">
+      <input id="su-pw" class="form-input" type="password" placeholder="6자 이상 입력">
     </div>
     <div class="form-group">
       <label class="form-label">비밀번호 확인</label>
@@ -220,15 +224,18 @@ function suMsg(t,ok){var m=document.getElementById('su-msg');m.style.display='bl
 async function doSignup(){
   var name=document.getElementById('su-name').value.trim();
   var email=document.getElementById('su-email').value.trim();
+  var phone=document.getElementById('su-phone').value.trim();
   var pw=document.getElementById('su-pw').value;
   var pw2=document.getElementById('su-pw2').value;
   if(!name){return suMsg('이름을 입력해주세요.');}
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){return suMsg('올바른 이메일을 입력해주세요.');}
-  if(pw.length<8){return suMsg('비밀번호는 8자 이상이어야 해요.');}
+  var phoneN=phone.replace(/[^0-9]/g,'');
+  if(phoneN.length<10){return suMsg('휴대폰 번호를 정확히 입력해주세요.');}
+  if(pw.length<6){return suMsg('비밀번호는 6자 이상이어야 해요.');}
   if(pw!==pw2){return suMsg('비밀번호가 일치하지 않아요.');}
   var btn=document.getElementById('su-btn'); btn.disabled=true; var orig=btn.textContent; btn.textContent='가입 중...';
   try{
-    var r=await OnAuth.signUp(email,pw,{name:name,nickname:name});
+    var r=await OnAuth.signUp(email,pw,{name:name,nickname:name,phone:phoneN});
     if(r.error){ suMsg(r.error.message.indexOf('registered')>=0?'이미 가입된 이메일이에요.':r.error.message); btn.disabled=false; btn.textContent=orig; return; }
     suMsg('가입 완료! 마이페이지로 이동합니다 :)',true);
     setTimeout(function(){ location.href='mypage.html'; },900);

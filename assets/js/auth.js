@@ -31,6 +31,35 @@
       return await sb.auth.signInWithPassword({ email: email, password: password });
     },
 
+    // 비밀번호 재설정 메일 발송
+    resetPassword: async function (email) {
+      var redirect = location.origin + location.pathname.replace(/[^\/]+$/, 'reset.html');
+      return await sb.auth.resetPasswordForEmail(email, { redirectTo: redirect });
+    },
+
+    // 로그인 후 새 비번으로 변경(재설정 링크로 진입한 상태)
+    updatePassword: async function (newPw) {
+      return await sb.auth.updateUser({ password: newPw });
+    },
+
+    // 이메일 찾기: 이름+전화 → 마스킹된 이메일 (서버 함수 find_email)
+    findEmail: async function (name, phone) {
+      return await sb.rpc('find_email', { p_name: name, p_phone: (phone || '').replace(/[^0-9]/g, '') });
+    },
+
+    // 내 프로필 조회
+    getProfile: async function () {
+      var u = await Auth.getUser(); if (!u) return null;
+      var r = await sb.from('profiles').select('*').eq('id', u.id).single();
+      return r.data || null;
+    },
+
+    // 내 프로필 수정
+    updateProfile: async function (fields) {
+      var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };
+      return await sb.from('profiles').update(fields).eq('id', u.id);
+    },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);

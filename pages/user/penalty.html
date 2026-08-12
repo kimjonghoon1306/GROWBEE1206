@@ -99,7 +99,12 @@ document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('cli
   var u = await OnAuth.requireAuth();   // 미로그인 시 login.html로
   if(!u) return;
   var nm = (u.user_metadata && (u.user_metadata.nickname||u.user_metadata.name)) || u.email.split('@')[0];
+  var pts = 0;
+  try{ var p = await OnAuth.getProfile(); if(p){ if(p.nickname||p.name) nm = p.nickname||p.name; pts = p.points||0; } }catch(e){}
   document.querySelectorAll('[data-user-name], .mp-name b').forEach(function(el){ el.textContent = nm; });
+  var pstr = pts.toLocaleString() + ' P';
+  document.querySelectorAll('.mp-point').forEach(function(el){ var svg=el.querySelector('svg'); el.textContent=' '+pstr; if(svg) el.insertBefore(svg, el.firstChild); });
+  document.querySelectorAll('.mp-mini').forEach(function(el){ el.textContent = pstr; });
 })();
 function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
 document.addEventListener('DOMContentLoaded',function(){

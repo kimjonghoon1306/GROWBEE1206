@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>새 비밀번호 — 온종일 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;max-width:1240px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark img{width:38px;height:38px;object-fit:contain;}
+.logo-main{font-family:var(--font-serif);font-size:18px;font-weight:700;color:var(--text);}
+.auth-page{min-height:calc(100vh - 64px);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;}
+.auth-box{background:var(--bg-card);border:1px solid var(--border);border-radius:22px;padding:36px 32px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);}
+.auth-title{font-family:var(--font-serif);font-size:24px;font-weight:700;text-align:center;color:var(--text);margin-bottom:6px;}
+.auth-sub{font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:26px;line-height:1.6;}
+.fg{margin-bottom:14px;}
+.fl{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:7px;}
+.fi{width:100%;background:var(--bg-card);border:1.5px solid var(--border-2);border-radius:12px;padding:14px 16px;color:var(--text);font-size:15px;outline:none;transition:var(--t);}
+.fi:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-tint);}
+.sb{width:100%;background:linear-gradient(135deg,#EE3E6D,#F4743B);color:#fff;padding:15px;border-radius:999px;font-size:15px;font-weight:700;margin-top:8px;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(236,58,102,.22);transition:var(--t);}
+.sb:hover{transform:translateY(-2px);}
+.sb:disabled{opacity:.6;transform:none;}
+.msg{display:none;font-size:13px;font-weight:600;padding:12px 14px;border-radius:10px;margin-bottom:12px;line-height:1.5;}
+.result{display:none;text-align:center;background:var(--accent-tint);border-radius:14px;padding:22px;margin-bottom:14px;}
+.result .em{font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--accent-text);margin:8px 0;}
+.foot{text-align:center;margin-top:18px;font-size:13px;color:var(--text-muted);}
+.foot a{color:var(--accent-text);font-weight:700;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--text-muted);background:var(--bg-card);border:1.5px solid var(--border-2);border-radius:999px;padding:8px 16px 8px 12px;margin:16px 0 0 20px;}
+.back-btn svg{width:18px;height:18px;}
+</style></head>
+<body>
+<header class="site-header"><div class="header-inner">
+  <a href="../../index.html" class="logo"><div class="logo-mark"><img src="../../assets/img/mascot.png" alt="온미"></div><div class="logo-main">온종일 체험단</div></a>
+</div></header>
+<a href="login.html" class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>로그인으로</a>
+<div class="auth-page"><div class="auth-box">
+<h1 class="auth-title">새 비밀번호 설정</h1>
+<p class="auth-sub">새로 사용할 비밀번호를 입력해주세요.</p>
+<div id="msg" class="msg"></div>
+<div class="fg"><label class="fl">새 비밀번호</label><input id="rs-pw" class="fi" type="password" placeholder="6자 이상"></div>
+<div class="fg"><label class="fl">새 비밀번호 확인</label><input id="rs-pw2" class="fi" type="password" placeholder="다시 입력"></div>
+<button class="sb" id="rs-btn" onclick="doUpdate()">비밀번호 변경하기</button>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>function msg(t,ok){var m=document.getElementById('msg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(60,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#2FA46A':'#d61f56';}
+async function doUpdate(){
+  var pw=document.getElementById('rs-pw').value,pw2=document.getElementById('rs-pw2').value;
+  if(pw.length<6){return msg('비밀번호는 6자 이상이어야 해요.');}
+  if(pw!==pw2){return msg('비밀번호가 일치하지 않아요.');}
+  var b=document.getElementById('rs-btn');b.disabled=true;b.textContent='변경 중...';
+  try{
+    var r=await OnAuth.updatePassword(pw);
+    if(r.error){msg('변경 실패: 링크가 만료되었을 수 있어요. 다시 요청해주세요.');b.disabled=false;b.textContent='비밀번호 변경하기';return;}
+    msg('변경 완료! 로그인 페이지로 이동합니다.',true);
+    setTimeout(function(){location.href='login.html';},1200);
+  }catch(e){msg('오류가 발생했어요.');b.disabled=false;b.textContent='비밀번호 변경하기';}
+}</script>
+</body></html>
