@@ -343,6 +343,34 @@ window.__adminReady = async function(){
       else tb.innerHTML=camps.map(function(c){ return '<tr><td>'+esc(c.title)+'</td><td style="color:var(--text-muted);">'+esc(c.store_name||'-')+'</td><td style="color:var(--text-muted);">'+esc((c.region||'').split(' ')[0]||'-')+'</td><td>'+stBadge(c.status)+'</td></tr>'; }).join('');
     }
   }catch(e){}
+
+  function esc2(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  // 지역별 캠페인 현황 (실집계)
+  try{
+    var allc=await OnAuth.client.from('campaigns').select('region');
+    var reg={}; (allc.data||[]).forEach(function(c){ var k=((c.region||'기타').split(/[·\s]/)[0])||'기타'; reg[k]=(reg[k]||0)+1; });
+    var arr=Object.keys(reg).map(function(k){return [k,reg[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,6);
+    var max=arr.length?arr[0][1]:1;
+    var tb2=document.getElementById('dashRegions');
+    if(tb2){ tb2.innerHTML = arr.length? arr.map(function(r){ var pct=Math.round(r[1]/max*100); return '<tr><td>'+esc2(r[0])+'</td><td style="color:var(--text-muted);">'+r[1]+'개</td><td style="width:120px;"><div class="bar-wrap"><div class="bar-fill" style="width:'+pct+'%"></div></div></td></tr>'; }).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:16px 0;">데이터 없음</td></tr>'; }
+  }catch(e){}
+  // 최근 신청/리뷰 + 활동로그
+  try{
+    var appsRes=await OnAuth.listAllApplications();
+    var apps=(appsRes&&appsRes.data)?appsRes.data:[];
+    var SL={applied:'신청중',selected:'선정됨',reviewing:'리뷰제출',completed:'검수완료',rejected:'미선정'};
+    var SB={applied:'s-review',selected:'s-active',reviewing:'s-active',completed:'s-done',rejected:'s-done'};
+    var tb3=document.getElementById('dashRecentReviews');
+    if(tb3){
+      var recent=apps.slice(0,6);
+      tb3.innerHTML = recent.length? recent.map(function(a){ var c=a.campaigns||{},m=a.profiles||{}; var d=new Date(a.created_at); var ds=('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); return '<tr><td>'+esc2(m.name||'-')+'</td><td style="color:var(--text-muted);">'+esc2(c.title||'-')+'</td><td style="color:var(--text-muted);">'+esc2(c.channel||'-')+'</td><td style="color:var(--text-muted);">'+ds+'</td><td><span class="s-badge '+(SB[a.status]||'s-done')+'">'+(SL[a.status]||a.status)+'</span></td></tr>'; }).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:16px 0;">아직 신청·리뷰가 없어요.</td></tr>';
+    }
+    var act=document.getElementById('dashActivity');
+    if(act){
+      var logs=apps.slice(0,6).map(function(a){ var c=a.campaigns||{},m=a.profiles||{}; var t={applied:'캠페인 신청',selected:'체험단 선정',reviewing:'리뷰 제출',completed:'검수 완료',rejected:'미선정'}[a.status]||'활동'; var dot=a.status==='completed'?'green':(a.status==='reviewing'?'blue':''); return '<div class="activity-item"><div class="activity-dot '+dot+'"></div><div><div class="activity-txt"><strong>'+esc2(t)+'</strong> — '+esc2(m.name||'회원')+' · '+esc2(c.title||'')+'</div></div></div>'; });
+      act.innerHTML = logs.length? logs.join('') : '<div style="color:var(--text-muted);padding:12px 0;font-size:13px;">최근 활동이 없어요.</div>';
+    }
+  }catch(e){}
 };
 </script>
 <script>
