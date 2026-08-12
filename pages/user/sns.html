@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>마이페이지 — 온종일 체험단</title>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNS 계정 연동 — 온종일 체험단</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <link rel="stylesheet" href="../../assets/css/mypage.css">
-</head>
-<body>
-
-<!-- HEADER -->
+</head><body>
 <header class="site-header">
   <div class="header-inner">
     <a href="../../index.html" class="logo">
@@ -32,29 +26,23 @@
     </div>
   </div>
 </header>
-
 <div class="mp-wrap">
-  <!-- SIDEBAR -->
-  <aside class="mp-side">
+<aside class="mp-side">
     <div class="mp-profile">
       <div class="mp-ava"><img src="../../assets/img/mascot.png" alt="프로필"></div>
       <div class="mp-hi">어서오세요 :)</div>
       <div class="mp-name"><b>tarry</b> 님</div>
-      <span class="mp-point">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg>
-        2,480 P
-      </span>
+      <span class="mp-point"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg> 2,480 P</span>
     </div>
-
     <div class="mp-sec">
       <div class="mp-sec-t">나의 캠페인</div>
-      <a href="mypage.html" class="mp-link active">신청한 캠페인 <span class="mp-arrow">›</span></a>
+      <a href="mypage.html" class="mp-link">신청한 캠페인 <span class="mp-arrow">›</span></a>
       <a href="mypage.html#selected" class="mp-link">선정된 캠페인 <span class="mp-arrow">›</span></a>
       <a href="mypage.html#reviewed" class="mp-link">리뷰한 캠페인 <span class="mp-arrow">›</span></a>
     </div>
     <div class="mp-divider"></div>
     <a href="messages.html" class="mp-link">나의 메시지 <span class="mp-cnt">10</span></a>
-    <a href="sns.html" class="mp-link">SNS 계정 연동 <span class="mp-arrow">›</span></a>
+    <a href="sns.html" class="mp-link active">SNS 계정 연동 <span class="mp-arrow">›</span></a>
     <a href="penalty.html" class="mp-link">페널티 현황 <span class="mp-arrow">›</span></a>
     <div class="mp-divider"></div>
     <div class="mp-sec">
@@ -65,7 +53,7 @@
       <a href="widget.html" class="mp-link">블로그 위젯 등록 <span class="mp-arrow">›</span></a>
     </div>
     <div class="mp-sec">
-      <div class="mp-sec-t">나의 포인트 <a href="points.html" class="mp-mini">2,480 P</a></div>
+      <div class="mp-sec-t">나의 포인트 <span class="mp-mini">2,480 P</span></div>
       <a href="points.html" class="mp-link">적립내역 보기 <span class="mp-arrow">›</span></a>
       <a href="points.html#withdraw" class="mp-link">출금내역 보기 <span class="mp-arrow">›</span></a>
       <a href="points.html#store" class="mp-link">스토어 구매내역 <span class="mp-arrow">›</span></a>
@@ -79,67 +67,37 @@
     <div class="mp-divider"></div>
     <a href="login.html" class="mp-logout">로그아웃</a>
   </aside>
-
-  <!-- MAIN -->
-  <main class="mp-main">
-    <h1 class="mp-title"><b>tarry</b> 님의<br>캠페인 리스트입니다.</h1>
-
-    <div class="mp-card">
-      <div class="flow">
-        <div class="flow-step on"><div class="fs-label">신청한 캠페인</div><div class="fs-num">03</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 5l6 7-6 7M13 5l6 7-6 7" opacity=".6"/></svg></div>
-        <div class="flow-step on"><div class="fs-label">선정된 캠페인</div><div class="fs-num">02</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 5l6 7-6 7M13 5l6 7-6 7" opacity=".6"/></svg></div>
-        <div class="flow-step"><div class="fs-label">리뷰한 캠페인</div><div class="fs-num">06</div></div>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap;">
-        <a href="campaigns.html" class="btn-primary" style="font-size:14px;">새 캠페인 신청하기</a>
-        <a href="reward.html" class="btn-outline" style="font-size:14px;">리워드 확인하기</a>
-      </div>
-    </div>
-
-    <div class="mp-card">
-      <div class="mp-tabs">
-        <div class="mp-tab active">전체 (11)</div>
-        <div class="mp-tab">신청중 (3)</div>
-        <div class="mp-tab">선정됨 (2)</div>
-        <div class="mp-tab">리뷰완료 (6)</div>
-      </div>
-
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/sushi.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">검토중</span><div class="rev-name">스시 오모 — 오마카세 코스 체험단</div><div class="rev-meta">강남구 · 신청일 2026.02.28 · 혜택 15만원</div></div>
-        <div class="rev-state">신청중</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/cafe.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">선정</span><div class="rev-name">카페 루미오 — 시그니처 음료 체험단</div><div class="rev-meta">마포구 · 신청일 2026.02.25 · 혜택 3만원</div></div>
-        <div class="rev-state">선정됨</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/skincare.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">선정</span><div class="rev-name">클리어 스킨랩 — 피부 케어 체험단</div><div class="rev-meta">청담동 · 방문일 2026.02.20 · 원고료 3만원</div></div>
-        <div class="rev-state">리뷰 제출 대기</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/hanwoo.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge done">리뷰 완료</span><div class="rev-name">한우 프리미엄 '우진각' 체험단</div><div class="rev-meta">방배동 · 완료일 2026.01.15 · 혜택 9만원</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+10 P</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/ramen.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge done">리뷰 완료</span><div class="rev-name">성수 라멘하우스 '호시' 체험단</div><div class="rev-meta">성수동 · 완료일 2026.01.10 · 혜택 4만원</div></div>
-        <div class="rev-state" style="color:#2FA46A;">+10 P</div>
-      </div>
-    </div>
-  </main>
+<main class="mp-main">
+<h1 class="mp-title"><b>tarry</b> 님,<br>SNS 계정을 연동해주세요!</h1>
+<div class="grid-2" style="gap:20px;">
+ <div class="mp-card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-weight:800;font-size:16px;">네이버 계정</div><span class="rev-badge done">연동완료</span></div>
+  <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">자동 로그인 시 연동되는 계정입니다.</div>
+  <input class="form-input" value="s9653" readonly>
+ </div>
+ <div class="mp-card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-weight:800;font-size:16px;">인스타그램</div><span class="rev-badge" style="background:rgba(236,58,102,.12);">재연동 필요</span></div>
+  <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">인스타 캠페인 신청을 위해 계정을 연동해주세요.</div>
+  <button class="btn-primary" style="width:100%;">재연동 하기</button>
+ </div>
+ <div class="mp-card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-weight:800;font-size:16px;">네이버 블로그 등록</div><span class="rev-badge done">등록완료</span></div>
+  <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">별도 블로그를 쓰는 경우 사용하는 블로그 주소로 변경해주세요.</div>
+  <input class="form-input" value="https://blog.naver.com/s9653" style="margin-bottom:12px;"><button class="btn-outline" style="width:100%;">변경 저장하기</button>
+ </div>
+ <div class="mp-card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div style="font-weight:800;font-size:16px;">네이버 인플루언서 등록</div><span class="rev-badge" style="background:var(--bg-card2);color:var(--text-muted);">등록 없음</span></div>
+  <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">네이버 인플루언서라면 URL을 등록해주세요.</div>
+  <input class="form-input" placeholder="네이버 인플루언서 URL을 입력하세요" style="margin-bottom:12px;"><button class="btn-primary" style="width:100%;">등록하기</button>
+ </div>
 </div>
-
+</main></div>
 <script>
 var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
 var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
+document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('click',function(){this.parentNode.querySelectorAll('.mp-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');});});
 </script>
-</body>
-</html>
+
+</body></html>

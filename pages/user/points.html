@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>마이페이지 — 온종일 체험단</title>
+<title>나의 포인트 — 온종일 체험단</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <link rel="stylesheet" href="../../assets/css/mypage.css">
 </head>
 <body>
-
-<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <a href="../../index.html" class="logo">
@@ -34,21 +32,16 @@
 </header>
 
 <div class="mp-wrap">
-  <!-- SIDEBAR -->
   <aside class="mp-side">
     <div class="mp-profile">
       <div class="mp-ava"><img src="../../assets/img/mascot.png" alt="프로필"></div>
       <div class="mp-hi">어서오세요 :)</div>
       <div class="mp-name"><b>tarry</b> 님</div>
-      <span class="mp-point">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg>
-        2,480 P
-      </span>
+      <span class="mp-point"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg> 2,480 P</span>
     </div>
-
     <div class="mp-sec">
       <div class="mp-sec-t">나의 캠페인</div>
-      <a href="mypage.html" class="mp-link active">신청한 캠페인 <span class="mp-arrow">›</span></a>
+      <a href="mypage.html" class="mp-link">신청한 캠페인 <span class="mp-arrow">›</span></a>
       <a href="mypage.html#selected" class="mp-link">선정된 캠페인 <span class="mp-arrow">›</span></a>
       <a href="mypage.html#reviewed" class="mp-link">리뷰한 캠페인 <span class="mp-arrow">›</span></a>
     </div>
@@ -65,8 +58,8 @@
       <a href="widget.html" class="mp-link">블로그 위젯 등록 <span class="mp-arrow">›</span></a>
     </div>
     <div class="mp-sec">
-      <div class="mp-sec-t">나의 포인트 <a href="points.html" class="mp-mini">2,480 P</a></div>
-      <a href="points.html" class="mp-link">적립내역 보기 <span class="mp-arrow">›</span></a>
+      <div class="mp-sec-t">나의 포인트 <span class="mp-mini">2,480 P</span></div>
+      <a href="points.html" class="mp-link active">적립내역 보기 <span class="mp-arrow">›</span></a>
       <a href="points.html#withdraw" class="mp-link">출금내역 보기 <span class="mp-arrow">›</span></a>
       <a href="points.html#store" class="mp-link">스토어 구매내역 <span class="mp-arrow">›</span></a>
     </div>
@@ -80,57 +73,61 @@
     <a href="login.html" class="mp-logout">로그아웃</a>
   </aside>
 
-  <!-- MAIN -->
   <main class="mp-main">
-    <h1 class="mp-title"><b>tarry</b> 님의<br>캠페인 리스트입니다.</h1>
+    <h1 class="mp-title">나의 포인트</h1>
 
-    <div class="mp-card">
-      <div class="flow">
-        <div class="flow-step on"><div class="fs-label">신청한 캠페인</div><div class="fs-num">03</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 5l6 7-6 7M13 5l6 7-6 7" opacity=".6"/></svg></div>
-        <div class="flow-step on"><div class="fs-label">선정된 캠페인</div><div class="fs-num">02</div></div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 5l6 7-6 7M13 5l6 7-6 7" opacity=".6"/></svg></div>
-        <div class="flow-step"><div class="fs-label">리뷰한 캠페인</div><div class="fs-num">06</div></div>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap;">
-        <a href="campaigns.html" class="btn-primary" style="font-size:14px;">새 캠페인 신청하기</a>
-        <a href="reward.html" class="btn-outline" style="font-size:14px;">리워드 확인하기</a>
+    <div class="mp-card" style="padding:0;">
+      <div class="sum-row">
+        <div class="sum-cell"><div class="sc-label">총 적립</div><div class="sc-num">+2,540<small>P</small></div></div>
+        <div class="sum-cell"><div class="sc-label">총 출금</div><div class="sc-num">-0<small>P</small></div></div>
+        <div class="sum-cell"><div class="sc-label">총 사용</div><div class="sc-num">-60<small>P</small></div></div>
+        <div class="sum-cell hl"><div class="sc-label">현재 포인트</div><div class="sc-num">2,480<small>P</small></div></div>
       </div>
     </div>
 
     <div class="mp-card">
       <div class="mp-tabs">
-        <div class="mp-tab active">전체 (11)</div>
-        <div class="mp-tab">신청중 (3)</div>
-        <div class="mp-tab">선정됨 (2)</div>
-        <div class="mp-tab">리뷰완료 (6)</div>
+        <div class="mp-tab active">적립 내역</div>
+        <div class="mp-tab">출금 내역</div>
+        <div class="mp-tab">스토어 구매 내역</div>
       </div>
 
       <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/sushi.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">검토중</span><div class="rev-name">스시 오모 — 오마카세 코스 체험단</div><div class="rev-meta">강남구 · 신청일 2026.02.28 · 혜택 15만원</div></div>
-        <div class="rev-state">신청중</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/cafe.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">선정</span><div class="rev-name">카페 루미오 — 시그니처 음료 체험단</div><div class="rev-meta">마포구 · 신청일 2026.02.25 · 혜택 3만원</div></div>
-        <div class="rev-state">선정됨</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/skincare.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge">선정</span><div class="rev-name">클리어 스킨랩 — 피부 케어 체험단</div><div class="rev-meta">청담동 · 방문일 2026.02.20 · 원고료 3만원</div></div>
-        <div class="rev-state">리뷰 제출 대기</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/hanwoo.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge done">리뷰 완료</span><div class="rev-name">한우 프리미엄 '우진각' 체험단</div><div class="rev-meta">방배동 · 완료일 2026.01.15 · 혜택 9만원</div></div>
+        <div class="rev-info"><div class="rev-name">[리워드] 한우 '우진각' 리뷰 적립</div><div class="rev-meta">2026.02.24</div></div>
         <div class="rev-state" style="color:#2FA46A;">+10 P</div>
       </div>
       <div class="rev-row">
-        <div class="rev-thumb" style="background-image:url(../../assets/img/ramen.jpg)"></div>
-        <div class="rev-info"><span class="rev-badge done">리뷰 완료</span><div class="rev-name">성수 라멘하우스 '호시' 체험단</div><div class="rev-meta">성수동 · 완료일 2026.01.10 · 혜택 4만원</div></div>
+        <div class="rev-info"><div class="rev-name">[리워드] 라멘하우스 '호시' 리뷰 적립</div><div class="rev-meta">2026.02.18</div></div>
         <div class="rev-state" style="color:#2FA46A;">+10 P</div>
       </div>
+      <div class="rev-row">
+        <div class="rev-info"><div class="rev-name">[원고료] 클리어 스킨랩 원고료</div><div class="rev-meta">2026.02.11</div></div>
+        <div class="rev-state" style="color:#2FA46A;">+2,500 P</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-info"><div class="rev-name">[친구초대] 신규 회원 초대 보너스</div><div class="rev-meta">2026.02.03</div></div>
+        <div class="rev-state" style="color:#2FA46A;">+20 P</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-info"><div class="rev-name">[스토어] 온종일팜 5%할인쿠폰 교환</div><div class="rev-meta">2026.01.28</div></div>
+        <div class="rev-state">-60 P</div>
+      </div>
+
+      <div style="margin-top:22px;">
+        <a href="#" class="btn-primary" style="width:100%;font-size:15px;padding:16px;">출금 요청하기</a>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>꼭 알아두세요!</h4>
+      <ul>
+        <li>포인트는 작성하신 리뷰가 <b>관리팀 승인</b> 후 적립되며, 승인은 리뷰 작성일 기준 <b>익일(영업일)</b>에 처리됩니다.</li>
+        <li>포인트가 <b>10,000원(P) 이상</b> 모이면 출금 신청을 할 수 있습니다.</li>
+        <li>출금은 한 달에 3번 진행되며, 신청 마감 5영업일 후 지급됩니다.</li>
+        <li>입금계좌 예금주는 반드시 <b>실명과 동일</b>해야 지급됩니다.</li>
+        <li>입금액은 관련 법상 사업소득 <b>세금 3.3%</b>를 공제 후 지급되며, 지급일 기준 소득 발생으로 신고됩니다.</li>
+        <li>쇼핑 포인트는 <b>온종일팜 등 제휴처</b>에서 상품 금액의 최대 50%까지 사용할 수 있습니다.</li>
+      </ul>
     </div>
   </main>
 </div>
@@ -140,6 +137,7 @@ var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4
 var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
+document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('click',function(){this.parentNode.querySelectorAll('.mp-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');});});
 </script>
 </body>
 </html>

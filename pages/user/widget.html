@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블로그 위젯 등록 — 온종일 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<link rel="stylesheet" href="../../assets/css/mypage.css">
+<style>
+.wg-lead { font-family: var(--font-serif); font-size: clamp(22px,2.6vw,30px); font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+.wg-lead b { color: var(--accent-text); }
+.wg-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; }
+.wg-steps { display: flex; gap: 10px; margin-bottom: 24px; }
+.wg-step-pill { padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; border: 1.5px solid var(--border-2); color: var(--text-muted); cursor: pointer; }
+.wg-step-pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.wg-sec-h { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; margin: 4px 0 6px; }
+.wg-sec-h .n { width: 30px; height: 30px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.wg-sec-d { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+.wg-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.wg-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--bg-card); box-shadow: var(--shadow); }
+.wg-card .wc-img { background: var(--bg-card2); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.wg-card .wc-img img { height: 210px; border-radius: 8px; box-shadow: var(--shadow); }
+.wg-card .wc-copy { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; font-weight: 700; font-size: 14px; color: var(--text); border-top: 1px solid var(--border); cursor: pointer; transition: var(--t); }
+.wg-card .wc-copy:hover { background: var(--accent-tint); color: var(--accent-text); }
+.wg-card.locked .wc-img { opacity: .5; }
+.wg-card .wc-locked { display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;font-weight:700;font-size:13px;color:var(--text-muted);border-top:1px solid var(--border);background:var(--bg-card2); }
+.wg-code { margin-top: 20px; }
+.wg-code textarea { width: 100%; height: 92px; border: 1.5px solid var(--border-2); border-radius: 12px; padding: 14px; font-size: 12px; font-family: monospace; color: var(--text); background: var(--bg-card2); resize: none; }
+.guide { counter-reset: g; }
+.guide-step { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.guide-step:last-child { border-bottom: none; }
+.guide-num { counter-increment: g; flex-shrink: 0; width: 34px; height: 34px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-text); font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.guide-num::before { content: counter(g); }
+.guide-txt { font-size: 14px; color: var(--text); line-height: 1.6; padding-top: 4px; }
+.guide-txt b { color: var(--accent-text); }
+.hidden { display: none; }
+@media (max-width:700px){ .wg-cards{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><img src="../../assets/img/mascot.png" alt="온미"></div>
+      <div class="logo-text"><span class="logo-main">온종일 체험단</span><span class="logo-sub">ONJONGIL EXPERIENCE</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="campaigns.html" class="nav-link">체험단</a>
+      <a href="reward.html" class="nav-link">리워드<span class="nav-new">NEW</span></a>
+      <a href="regions.html" class="nav-link">지역별</a>
+      <a href="categories.html" class="nav-link">카테고리</a>
+      <a href="review.html" class="nav-link">스토리</a>
+      <a href="advertiser.html" class="nav-link">사장님</a>
+    </nav>
+    <div class="header-right">
+      <button class="h-ico" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+      <button class="h-ico" id="modeBtn" onclick="toggleMode()" aria-label="낮/밤"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="#" class="h-ico" aria-label="알림"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="h-badge">10</span></a>
+      <a href="mypage.html" class="h-avatar"><img src="../../assets/img/mascot.png" alt="프로필"></a>
+    </div>
+  </div>
+</header>
+
+<div class="mp-wrap">
+  <aside class="mp-side">
+    <div class="mp-profile">
+      <div class="mp-ava"><img src="../../assets/img/mascot.png" alt="프로필"></div>
+      <div class="mp-hi">어서오세요 :)</div>
+      <div class="mp-name"><b>tarry</b> 님</div>
+      <span class="mp-point"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a2 2 0 0 1 0 4H9.5"/></svg> 2,480 P</span>
+    </div>
+    <div class="mp-sec">
+      <div class="mp-sec-t">나의 캠페인</div>
+      <a href="mypage.html" class="mp-link">신청한 캠페인 <span class="mp-arrow">›</span></a>
+      <a href="mypage.html#selected" class="mp-link">선정된 캠페인 <span class="mp-arrow">›</span></a>
+      <a href="mypage.html#reviewed" class="mp-link">리뷰한 캠페인 <span class="mp-arrow">›</span></a>
+    </div>
+    <div class="mp-divider"></div>
+    <a href="messages.html" class="mp-link">나의 메시지 <span class="mp-cnt">10</span></a>
+    <a href="sns.html" class="mp-link">SNS 계정 연동 <span class="mp-arrow">›</span></a>
+    <a href="penalty.html" class="mp-link">페널티 현황 <span class="mp-arrow">›</span></a>
+    <div class="mp-divider"></div>
+    <div class="mp-sec">
+      <div class="mp-sec-t">내 정보 수정</div>
+      <a href="profile.html" class="mp-link">기본정보 수정 <span class="mp-arrow">›</span></a>
+      <a href="profile.html#detail" class="mp-link">상세정보 수정 <span class="mp-arrow">›</span></a>
+      <a href="profile.html#pw" class="mp-link">비밀번호 변경 <span class="mp-arrow">›</span></a>
+      <a href="widget.html" class="mp-link active">블로그 위젯 등록 <span class="mp-arrow">›</span></a>
+    </div>
+    <div class="mp-sec">
+      <div class="mp-sec-t">나의 포인트 <a href="points.html" class="mp-mini">2,480 P</a></div>
+      <a href="points.html" class="mp-link">적립내역 보기 <span class="mp-arrow">›</span></a>
+      <a href="points.html#withdraw" class="mp-link">출금내역 보기 <span class="mp-arrow">›</span></a>
+      <a href="points.html#store" class="mp-link">스토어 구매내역 <span class="mp-arrow">›</span></a>
+    </div>
+    <div class="mp-sec">
+      <div class="mp-sec-t">고객센터</div>
+      <a href="notice.html" class="mp-link">공지사항 <span class="mp-arrow">›</span></a>
+      <a href="faq.html" class="mp-link">자주 묻는 질문 <span class="mp-arrow">›</span></a>
+      <a href="contact.html" class="mp-link">1:1 문의하기 <span class="mp-arrow">›</span></a>
+    </div>
+    <div class="mp-divider"></div>
+    <a href="login.html" class="mp-logout">로그아웃</a>
+  </aside>
+
+  <main class="mp-main">
+    <div class="wg-lead">지금, 블로그 위젯을<br><b>등록해보세요!</b></div>
+    <div class="wg-sub">블로그 위젯을 등록하면 <b style="color:var(--accent-text)">tarry 님의 캠페인 신청 확률</b>이 더 올라가요!</div>
+
+    <div class="wg-steps">
+      <div class="wg-step-pill active" onclick="wgTab(0)">01. 위젯 링크 복사</div>
+      <div class="wg-step-pill" onclick="wgTab(1)">02. 블로그에 등록하기</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section id="wg0">
+      <div class="mp-card">
+        <div class="wg-sec-h"><span class="n">1</span> 위젯 링크 복사</div>
+        <div class="wg-sec-d">아래에서 원하는 위젯의 <b>위젯 코드</b>를 복사해주세요.</div>
+        <div class="wg-cards">
+          <div class="wg-card">
+            <div class="wc-img"><img src="../../assets/img/mascot_widget.png" alt="온종일 체험단 위젯"></div>
+            <div class="wc-copy" onclick="copyCode()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> 위젯 코드복사</div>
+          </div>
+          <div class="wg-card">
+            <div class="wc-img"><img src="../../assets/img/mascot_widget.png" alt="온종일팜 위젯" style="filter:hue-rotate(150deg)"></div>
+            <div class="wc-copy" onclick="copyCode()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> 위젯 코드복사</div>
+          </div>
+          <div class="wg-card locked">
+            <div class="wc-img"><img src="../../assets/img/mascot_widget.png" alt="인플루언서 위젯" style="filter:grayscale(1)"></div>
+            <div class="wc-locked"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> 계정 연동 필요</div>
+          </div>
+        </div>
+        <div class="wg-code">
+          <label class="form-label">위젯 코드</label>
+          <textarea id="wgCode" readonly>&lt;a target='_blank' href='https://onjongil.kr?user=tarry'&gt;&lt;img src='https://onjongil.kr/widget/onmi_widget.png' alt='온종일 체험단 위젯'/&gt;&lt;/a&gt;</textarea>
+          <div style="margin-top:12px;"><button class="btn-primary" onclick="copyCode()" style="font-size:14px;">위젯 코드 복사하기</button> <span id="copied" style="margin-left:10px;color:var(--accent-text);font-weight:700;font-size:13px;display:none;">복사됐어요!</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section id="wg1" class="hidden">
+      <div class="mp-card">
+        <div class="wg-sec-h"><span class="n">2</span> 블로그에 등록하기</div>
+        <div class="wg-sec-d">아래 가이드를 따라 차근차근 진행하면 블로그 위젯 설치 끝!</div>
+        <div class="guide">
+          <div class="guide-step"><div class="guide-num"></div><div class="guide-txt">네이버 블로그 관리화면에서 <b>꾸미기 설정 › 레이아웃·위젯 설정</b>으로 들어갑니다.</div></div>
+          <div class="guide-step"><div class="guide-num"></div><div class="guide-txt">우측 하단의 <b>위젯 직접등록</b> 버튼을 눌러주세요.</div></div>
+          <div class="guide-step"><div class="guide-num"></div><div class="guide-txt">위젯명에 원하는 이름(예: <b>온종일 체험단</b>)을 쓰고, 위젯코드 입력란에 <b>복사한 위젯 코드를 붙여넣기</b> 해주세요.</div></div>
+          <div class="guide-step"><div class="guide-num"></div><div class="guide-txt">미리보기에서 위젯 이미지를 확인할 수 있어요. 확인 후 <b>등록</b>을 눌러주세요.</div></div>
+          <div class="guide-step"><div class="guide-num"></div><div class="guide-txt">이제 블로그에 <b>위젯이 생성</b>되었어요! 본인 블로그 디자인에 맞게 위치를 옮겨주세요 :)</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
+if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
+function wgTab(i){
+  document.querySelectorAll('.wg-step-pill').forEach(function(p,x){p.classList.toggle('active',x===i);});
+  document.getElementById('wg0').classList.toggle('hidden',i!==0);
+  document.getElementById('wg1').classList.toggle('hidden',i!==1);
+}
+function copyCode(){
+  var t=document.getElementById('wgCode'); t.select();
+  try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}
+  var c=document.getElementById('copied'); if(c){c.style.display='inline';setTimeout(function(){c.style.display='none';},1800);}
+}
+</script>
+</body>
+</html>
