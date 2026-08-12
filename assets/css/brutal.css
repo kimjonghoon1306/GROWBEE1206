@@ -149,3 +149,33 @@ div>*:nth-child(8n)>.rev-img{ background-image:url(../../assets/img/ramen.jpg)!i
 
 /* --- SAFETY NET: any lime bg + white text left anywhere --- */
 [style*="D6FF3F"], [style*="#d6ff3f"]{ background:var(--accent)!important; color:#fff!important; }
+
+/* ============================================================
+   MOBILE FIX — 옛 서브페이지 인라인 grid/아이콘 강제 정리
+   (인라인 style을 !important + 속성선택자로 오버라이드)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* 4·3칸 인라인 그리드 → 2칸 */
+  [style*="repeat(4,1fr)"], [style*="repeat(4, 1fr)"],
+  [style*="repeat(3,1fr)"], [style*="repeat(3, 1fr)"] { grid-template-columns: repeat(2,1fr) !important; gap: 12px !important; }
+  /* 7칸(관심사 등) → 3칸 */
+  [style*="repeat(7,1fr)"], [style*="repeat(7, 1fr)"] { grid-template-columns: repeat(3,1fr) !important; }
+  /* 거대 카테고리/지역 상세 타일 아이콘 억제 */
+  .cat-ico-lg, .cat-sec-ico, .rsec-ico { width: 44px !important; height: 44px !important; flex: 0 0 44px !important; }
+  .cat-ico-lg svg, .cat-sec-ico svg, .rsec-ico svg { width: 22px !important; height: 22px !important; }
+  .cat-hero-card, .cat-sec, .rsec { padding: 16px !important; }
+  /* 캠페인 카드 이미지가 이모지/폰트로 눌리지 않게 최소 높이 */
+  .camp-img { min-height: 120px !important; }
+  .camp-name { font-size: 13px !important; line-height: 1.35 !important; }
+  .camp-desc { font-size: 12px !important; }
+  .camp-reward { font-size: 11px !important; }
+}
+@media (max-width: 480px) {
+  /* 아주 좁은 화면: 캠페인/상품 그리드는 1칸 */
+  [style*="repeat(4,1fr)"], [style*="repeat(4, 1fr)"],
+  [style*="repeat(3,1fr)"], [style*="repeat(3, 1fr)"],
+  [style*="repeat(2,1fr)"], [style*="repeat(2, 1fr)"] { grid-template-columns: 1fr !important; }
+  [style*="repeat(7,1fr)"], [style*="repeat(7, 1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+  /* 2단 본문 레이아웃(상세페이지 1fr 320px 등) → 세로 */
+  [style*="1fr 320px"], [style*="1fr 300px"], [style*="320px 1fr"], [style*="220px 1fr"], [style*="240px 1fr"] { grid-template-columns: 1fr !important; }
+}
