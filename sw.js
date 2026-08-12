@@ -1,6 +1,6 @@
 /* 온종일 체험단 Service Worker
    배포마다 VERSION 을 올리면 하단 '새로운 업데이트' 배너가 뜹니다. */
-const VERSION = 'onjongil-v15';
+const VERSION = 'onjongil-v16';
 
 self.addEventListener('install', function (e) {
   // 새 SW 즉시 대기 → skipWaiting 은 배너에서 사용자가 누르면 호출

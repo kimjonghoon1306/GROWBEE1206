@@ -471,9 +471,16 @@ carRender();
     if(!slides || !slides.length) return; // 비어있으면 기존 하드코딩 유지
     function esc(x){return (x==null?'':String(x)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     var html = slides.map(function(s){
-      var badgeCls = s.is_ship ? 'banner-badge ship' : 'banner-badge';
       var reward = s.reward_text ? '<span class="banner-reward">'+esc(s.reward_text)+'</span>' : '';
-      var badge = s.badge ? '<span class="'+badgeCls+'">'+esc(s.badge)+'</span>' : '';
+      // 유형 뱃지(방문형/배송형/원고형, 중복). 없으면 badge 문구 사용
+      var types = (s.types||'').split(',').filter(Boolean);
+      var badge = '';
+      if(types.length){
+        badge = types.map(function(t){ var c=(t==='배송형')?'banner-badge ship':'banner-badge'; return '<span class="'+c+'" style="margin-right:6px;">'+esc(t)+'</span>'; }).join('');
+      } else if(s.badge){
+        var badgeCls = s.is_ship ? 'banner-badge ship' : 'banner-badge';
+        badge = '<span class="'+badgeCls+'">'+esc(s.badge)+'</span>';
+      }
       var title = s.title ? '<div class="banner-title">'+esc(s.title)+'</div>' : '';
       var desc = s.subtitle ? '<div class="banner-desc">'+esc(s.subtitle)+'</div>' : '';
       return '<a href="'+esc(s.link_url||'#')+'" class="banner"><img src="'+esc(s.image_url||'')+'" alt="">'

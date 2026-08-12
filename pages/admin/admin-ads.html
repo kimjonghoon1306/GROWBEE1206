@@ -147,6 +147,9 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 .cf-msg{display:none;font-size:13px;font-weight:600;padding:10px 12px;border-radius:10px;margin-top:12px;}
 .sl-tab{background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;}
 .sl-tab.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+.sf-types{display:flex;gap:8px;flex-wrap:wrap;}
+.sf-type{background:var(--bg-card2,transparent);border:1.5px solid var(--border);border-radius:50px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;transition:.15s;}
+.sf-type.on{background:var(--brand-gradient);color:#fff;border-color:transparent;}
 .sl-pager{display:flex;justify-content:center;gap:6px;margin-top:20px;}
 .sl-pager button{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);font-size:13px;font-weight:700;cursor:pointer;}
 .sl-pager button.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
@@ -164,7 +167,12 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
       <div><label class="cf-l">뱃지 문구</label><input id="sf-badge" class="cf-in" placeholder="방문형 캠페인"></div>
       <div><label class="cf-l">혜택 (우측 상단)</label><input id="sf-reward" class="cf-in" placeholder="9만원 상당"></div>
     </div>
-    <label class="cf-check"><input type="checkbox" id="sf-ship"> 배송형(뱃지 색을 베이지로)</label>
+    <label class="cf-l">캠페인 유형 (중복 선택 가능)</label>
+    <div class="sf-types" id="sf-types">
+      <button type="button" class="sf-type" data-t="방문형" onclick="slToggleType(this)">방문형</button>
+      <button type="button" class="sf-type" data-t="배송형" onclick="slToggleType(this)">배송형</button>
+      <button type="button" class="sf-type" data-t="원고형" onclick="slToggleType(this)">원고형</button>
+    </div>
     <label class="cf-l">제목</label><input id="sf-title" class="cf-in" placeholder="청담의 밤을 더 특별하게, 품격 있는 오마카세">
     <label class="cf-l">부제</label><input id="sf-subtitle" class="cf-in" placeholder="[서울 강남] 프리미엄 한우 우진각 — 3인 세트 무료 체험">
     <label class="cf-l">캠페인 연결 (고르면 내부 링크 자동 입력)</label>
@@ -205,6 +213,9 @@ function slFillCamps(){
   sel.innerHTML=opts; sel.value=cur;
 }
 function slPickCamp(){ var id=document.getElementById('sf-camp').value; if(id){ document.getElementById('sf-link').value='pages/user/campaign-detail.html?id='+id; } }
+function slToggleType(b){ b.classList.toggle('on'); }
+function slGetTypes(){ return Array.prototype.slice.call(document.querySelectorAll('#sf-types .sf-type.on')).map(function(x){return x.getAttribute('data-t');}); }
+function slSetTypes(arr){ arr=arr||[]; document.querySelectorAll('#sf-types .sf-type').forEach(function(x){ x.classList.toggle('on', arr.indexOf(x.getAttribute('data-t'))>=0); }); }
 function slToggleAlways(){ var on=document.getElementById('sf-always').checked; var row=document.getElementById('sf-daterow'); if(row) row.style.opacity=on?'.4':'1'; document.getElementById('sf-start').disabled=on; document.getElementById('sf-end').disabled=on; if(on){ document.getElementById('sf-start').value=''; document.getElementById('sf-end').value=''; } }
 async function slUpload(inp){
   var f=inp.files&&inp.files[0]; if(!f) return;
@@ -223,7 +234,7 @@ async function openSlideForm(id){
   document.getElementById('sf-image').value=c.image_url||'';
   document.getElementById('sf-badge').value=c.badge||'';
   document.getElementById('sf-reward').value=c.reward_text||'';
-  document.getElementById('sf-ship').checked=!!c.is_ship;
+  slSetTypes(c.types?c.types.split(',').filter(Boolean):(c.is_ship?['배송형']:[]));
   document.getElementById('sf-title').value=c.title||'';
   document.getElementById('sf-subtitle').value=c.subtitle||'';
   document.getElementById('sf-link').value=c.link_url||'';
@@ -245,7 +256,7 @@ function closeSlideForm(){ document.getElementById('cfOverlay').style.display='n
 async function saveSlideForm(){
   var img=_sv('sf-image'); if(!img){ cfMsg('광고 이미지를 올려주세요.'); return; }
   var fields={ image_url:img, badge:_sv('sf-badge')||null, reward_text:_sv('sf-reward')||null,
-    is_ship:document.getElementById('sf-ship').checked, title:_sv('sf-title')||null,
+    types:slGetTypes().join(','), is_ship:slGetTypes().indexOf('배송형')>=0, title:_sv('sf-title')||null,
     subtitle:_sv('sf-subtitle')||null, link_url:_sv('sf-link')||null,
     sort_order:parseInt(_sv('sf-order'),10)||0, is_active:document.getElementById('sf-active').checked };
   var _always=document.getElementById('sf-always').checked;
@@ -297,7 +308,7 @@ function renderSlidePage(){
     var period=(c.start_at||c.end_at)?((c.start_at?_sd(c.start_at):'~')+' ~ '+(c.end_at?_sd(c.end_at):'무기한')):'상시';
     return '<tr>'
       +'<td>'+thumb+_sesc(c.title||'(제목 없음)')+'</td>'
-      +'<td style="color:var(--text-muted);">'+_sesc(c.badge||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+_sesc(c.types||c.badge||'-')+'</td>'
       +'<td style="color:var(--text-muted);">'+period+'</td>'
       +'<td style="color:var(--text-muted);">'+(c.sort_order||0)+'</td>'
       +'<td>'+badge+'</td>'
