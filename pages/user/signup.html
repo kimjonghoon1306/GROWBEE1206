@@ -200,10 +200,10 @@ function toggleAll(el) {
 function toggleMode() {
   var isNight = document.body.classList.toggle('night');
   document.getElementById('modeBtn').textContent = isNight ? '' : '';
-  localStorage.setItem('growbee-mode', isNight ? 'night' : 'day');
+  localStorage.setItem('onjongil-mode', isNight ? 'night' : 'day');
 }
 (function() {
-  if (localStorage.getItem('growbee-mode') === 'night') {
+  if (localStorage.getItem('onjongil-mode') === 'night') {
     document.body.classList.add('night');
   }
 })();

@@ -130,7 +130,8 @@
     <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">피트니스 (6)</button>
     <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">배송형 (6)</button>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+  <div style="display:flex;justify-content:flex-end;margin:0 0 14px;"><div class="view-switch"><button id="vLarge" onclick="setView(0)" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>크게 보기</button><button id="vSmall" onclick="setView(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>작게 보기</button></div></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
     <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#1a0a10,#2a1018);"><div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-5</div></div><div class="camp-body"><div class="camp-region">강남구 · 역삼동</div><div class="camp-name">스시 오모 — 오마카세 코스</div><div class="camp-desc">15만원 상당 2인 오마카세 코스를 무료로 체험하고 블로그 리뷰를 작성해주세요.</div><div class="camp-meta"><span class="camp-reward">15만원 상당</span><span class="camp-slots">24/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:80%"></div></div></div></a>
     <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a1210,#0e1e18);"><div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">마포구 · 홍대입구</div><div class="camp-name">카페 루미오 시그니처 음료</div><div class="camp-desc">감성 카페 루미오 음료 2잔 + 디저트 1종 체험. 인스타그램 피드 포스팅.</div><div class="camp-meta"><span class="camp-reward">3만원 상당</span><span class="camp-slots">8/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a>
     <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#12080a,#1e0c10);"><div class="camp-badges"><span class="badge badge-red">마감임박</span></div><div class="camp-d">D-2</div></div><div class="camp-body"><div class="camp-region">서초구 · 방배동</div><div class="camp-name">한우 프리미엄 '우진각'</div><div class="camp-desc">1++ 등급 한우 세트 3인 9만원 상당 무료 제공. 방배동 핫플레이스.</div><div class="camp-meta"><span class="camp-reward">9만원 상당</span><span class="camp-slots">19/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:95%"></div></div></div></a>
@@ -167,9 +168,13 @@
   </div>
 </footer>
 <script>
-function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');localStorage.setItem('growbee-mode',n?'night':'day');}}
-(function(){{if(localStorage.getItem('growbee-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');}}}}());
+function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');localStorage.setItem('onjongil-mode',n?'night':'day');}}
+(function(){{if(localStorage.getItem('onjongil-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');}}}}());
 </script>
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-dashboard.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
+
+<script>
+function setView(small){document.body.classList.toggle("view-compact",!!small);var L=document.getElementById("vLarge"),S=document.getElementById("vSmall");if(L&&S){L.classList.toggle("active",!small);S.classList.toggle("active",!!small);}localStorage.setItem("onjongil-view",small?"compact":"large");}(function(){if(localStorage.getItem("onjongil-view")==="compact"){setView(1);}})();
+</script>
 </body></html>

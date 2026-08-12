@@ -179,3 +179,38 @@ div>*:nth-child(8n)>.rev-img{ background-image:url(../../assets/img/ramen.jpg)!i
   /* 2단 본문 레이아웃(상세페이지 1fr 320px 등) → 세로 */
   [style*="1fr 320px"], [style*="1fr 300px"], [style*="320px 1fr"], [style*="220px 1fr"], [style*="240px 1fr"] { grid-template-columns: 1fr !important; }
 }
+
+/* ============================================================
+   VIEW TOGGLE — 크게 보기 / 작게 보기 (캠페인 목록)
+   body.view-compact 이면 카드 그리드를 더 촘촘히
+   ============================================================ */
+.view-switch { display: inline-flex; gap: 4px; background: var(--bg-card2); border: 1px solid var(--border); border-radius: 999px; padding: 4px; }
+.view-switch button { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--text-muted); background: transparent; cursor: pointer; transition: var(--t); }
+.view-switch button svg { width: 16px; height: 16px; }
+.view-switch button.active { background: var(--accent); color: #fff; }
+
+/* 작게 보기: 데스크탑에선 한 줄 더 촘촘, 모바일에선 2열 */
+body.view-compact [style*="repeat(4,1fr)"], body.view-compact [style*="repeat(4, 1fr)"] { grid-template-columns: repeat(5,1fr) !important; gap: 12px !important; }
+body.view-compact [style*="repeat(3,1fr)"], body.view-compact [style*="repeat(3, 1fr)"] { grid-template-columns: repeat(4,1fr) !important; }
+body.view-compact .camp-desc { display: none !important; }
+body.view-compact .camp-img { min-height: 120px !important; height: 130px !important; }
+body.view-compact .camp-body { padding: 10px !important; }
+body.view-compact .camp-name { font-size: 13px !important; }
+
+@media (max-width: 768px) {
+  /* 크게 보기(기본): 1열 큰 카드 — 이미 mobile fix에서 처리 */
+  /* 작게 보기: 2열 컴팩트 */
+  body.view-compact [style*="repeat(4,1fr)"], body.view-compact [style*="repeat(4, 1fr)"],
+  body.view-compact [style*="repeat(3,1fr)"], body.view-compact [style*="repeat(3, 1fr)"] { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; }
+  body.view-compact .camp-img { height: 100px !important; min-height: 100px !important; }
+  body.view-compact .camp-region, body.view-compact .camp-bar { display: none !important; }
+  body.view-compact .camp-name { font-size: 12px !important; -webkit-line-clamp: 2; }
+  body.view-compact .camp-meta { padding-top: 8px !important; }
+  body.view-compact .camp-reward { font-size: 10px !important; padding: 2px 6px !important; }
+  body.view-compact .camp-slots { font-size: 10px !important; }
+}
+@media (max-width: 480px) {
+  /* 작게 보기는 480서도 2열 유지(더 많이 보이게) */
+  body.view-compact [style*="repeat(4,1fr)"], body.view-compact [style*="repeat(4, 1fr)"],
+  body.view-compact [style*="repeat(3,1fr)"], body.view-compact [style*="repeat(3, 1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+}
