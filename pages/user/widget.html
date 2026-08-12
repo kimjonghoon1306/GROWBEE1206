@@ -35,6 +35,31 @@
 .guide-txt b { color: var(--accent-text); }
 .hidden { display: none; }
 @media (max-width:700px){ .wg-cards{ grid-template-columns:1fr; } }
+
+/* live widget block */
+.wg-live { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: start; }
+.wg-preview { text-align: center; }
+.wg-preview a { display: inline-block; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-lg); }
+.wg-preview img { display: block; border-radius: 14px; }
+.wg-prev-cap { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+.wg-right { min-width: 0; }
+.wg-size { display: flex; gap: 8px; }
+.wg-size-btn { padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--border-2); background: var(--bg-card); font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+.wg-size-btn span { font-size: 11px; font-weight: 500; opacity: .7; }
+.wg-size-btn.active { border-color: var(--accent); background: var(--accent-tint); color: var(--accent-text); }
+#wgCode { width: 100%; height: 100px; border: 1.5px solid var(--border-2); border-radius: 12px; padding: 14px; font-size: 12.5px; font-family: monospace; line-height: 1.6; color: var(--text); background: var(--bg-card2); resize: none; }
+.wg-copy-row { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+.wg-copied { color: var(--accent-text); font-weight: 700; font-size: 13px; display: none; }
+.wg-copied.show { display: inline; }
+.wg-note { margin-top: 16px; font-size: 13px; color: var(--text-muted); background: var(--accent-tint); border-radius: 12px; padding: 14px 16px; line-height: 1.6; }
+.wg-note b { color: var(--accent-text); }
+.wg-why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 8px; }
+.wg-why-item { text-align: center; padding: 18px 12px; border: 1px solid var(--border); border-radius: 14px; }
+.wg-why-item b { display: block; font-size: 15px; margin: 10px 0 4px; }
+.wg-why-item span { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+.wwi-ic { width: 46px; height: 46px; margin: 0 auto; border-radius: 14px; background: var(--accent-tint); display: flex; align-items: center; justify-content: center; }
+.wwi-ic svg { width: 24px; height: 24px; color: var(--accent-text); }
+@media (max-width:700px){ .wg-cards{ grid-template-columns:1fr; } .wg-live{ grid-template-columns:1fr; } .wg-preview a{ } .wg-why-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -115,26 +140,43 @@
     <!-- STEP 1 -->
     <section id="wg0">
       <div class="mp-card">
-        <div class="wg-sec-h"><span class="n">1</span> 위젯 링크 복사</div>
-        <div class="wg-sec-d">아래에서 원하는 위젯의 <b>위젯 코드</b>를 복사해주세요.</div>
-        <div class="wg-cards">
-          <div class="wg-card">
-            <div class="wc-img"><img src="../../assets/img/mascot_widget.png" alt="온종일 체험단 위젯"></div>
-            <div class="wc-copy" onclick="copyCode()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> 위젯 코드복사</div>
+        <div class="wg-sec-h"><span class="n">1</span> 위젯 코드 복사</div>
+        <div class="wg-sec-d">아래 코드를 복사해서 블로그·카페에 붙여넣으면 <b>바로 위젯이 생성</b>돼요. 방문자가 클릭하면 온종일 체험단으로 연결됩니다.</div>
+
+        <div class="wg-live">
+          <!-- 실제 렌더링되는 위젯 미리보기 -->
+          <div class="wg-preview">
+            <a id="wgPrev" href="#" target="_blank" rel="noopener"><img src="../../assets/img/mascot_widget.png" width="170" alt="온종일 체험단 위젯"></a>
+            <div class="wg-prev-cap">실제 방문자에게 보이는 모습</div>
           </div>
-          <div class="wg-card">
-            <div class="wc-img"><img src="../../assets/img/mascot_widget.png" alt="온종일팜 위젯" style="filter:hue-rotate(150deg)"></div>
-            <div class="wc-copy" onclick="copyCode()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> 위젯 코드복사</div>
-          </div>
-          <div class="wg-card locked">
-            <div class="wc-img"><img src="../../assets/img/mascot_widget.png" alt="인플루언서 위젯" style="filter:grayscale(1)"></div>
-            <div class="wc-locked"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> 계정 연동 필요</div>
+
+          <div class="wg-right">
+            <div class="wg-size">
+              <button class="wg-size-btn active" onclick="wgSize('tall',this)">세로형 <span>170×600</span></button>
+              <button class="wg-size-btn" onclick="wgSize('badge',this)">작은배너 <span>170×250</span></button>
+            </div>
+            <label class="form-label" style="margin-top:14px;">위젯 코드 (이걸 복사하세요)</label>
+            <textarea id="wgCode" readonly></textarea>
+            <div class="wg-copy-row">
+              <button class="btn-primary" onclick="copyCode()" style="font-size:15px;padding:14px 24px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:2px;"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                위젯 코드 복사하기
+              </button>
+              <span id="copied" class="wg-copied">복사됐어요! 이제 블로그에 붙여넣으세요 👍</span>
+            </div>
+            <div class="wg-note">
+              <b>이미지는 지금 바로 표시돼요.</b> 클릭 링크는 도메인(<b>feel.온종일.com</b>) 연결 후 자동으로 살아납니다.
+            </div>
           </div>
         </div>
-        <div class="wg-code">
-          <label class="form-label">위젯 코드</label>
-          <textarea id="wgCode" readonly>&lt;a target='_blank' href='https://onjongil.kr?user=tarry'&gt;&lt;img src='https://onjongil.kr/widget/onmi_widget.png' alt='온종일 체험단 위젯'/&gt;&lt;/a&gt;</textarea>
-          <div style="margin-top:12px;"><button class="btn-primary" onclick="copyCode()" style="font-size:14px;">위젯 코드 복사하기</button> <span id="copied" style="margin-left:10px;color:var(--accent-text);font-weight:700;font-size:13px;display:none;">복사됐어요!</span></div>
+      </div>
+
+      <div class="mp-card wg-why">
+        <div class="wg-sec-h" style="font-size:16px;"><span class="n" style="background:var(--accent-tint);color:var(--accent-text);">?</span> 위젯을 왜 달아요?</div>
+        <div class="wg-why-grid">
+          <div class="wg-why-item"><div class="wwi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20l-1.5-1.4C5 13.6 2 10.9 2 7.5A4.5 4.5 0 0 1 12 4a4.5 4.5 0 0 1 10 3.5c0 3.4-3 6.1-8.5 11.1z"/></svg></div><b>선정 확률 UP</b><span>위젯 단 블로거는 캠페인 선정 우대!</span></div>
+          <div class="wg-why-item"><div class="wwi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div><b>눈에 확 띔</b><span>코랄 세로배너 + 온미 캐릭터로 시선 집중</span></div>
+          <div class="wg-why-item"><div class="wwi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16v12H4zM4 7l2-3h12l2 3M9 12a3 3 0 0 0 6 0"/></svg></div><b>포인트 적립</b><span>위젯으로 유입된 친구 가입 시 보너스</span></div>
         </div>
       </div>
     </section>
@@ -166,11 +208,40 @@ function wgTab(i){
   document.getElementById('wg0').classList.toggle('hidden',i!==0);
   document.getElementById('wg1').classList.toggle('hidden',i!==1);
 }
-function copyCode(){
-  var t=document.getElementById('wgCode'); t.select();
-  try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}
-  var c=document.getElementById('copied'); if(c){c.style.display='inline';setTimeout(function(){c.style.display='none';},1800);}
+
+/* ===== 위젯 코드 생성 =====
+   도메인이 바뀌면 SITE 한 줄만 수정하면 전부 반영됩니다. */
+var SITE = 'https://feel.xn--zk5biyyw.com';  /* = feel.온종일.com */
+var IMG_TALL = 'https://cdn.jsdelivr.net/gh/kimjonghoon1306/GROWBEE1206@main/assets/img/mascot_widget.png';
+var IMG_SQ   = 'https://cdn.jsdelivr.net/gh/kimjonghoon1306/GROWBEE1206@main/assets/img/mascot.png';
+var wgKind = 'tall';
+function widgetCode(kind){
+  var img = kind==='tall' ? IMG_TALL : IMG_SQ;
+  var w = kind==='tall' ? 170 : 150;
+  return '<a href="'+SITE+'" target="_blank" rel="noopener">'
+       + '<img src="'+img+'" width="'+w+'" '
+       + 'alt="온종일 체험단 - 맛집·카페·뷰티 체험단 모집" style="border:0;"></a>';
 }
+function renderWidget(){
+  document.getElementById('wgCode').value = widgetCode(wgKind);
+  var a = document.getElementById('wgPrev'); a.href = SITE;
+  var im = a.querySelector('img');
+  im.src = (wgKind==='tall'?'../../assets/img/mascot_widget.png':'../../assets/img/mascot.png');
+  im.width = (wgKind==='tall'?170:150);
+}
+function wgSize(kind,btn){
+  wgKind = kind;
+  document.querySelectorAll('.wg-size-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderWidget();
+}
+function copyCode(){
+  var t=document.getElementById('wgCode');
+  t.select(); t.setSelectionRange(0,99999);
+  try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}
+  var c=document.getElementById('copied'); if(c){c.classList.add('show');setTimeout(function(){c.classList.remove('show');},2600);}
+}
+renderWidget();
 </script>
 </body>
 </html>
