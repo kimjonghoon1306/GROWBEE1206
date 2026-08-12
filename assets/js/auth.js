@@ -210,6 +210,24 @@
       if (r.error) return { ok: false, msg: r.error.message };
       return r.data;
     },
+    // 관리자: 회원 완전 삭제
+    deleteMember: async function (userId) {
+      var r = await sb.rpc('delete_member', { p_user: userId });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 관리자: 대시보드 통계
+    adminStats: async function () {
+      var r = await sb.rpc('admin_stats');
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 관리자: 최근 캠페인 N개
+    recentCampaigns: async function (n) {
+      var r = await sb.from('campaigns').select('title,store_name,region,status')
+        .order('created_at', { ascending: false }).limit(n || 5);
+      return (r && !r.error) ? (r.data || []) : [];
+    },
 
     // ── 관리자: 캠페인 CRUD (RLS가 admin만 통과) ──
     adminListCampaigns: async function () {

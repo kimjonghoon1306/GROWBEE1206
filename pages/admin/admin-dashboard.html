@@ -234,18 +234,18 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
         </div>
         <div class="kpi-card green">
           <div class="kpi-label">진행 중 캠페인</div>
-          <div class="kpi-val green">8<em>4</em></div>
-          <div class="kpi-change kpi-up"> 이번 주 +12개</div>
+          <div class="kpi-val green" id="kpiCamps">–</div>
+          <div class="kpi-change kpi-up">실시간 집계</div>
         </div>
         <div class="kpi-card blue">
-          <div class="kpi-label">이번 달 리뷰 수</div>
-          <div class="kpi-val blue">2,<em>847</em></div>
-          <div class="kpi-change kpi-up"> 전월 대비 +18%</div>
+          <div class="kpi-label">검수 대기 리뷰</div>
+          <div class="kpi-val blue" id="kpiPending">–</div>
+          <div class="kpi-change kpi-up">리뷰 제출됨</div>
         </div>
         <div class="kpi-card orange">
-          <div class="kpi-label">이번 달 매출</div>
-          <div class="kpi-val orange">28.<em>4</em>M</div>
-          <div class="kpi-change kpi-up"> 전월 대비 +22%</div>
+          <div class="kpi-label">재검토 요청</div>
+          <div class="kpi-val orange" id="kpiAppeal">–</div>
+          <div class="kpi-change kpi-up">이의신청 대기</div>
         </div>
       </div>
 
@@ -255,26 +255,14 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
           <div class="admin-card-title">최근 캠페인 <a href="admin-campaigns.html">전체보기 →</a></div>
           <table class="admin-table">
             <thead><tr><th>캠페인명</th><th>광고주</th><th>지역</th><th>상태</th></tr></thead>
-            <tbody>
-              <tr><td>스시 오모 오마카세</td><td>오모레스토랑</td><td>강남</td><td><span class="s-badge s-active">진행중</span></td></tr>
-              <tr><td>카페 루미오 음료</td><td>루미오카페</td><td>마포</td><td><span class="s-badge s-active">진행중</span></td></tr>
-              <tr><td>한우 우진각</td><td>우진각</td><td>서초</td><td><span class="s-badge s-review">검토중</span></td></tr>
-              <tr><td>클리어 스킨랩</td><td>클리어뷰티</td><td>강남</td><td><span class="s-badge s-active">진행중</span></td></tr>
-              <tr><td>테라스 해운대</td><td>해운대비치</td><td>부산</td><td><span class="s-badge s-done">마감</span></td></tr>
-            </tbody>
+            <tbody id="dashRecentCamps"><tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px 0;">불러오는 중…</td></tr></tbody>
           </table>
         </div>
         <div class="admin-card">
           <div class="admin-card-title">지역별 캠페인 현황</div>
           <table class="admin-table">
             <thead><tr><th>지역</th><th>캠페인</th><th>비율</th></tr></thead>
-            <tbody>
-              <tr><td>서울</td><td style="color:var(--text-muted);">38개</td><td style="width:120px;"><div class="bar-wrap"><div class="bar-fill" style="width:76%"></div></div></td></tr>
-              <tr><td>경기·인천</td><td style="color:var(--text-muted);">14개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:28%"></div></div></td></tr>
-              <tr><td>부산</td><td style="color:var(--text-muted);">11개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:22%"></div></div></td></tr>
-              <tr><td>제주</td><td style="color:var(--text-muted);">9개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:18%"></div></div></td></tr>
-              <tr><td>대구</td><td style="color:var(--text-muted);">7개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:14%"></div></div></td></tr>
-            </tbody>
+            <tbody id="dashRegions"><tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:16px 0;">불러오는 중…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -285,23 +273,12 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
           <div class="admin-card-title">최근 리뷰 제출 <a href="#">전체보기 →</a></div>
           <table class="admin-table">
             <thead><tr><th>리뷰어</th><th>캠페인</th><th>채널</th><th>제출일</th><th>상태</th></tr></thead>
-            <tbody>
-              <tr><td>foodie_kimj</td><td>스시 오모</td><td>블로그</td><td style="color:var(--text-muted);">01.28</td><td><span class="s-badge s-active">승인</span></td></tr>
-              <tr><td>cafe_tour_lee</td><td>카페 루미오</td><td>인스타</td><td style="color:var(--text-muted);">01.25</td><td><span class="s-badge s-active">승인</span></td></tr>
-              <tr><td>meat_hunter_pk</td><td>한우 우진각</td><td>블로그</td><td style="color:var(--text-muted);">01.22</td><td><span class="s-badge s-review">검토중</span></td></tr>
-              <tr><td>beauty_choi</td><td>스킨랩</td><td>클립</td><td style="color:var(--text-muted);">01.20</td><td><span class="s-badge s-active">승인</span></td></tr>
-              <tr><td>ramen_jeong</td><td>라멘 호시</td><td>인스타</td><td style="color:var(--text-muted);">01.18</td><td><span class="s-badge s-review">검토중</span></td></tr>
-            </tbody>
+            <tbody id="dashRecentReviews"><tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:16px 0;">불러오는 중…</td></tr></tbody>
           </table>
         </div>
         <div class="admin-card">
           <div class="admin-card-title">실시간 활동 로그</div>
-          <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-txt"><strong>새 캠페인 등록</strong> — 나폴리 화덕피자 '체스토' (강남구)</div><div class="activity-time">방금 전</div></div></div>
-          <div class="activity-item"><div class="activity-dot green"></div><div><div class="activity-txt"><strong>리뷰 제출</strong> — foodie_kimj · 스시 오모</div><div class="activity-time">5분 전</div></div></div>
-          <div class="activity-item"><div class="activity-dot blue"></div><div><div class="activity-txt"><strong>신규 회원가입</strong> — cafe_hana (인스타그램)</div><div class="activity-time">12분 전</div></div></div>
-          <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-txt"><strong>캠페인 신청</strong> — 카페 루미오 (8번째 신청자)</div><div class="activity-time">23분 전</div></div></div>
-          <div class="activity-item"><div class="activity-dot green"></div><div><div class="activity-txt"><strong>정산 완료</strong> — beauty_choi · ₩30,000</div><div class="activity-time">1시간 전</div></div></div>
-          <div class="activity-item"><div class="activity-dot blue"></div><div><div class="activity-txt"><strong>광고주 가입</strong> — 르블랑 스파 (신사동)</div><div class="activity-time">2시간 전</div></div></div>
+          <div id="dashActivity"><div style="color:var(--text-muted);padding:12px 0;font-size:13px;">불러오는 중…</div></div></div></div></div>
         </div>
       </div>
 
@@ -344,8 +321,28 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 })();
 </script>
 <script>
+function _setKpi(id,v){ var el=document.getElementById(id); if(el) el.innerHTML=(v==null?'0':Number(v).toLocaleString()); }
 window.__adminReady = async function(){
-  try{ var c=await OnAuth.memberCount(); if(c!=null){ var el=document.getElementById('kpiMembers'); if(el) el.innerHTML=c.toLocaleString(); } }catch(e){}
+  try{
+    var st=await OnAuth.adminStats();
+    if(st&&st.ok){
+      _setKpi('kpiMembers', st.members);
+      _setKpi('kpiCamps', st.camps_active);
+      _setKpi('kpiPending', st.pending);
+      _setKpi('kpiAppeal', st.appeal);
+    }
+  }catch(e){}
+  // 최근 캠페인 실데이터
+  try{
+    var camps=await OnAuth.recentCampaigns(5);
+    var tb=document.getElementById('dashRecentCamps');
+    if(tb){
+      function esc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+      function stBadge(s){ return s==='active'?'<span class="s-badge s-active">진행중</span>':'<span class="s-badge s-done">마감</span>'; }
+      if(!camps.length){ tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px 0;">등록된 캠페인이 없어요.</td></tr>'; }
+      else tb.innerHTML=camps.map(function(c){ return '<tr><td>'+esc(c.title)+'</td><td style="color:var(--text-muted);">'+esc(c.store_name||'-')+'</td><td style="color:var(--text-muted);">'+esc((c.region||'').split(' ')[0]||'-')+'</td><td>'+stBadge(c.status)+'</td></tr>'; }).join('');
+    }
+  }catch(e){}
 };
 </script>
 <script>

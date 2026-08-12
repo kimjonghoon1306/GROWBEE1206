@@ -204,6 +204,16 @@ window.__adminReady = async function(){
 .mv-btn{border:none;border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;cursor:pointer;}
 .mv-btn.pri{background:var(--brand-gradient);color:#fff;}
 .mv-btn.warn{background:transparent;border:1.5px solid var(--border);color:var(--text);}
+.mv-btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-muted);}
+.mv-btn.danger{background:transparent;border:1.5px solid rgba(255,71,87,.5);color:var(--brand-primary);}
+.mv-btn.danger:hover{background:var(--brand-primary);color:#fff;}
+.mv-in{width:100%;box-sizing:border-box;background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:14px;font-family:inherit;}
+.mv-seg{display:flex;gap:0;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:6px;}
+.mv-seg-btn{flex:1;background:transparent;border:none;padding:10px;font-size:13px;font-weight:800;color:var(--text-muted);cursor:pointer;}
+.mv-seg-btn.on{background:var(--brand-gradient);color:#fff;}
+.mv-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.mv-chip{background:var(--bg-card2,transparent);border:1.5px solid var(--border);border-radius:50px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;}
+.mv-chip.on{background:rgba(236,58,102,.12);border-color:var(--brand-primary);color:var(--brand-primary);}
 .mv-actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;}
 @media(max-width:520px){.mv-grid{grid-template-columns:1fr;}}
 </style>
@@ -221,18 +231,29 @@ window.__adminReady = async function(){
         <div><div class="mv-f">가입일</div><div class="mv-v" id="mvJoined">-</div></div>
       </div>
       <div class="mv-sec-t">포인트 지급 / 차감</div>
-      <div class="mv-grant">
-        <input id="mvAmount" type="number" placeholder="예: 1000 / -500">
-        <input id="mvReason" type="text" placeholder="사유 (예: 이벤트 보상)">
-        <button class="mv-btn pri" id="mvGrantBtn" onclick="doGrant(this)">지급</button>
+      <!-- 1) 지급/차감 선택 -->
+      <div class="mv-seg" id="mvMode">
+        <button type="button" class="mv-seg-btn on" data-mode="grant" onclick="mvSetMode('grant')">＋ 지급</button>
+        <button type="button" class="mv-seg-btn" data-mode="deduct" onclick="mvSetMode('deduct')">－ 차감</button>
       </div>
+      <!-- 2) 금액 프리셋 + 직접입력 -->
+      <div class="mv-chips" id="mvAmtChips"></div>
+      <input id="mvAmount" type="number" class="mv-in" placeholder="직접 입력 (숫자만)" style="margin-top:8px;">
+      <!-- 3) 사유 드롭다운(자동선택) + 직접입력 -->
+      <select id="mvReasonSel" class="mv-in" style="margin-top:8px;" onchange="mvReasonChange()">
+        <option value="">사유를 선택하세요</option>
+      </select>
+      <input id="mvReason" type="text" class="mv-in" placeholder="사유 직접 입력" style="margin-top:8px;display:none;">
+      <button class="mv-btn pri" id="mvGrantBtn" onclick="doGrant(this)" style="width:100%;margin-top:10px;">포인트 지급하기</button>
+
       <div class="mv-sec-t">신청한 캠페인</div>
       <div id="mvApps" class="mv-list"><div class="mv-empty">불러오는 중…</div></div>
       <div class="mv-sec-t">포인트 내역</div>
       <div id="mvTx" class="mv-list"><div class="mv-empty">불러오는 중…</div></div>
       <div class="mv-actions">
         <button class="mv-btn warn" id="mvSuspendBtn" onclick="doSuspend(this)">회원 정지</button>
-        <button class="mv-btn warn" onclick="closeMember()">닫기</button>
+        <button class="mv-btn danger" id="mvDeleteBtn" onclick="doDelete(this)">회원 삭제</button>
+        <button class="mv-btn ghost" onclick="closeMember()">닫기</button>
       </div>
     </div>
   </div>
@@ -252,9 +273,37 @@ function openMember(uid){
   document.getElementById('mvJoined').textContent=fmtDate(m.created_at);
   var sbBtn=document.getElementById('mvSuspendBtn'); sbBtn.textContent=m.suspended?'정지 해제':'회원 정지'; sbBtn.dataset.uid=uid; sbBtn.dataset.on=m.suspended?'1':'0';
   document.getElementById('mvGrantBtn').dataset.uid=uid;
+  document.getElementById('mvDeleteBtn').dataset.uid=uid;
   document.getElementById('mvAmount').value=''; document.getElementById('mvReason').value='';
+  document.getElementById('mvReason').style.display='none';
+  mvSetMode('grant');
   document.getElementById('mvOverlay').style.display='flex';
   loadMemberDetail(uid);
+}
+// 지급/차감 사유 프리셋 (자동 선택)
+var MV_REASONS={
+  grant:[['리뷰 적립','리뷰 적립'],['원고료 지급','원고료 지급'],['이벤트 보상','이벤트 보상'],['친구초대 보너스','친구초대 보너스'],['고객 보상','고객 보상'],['오류 보정(지급)','오류 보정']],
+  deduct:[['미션 미이행 차감','미션 미이행 차감'],['부정 적립 회수','부정 적립 회수'],['출금 처리','출금 처리'],['오류 보정(차감)','오류 보정']]
+};
+var MV_AMOUNTS=[100,500,1000,3000,5000,10000];
+var _mvMode='grant', _mvAmt=0;
+function mvSetMode(mode){
+  _mvMode=mode; _mvAmt=0;
+  document.querySelectorAll('#mvMode .mv-seg-btn').forEach(function(b){ b.classList.toggle('on', b.dataset.mode===mode); });
+  document.getElementById('mvGrantBtn').textContent=(mode==='grant'?'포인트 지급하기':'포인트 차감하기');
+  // 금액 칩
+  var chips=document.getElementById('mvAmtChips');
+  chips.innerHTML=MV_AMOUNTS.map(function(a){return '<button type="button" class="mv-chip" data-a="'+a+'">'+(mode==='deduct'?'-':'+')+a.toLocaleString()+'P</button>';}).join('');
+  chips.querySelectorAll('.mv-chip').forEach(function(c){ c.onclick=function(){ chips.querySelectorAll('.mv-chip').forEach(function(x){x.classList.remove('on');}); this.classList.add('on'); _mvAmt=parseInt(this.getAttribute('data-a'),10); document.getElementById('mvAmount').value=''; }; });
+  document.getElementById('mvAmount').value='';
+  // 사유 드롭다운
+  var sel=document.getElementById('mvReasonSel');
+  sel.innerHTML='<option value="">사유를 선택하세요</option>'+MV_REASONS[mode].map(function(r){return '<option value="'+r[1]+'">'+r[0]+'</option>';}).join('')+'<option value="__custom">직접 입력…</option>';
+  document.getElementById('mvReason').style.display='none'; document.getElementById('mvReason').value='';
+}
+function mvReasonChange(){
+  var v=document.getElementById('mvReasonSel').value;
+  document.getElementById('mvReason').style.display=(v==='__custom')?'block':'none';
 }
 async function loadMemberDetail(uid){
   var appsEl=document.getElementById('mvApps'), txEl=document.getElementById('mvTx');
@@ -272,19 +321,37 @@ function refreshRow(uid){
 }
 async function doGrant(btn){
   var uid=btn.dataset.uid;
-  var amt=parseInt(document.getElementById('mvAmount').value,10);
-  if(!amt){ alert('지급/차감할 포인트를 입력하세요. 차감은 -500 처럼 음수로.'); return; }
-  var reason=(document.getElementById('mvReason').value||'').trim()||'관리자 지급';
-  btn.disabled=true; btn.textContent='처리 중…';
+  var typed=parseInt(document.getElementById('mvAmount').value,10);
+  var base=typed||_mvAmt;
+  if(!base||base<=0){ alert('금액을 선택하거나 직접 입력해주세요.'); return; }
+  var amt=(_mvMode==='deduct')? -Math.abs(base) : Math.abs(base);
+  var sel=document.getElementById('mvReasonSel').value;
+  var reason = sel==='__custom' ? (document.getElementById('mvReason').value||'').trim() : sel;
+  if(!reason){ alert('사유를 선택하거나 입력해주세요.'); return; }
+  if(!confirm((_mvMode==='deduct'?'차감':'지급')+': '+Math.abs(amt).toLocaleString()+'P\n사유: '+reason+'\n진행할까요?')) return;
+  var o=btn.textContent; btn.disabled=true; btn.textContent='처리 중…';
   var res=await OnAuth.grantPoints(uid, amt, reason, 'admin');
-  btn.disabled=false; btn.textContent='지급';
+  btn.disabled=false; btn.textContent=o;
   if(res&&res.ok){
     var m=window.__members[uid]; m.points=(m.points||0)+amt;
     document.getElementById('mvPoints').textContent=m.points.toLocaleString()+' P';
-    document.getElementById('mvAmount').value=''; document.getElementById('mvReason').value='';
-    refreshRow(uid); loadMemberDetail(uid);
-    alert((amt>0?'지급':'차감')+' 완료: '+Math.abs(amt).toLocaleString()+' P');
+    mvSetMode(_mvMode); refreshRow(uid); loadMemberDetail(uid);
+    alert((_mvMode==='deduct'?'차감':'지급')+' 완료: '+Math.abs(amt).toLocaleString()+' P');
   } else alert((res&&res.msg)||'처리에 실패했습니다.');
+}
+async function doDelete(btn){
+  var uid=btn.dataset.uid; var m=window.__members[uid];
+  if(!confirm('⚠️ '+(m.name||'이 회원')+' 님을 완전히 삭제할까요?\n\n신청·포인트·계정이 모두 삭제되며 되돌릴 수 없습니다.')) return;
+  if(!confirm('정말 삭제하시겠어요? 마지막 확인입니다.')) return;
+  btn.disabled=true; var o=btn.textContent; btn.textContent='삭제 중…';
+  var res=await OnAuth.deleteMember(uid);
+  btn.disabled=false; btn.textContent=o;
+  if(res&&res.ok){
+    var tr=document.querySelector('#memBody tr[data-uid="'+uid+'"]'); if(tr) tr.remove();
+    delete window.__members[uid];
+    closeMember();
+    alert('회원이 삭제되었습니다.');
+  } else alert((res&&res.msg)||'삭제에 실패했습니다.');
 }
 async function doSuspend(btn){
   var uid=btn.dataset.uid; var on=btn.dataset.on==='1';
