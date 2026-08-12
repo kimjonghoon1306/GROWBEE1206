@@ -179,4 +179,5 @@ function toggleMode(){{var n=document.body.classList.toggle('night');var b=docum
 <script>
 function setView(small){document.body.classList.toggle("view-compact",!!small);var L=document.getElementById("vLarge"),S=document.getElementById("vSmall");if(L&&S){L.classList.toggle("active",!small);S.classList.toggle("active",!!small);}localStorage.setItem("onjongil-view",small?"compact":"large");}(function(){if(localStorage.getItem("onjongil-view")==="compact"){setView(1);}})();
 </script>
+<script src="../../assets/js/pwa.js" defer></script>
 </body></html>

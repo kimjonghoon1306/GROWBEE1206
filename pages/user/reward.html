@@ -88,5 +88,6 @@ function toggleMode(){var n=document.body.classList.toggle('night');document.get
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
 (function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='../admin/admin-login.html';return;}t=setTimeout(function(){if(c===1){location.href='../../index.html';}c=0;},450);});})();
 </script>
+<script src="../../assets/js/pwa.js" defer></script>
 </body>
 </html>

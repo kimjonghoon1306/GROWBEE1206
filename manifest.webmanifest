@@ -1,0 +1,15 @@
+{
+  "name": "온종일 체험단",
+  "short_name": "온종일 체험단",
+  "description": "전국 맛집·카페·뷰티 체험단과 리워드를 한 곳에서. 온미와 함께!",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FBF8F2",
+  "theme_color": "#EC3A66",
+  "lang": "ko",
+  "icons": [
+    { "src": "assets/icons/onmi-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/icons/onmi-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
