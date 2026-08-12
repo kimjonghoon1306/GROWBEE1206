@@ -14,6 +14,12 @@ input, textarea, select, [contenteditable="true"], .allow-select, .allow-select 
 }
 img, a { -webkit-touch-callout: none; }
 
+/* 관리자 공통 페이지네이션 */
+.adm-pager { display:flex; justify-content:center; gap:6px; margin-top:20px; flex-wrap:wrap; }
+.adm-pager button { min-width:34px; height:34px; border-radius:8px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-muted); font-size:13px; font-weight:700; cursor:pointer; }
+.adm-pager button.active { background:var(--brand-gradient); color:#fff; border-color:transparent; }
+.adm-pager button:hover { color:var(--text); }
+
 :root {
   --accent:      #EC3A66;   /* deep purple */
   --accent-2:    #F0663C;

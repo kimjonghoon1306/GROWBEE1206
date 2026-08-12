@@ -108,12 +108,9 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
     </div>
     <div class="admin-content">
 <div class="search-bar">
-  <input class="search-input" placeholder="이름, 이메일, 채널명 검색...">
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
-    <option>전체 회원</option><option>리뷰어</option><option>광고주</option>
-  </select>
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
-    <option>전체 등급</option><option>브론즈</option><option>실버</option><option>골드</option><option>플래티넘</option>
+  <input class="search-input" id="memSearch" placeholder="이름, 이메일, 휴대폰 검색...">
+  <select id="memFilter" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
+    <option value="all">전체 회원</option><option value="active">정상 회원</option><option value="suspended">정지 회원</option>
   </select>
 </div>
 <div class="admin-card">
@@ -124,6 +121,7 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
       <tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">회원 정보를 불러오는 중…</td></tr>
     </tbody>
   </table>
+  <div class="adm-pager" id="memPager"></div>
 </div></div>
   </div>
 </div>
@@ -152,14 +150,37 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
 function fmtDate(iso){ if(!iso) return '-'; var d=new Date(iso); return (''+d.getFullYear()).slice(2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); }
 function fmtPhone(p){ if(!p) return '-'; p=(''+p).replace(/[^0-9]/g,''); if(p.length===11) return p.slice(0,3)+'-'+p.slice(3,7)+'-'+p.slice(7); return p; }
+var MEM_ALL=[], MEM_PAGE=1, MEM_PER=20;
 window.__adminReady = async function(){
   var body=document.getElementById('memBody');
   var r=await OnAuth.listMembers();
   if(r.error){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+esc(r.error.message)+'</td></tr>'; return; }
-  var rows=r.data||[];
-  document.getElementById('memCount').textContent='('+rows.length.toLocaleString()+'명)';
-  if(!rows.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">아직 가입한 회원이 없어요.</td></tr>'; return; }
-  body.innerHTML = rows.map(function(m){
+  MEM_ALL=r.data||[];
+  window.__members={}; MEM_ALL.forEach(function(m){ window.__members[m.id]=m; });
+  var si=document.getElementById('memSearch'), fs=document.getElementById('memFilter');
+  if(si) si.oninput=function(){ MEM_PAGE=1; renderMembers(); };
+  if(fs) fs.onchange=function(){ MEM_PAGE=1; renderMembers(); };
+  renderMembers();
+};
+function _memFiltered(){
+  var q=(document.getElementById('memSearch').value||'').toLowerCase().trim();
+  var f=document.getElementById('memFilter').value;
+  return MEM_ALL.filter(function(m){
+    if(f==='active'&&m.suspended) return false;
+    if(f==='suspended'&&!m.suspended) return false;
+    if(!q) return true;
+    return ((m.name||'')+(m.nickname||'')+(m.email||'')+(m.phone||'')).toLowerCase().indexOf(q)>=0;
+  });
+}
+function renderMembers(){
+  var body=document.getElementById('memBody'), pager=document.getElementById('memPager');
+  var rows=_memFiltered();
+  document.getElementById('memCount').textContent='('+rows.length.toLocaleString()+'명'+(rows.length!==MEM_ALL.length?(' / 전체 '+MEM_ALL.length):'')+')';
+  var pages=Math.max(1,Math.ceil(rows.length/MEM_PER));
+  if(MEM_PAGE>pages) MEM_PAGE=pages;
+  if(!rows.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">해당하는 회원이 없어요.</td></tr>'; pager.innerHTML=''; return; }
+  var slice=rows.slice((MEM_PAGE-1)*MEM_PER, MEM_PAGE*MEM_PER);
+  body.innerHTML = slice.map(function(m){
     var nm = esc(m.name||'-') + (m.nickname? ' / '+esc(m.nickname) : '') + (m.suspended? ' <span class="mv-susp">정지</span>' : '');
     return '<tr data-uid="'+m.id+'">'
       +'<td>'+nm+'</td>'
@@ -171,12 +192,10 @@ window.__adminReady = async function(){
       +'<td data-label="관리"><a href="#" class="mv-view" data-uid="'+m.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td>'
       +'</tr>';
   }).join('');
-  window.__members={}; rows.forEach(function(m){ window.__members[m.id]=m; });
   body.querySelectorAll('.mv-view').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); openMember(this.getAttribute('data-uid')); }); });
-  // 검색
-  var si=document.querySelector('.search-input');
-  if(si){ si.addEventListener('input',function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display = tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }); }
-};
+  if(pages<=1){ pager.innerHTML=''; }
+  else { var h=''; for(var i=1;i<=pages;i++){ h+='<button class="'+(i===MEM_PAGE?'active':'')+'" data-p="'+i+'">'+i+'</button>'; } pager.innerHTML=h; pager.querySelectorAll('button').forEach(function(bn){ bn.onclick=function(){ MEM_PAGE=parseInt(this.getAttribute('data-p'),10); renderMembers(); }; }); }
+}
 </script>
 <style>
 .mv-susp{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(255,71,87,.15);color:var(--brand-primary);margin-left:6px;vertical-align:1px;}
