@@ -18,6 +18,9 @@
       + '@keyframes ojpup{from{transform:translateY(22px) scale(.96);opacity:0}to{transform:none;opacity:1}}'
       + '.ojp-img{width:100%;display:block;}.ojp-imglink{display:block;}'
       + '.ojp-content{padding:20px 22px 6px;text-align:center;}'
+      + '.ojp-chip{display:inline-block;font-size:11px;font-weight:800;padding:4px 11px;border-radius:50px;margin-bottom:10px;}'
+      + '.ojp-chip.notice{background:rgba(84,160,255,.15);color:#3d8bfd;}'
+      + '.ojp-chip.ad{background:rgba(236,58,102,.13);color:#EC3A66;}'
       + '.ojp-emoji{font-size:38px;margin-bottom:6px;line-height:1;}'
       + '.ojp-title{font-size:19px;font-weight:800;color:#1a1a1a;margin-bottom:8px;line-height:1.32;}'
       + '.ojp-body{font-size:14px;color:#555;line-height:1.6;white-space:pre-line;}'
@@ -35,6 +38,9 @@
     var img = pp.image_url ? '<img class="ojp-img" src="' + esc(pp.image_url) + '" alt="">' : '';
     if (pp.image_url && pp.link_url) img = '<a class="ojp-imglink" href="' + esc(pp.link_url) + '">' + img + '</a>';
     var html = '<div class="ojp-card">' + img + '<div class="ojp-content">';
+    html += (pp.kind === 'notice')
+      ? '<div class="ojp-chip notice">📢 공지사항</div>'
+      : '<div class="ojp-chip ad">✨ 이벤트</div>';
     if (pp.emoji) html += '<div class="ojp-emoji">' + esc(pp.emoji) + '</div>';
     if (pp.title) html += '<div class="ojp-title">' + esc(pp.title) + '</div>';
     if (pp.body) html += '<div class="ojp-body">' + esc(pp.body) + '</div>';
