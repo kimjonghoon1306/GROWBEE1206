@@ -44,9 +44,19 @@
 .mp-link.active { background: var(--accent-tint); color: var(--accent-text); font-weight: 800; }
 .mp-link .mp-cnt { font-size: 12px; font-weight: 800; color: var(--accent); }
 .mp-link .mp-arrow { opacity: .4; }
-.mp-logout { display: block; padding: 12px 14px; font-size: 13px; color: var(--text-muted); }
-.mp-logout:hover { color: var(--accent-text); }
+.mp-logout { display: flex; align-items:center; justify-content:center; gap:7px; padding: 13px 14px; font-size: 14px; font-weight:700; color: var(--text-muted); border:1.5px solid var(--border); border-radius:12px; margin-top:4px; transition: var(--t); }
+.mp-logout::before { content:''; width:17px; height:17px; background:currentColor; -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/><polyline points='16 17 21 12 16 7'/><line x1='21' y1='12' x2='9' y2='12'/></svg>") center/contain no-repeat; mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/><polyline points='16 17 21 12 16 7'/><line x1='21' y1='12' x2='9' y2='12'/></svg>") center/contain no-repeat; }
+.mp-logout:hover { color: var(--accent-text); border-color: var(--accent); background: var(--accent-tint); }
 .mp-divider { height: 1px; background: var(--border); margin: 14px 6px; }
+
+/* 사이드바 아코디언: 대분류 제목 클릭 → 소분류 펼침/접힘 */
+.mp-sec-t { cursor: pointer; user-select: none; }
+.mp-sec-t:hover { color: var(--accent-text); }
+.mp-chev { display: inline-flex; opacity: .45; margin-left: 6px; transition: transform .22s ease; }
+.mp-chev svg { width: 15px; height: 15px; }
+.mp-sec.mp-collapsed .mp-chev { transform: rotate(-90deg); }
+.mp-sec > .mp-link { overflow: hidden; max-height: 60px; transition: max-height .25s ease, opacity .2s ease, padding .2s ease, margin .2s ease; }
+.mp-sec.mp-collapsed > .mp-link { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-top:0; margin-bottom:0; pointer-events: none; }
 
 /* ===== MAIN ===== */
 .mp-main { min-width: 0; }
