@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>네이버 로그인 처리 중 — 온종일 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);}
+.nc-box{text-align:center;padding:40px 24px;}
+.nc-box img{width:96px;margin-bottom:18px;animation:bob 1.4s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.nc-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.nc-sub{font-size:14px;color:var(--text-muted);}
+.nc-spin{width:34px;height:34px;margin:22px auto 0;border:3px solid var(--border);border-top-color:var(--brand-primary);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="nc-box">
+  <img src="../../assets/img/mascot.png" alt="온미">
+  <div class="nc-title">네이버 로그인 처리 중</div>
+  <div class="nc-sub">잠시만 기다려주세요…</div>
+  <div class="nc-spin"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  var done=false;
+  function go(){ if(done) return; done=true; location.replace('mypage.html'); }
+  // detectSessionInUrl 이 해시(#access_token)로 세션을 심음 → 로그인 완료 감지
+  try{
+    window.sb.auth.onAuthStateChange(function(ev, session){ if(session) go(); });
+    var s = await window.sb.auth.getSession();
+    if(s && s.data && s.data.session) go();
+  }catch(e){}
+  // 실패 대비 타임아웃
+  setTimeout(function(){ if(!done){ location.replace('login.html?err=naver_session'); } }, 7000);
+})();
+</script>
+</body>
+</html>

@@ -150,7 +150,7 @@
     <div id="li-msg" style="display:none;font-size:13px;font-weight:600;padding:11px 14px;border-radius:10px;margin-bottom:12px;"></div>
     <button class="submit-btn" id="li-btn" onclick="doLogin()">로그인</button>
     <div class="divider"><span>또는</span></div>
-    <button class="social-btn social-naver" id="naverBtn">네이버로 로그인</button>
+    <button class="social-btn social-naver" id="naverBtn" onclick="return OnAuth.startNaverLogin()">네이버로 로그인</button>
     <div class="auth-footer">아직 계정이 없으신가요? <a href="signup.html">무료 가입</a></div>
   </div>
 </div>
@@ -203,6 +203,13 @@ async function doLogin(){
   async function checkIn(){ try{ var u=await OnAuth.getUser(); if(u){ location.replace(nextParam()); } }catch(e){} }
   checkIn();
   window.addEventListener('pageshow', function(ev){ if(ev.persisted) checkIn(); });
+})();
+</script>
+<script>
+(function(){
+  var MSG={naver_token:'네이버 인증에 실패했어요. 다시 시도해주세요.',naver_email:'네이버 이메일 제공에 동의해야 로그인할 수 있어요.',naver_link:'로그인 처리 중 문제가 생겼어요. 다시 시도해주세요.',naver_session:'세션 생성에 실패했어요. 다시 시도해주세요.',naver_no_code:'네이버 로그인이 취소되었어요.',naver_exc:'일시적 오류예요. 잠시 후 다시 시도해주세요.'};
+  var e=new URLSearchParams(location.search).get('err');
+  if(e){ setTimeout(function(){ alert(MSG[e]||'네이버 로그인에 실패했어요. 다시 시도해주세요.'); },200); history.replaceState(null,'',location.pathname); }
 })();
 </script>
 <script src="../../assets/js/pwa.js" defer></script>

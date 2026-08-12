@@ -4,6 +4,9 @@
    ============================================================ */
 (function () {
   var SUPABASE_URL = 'https://vjoqbisnatsugbrtqloh.supabase.co';
+  // 네이버 로그인 (Client ID는 authorize URL에 노출되는 공개값 — 시크릿은 서버함수에만 있음)
+  var NAVER_CLIENT_ID = 'ymmWLZfSG3VCZFRYNM7F';
+  var NAVER_CALLBACK = 'https://vjoqbisnatsugbrtqloh.supabase.co/functions/v1/naver-auth';
   var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqb3FiaXNuYXRzdWdicnRxbG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTQ5MDEsImV4cCI6MjEwMjA5MDkwMX0.Rli0tyr4gHd3vKnoxxZspkE2SZlDIsYtx-PxRBKBr6s';
 
   if (!window.supabase || !window.supabase.createClient) {
@@ -29,6 +32,18 @@
 
     signIn: async function (email, password) {
       return await sb.auth.signInWithPassword({ email: email, password: password });
+    },
+
+    // 네이버 로그인 시작: 네이버 authorize 로 이동 (서버함수 콜백이 세션 발급)
+    startNaverLogin: function () {
+      var state = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      try { sessionStorage.setItem('naver_state', state); } catch (e) {}
+      var u = 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
+        + '&client_id=' + encodeURIComponent(NAVER_CLIENT_ID)
+        + '&redirect_uri=' + encodeURIComponent(NAVER_CALLBACK)
+        + '&state=' + encodeURIComponent(state);
+      location.href = u;
+      return false;
     },
 
     // 비밀번호 재설정 메일 발송
