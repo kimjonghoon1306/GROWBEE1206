@@ -52,11 +52,12 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
 .admin-main { background: var(--bg); overflow-y: auto; }
 .admin-topbar {
   position: sticky; top: 0; z-index: 10;
-  background: rgba(13,13,13,.95); backdrop-filter: blur(16px);
+  background: var(--header-bg); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   padding: 0 28px; height: 60px;
   display: flex; align-items: center; justify-content: space-between;
 }
+.topbar-btn { background: var(--nav-active-bg); }
 .admin-topbar-left { display: flex; align-items: center; gap: 12px; }
 .admin-page-title { font-family: var(--font-display); font-size: 18px; font-weight: 800; color:var(--text); }
 .admin-topbar-right { display: flex; align-items: center; gap: 10px; }
@@ -210,8 +211,8 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-label">총 회원 수</div>
-          <div class="kpi-val">12,<em>847</em></div>
-          <div class="kpi-change kpi-up"> 이번 주 +284명</div>
+          <div class="kpi-val" id="kpiMembers">–</div>
+          <div class="kpi-change kpi-up">실시간 집계</div>
         </div>
         <div class="kpi-card green">
           <div class="kpi-label">진행 중 캠페인</div>
@@ -314,6 +315,20 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
   }
   tick(); setInterval(tick,1000);
 })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  var admin = await OnAuth.requireAdmin();  // admin 아니면 admin-login으로
+  if(!admin) return;
+  window.__adminReady && window.__adminReady();
+})();
+</script>
+<script>
+window.__adminReady = async function(){
+  try{ var c=await OnAuth.memberCount(); if(c!=null){ var el=document.getElementById('kpiMembers'); if(el) el.innerHTML=c.toLocaleString(); } }catch(e){}
+};
 </script>
 </body>
 </html>

@@ -54,6 +54,26 @@
       return r.data || null;
     },
 
+    // 관리자 전용 페이지 보호: admin 아니면 관리자 로그인으로
+    requireAdmin: async function () {
+      var u = await Auth.getUser();
+      if (!u) { location.href = 'admin-login.html'; return null; }
+      var p = await Auth.getProfile();
+      if (!p || p.role !== 'admin') { location.href = 'admin-login.html'; return null; }
+      return p;
+    },
+
+    // 전체 회원 목록 (관리자만 RLS 통과)
+    listMembers: async function () {
+      return await sb.from('profiles').select('*').neq('role', 'admin').order('created_at', { ascending: false });
+    },
+
+    // 총 회원 수
+    memberCount: async function () {
+      var r = await sb.rpc('member_count');
+      return (r && !r.error) ? r.data : null;
+    },
+
     // 내 프로필 수정
     updateProfile: async function (fields) {
       var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };

@@ -204,7 +204,7 @@ function toggleMode(){var n=document.body.classList.toggle('night');localStorage
 (function(){if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());
 </script>
 
-<script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-dashboard.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
+<script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-login.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
 
 <script>
 function setView(small){document.body.classList.toggle("view-compact",!!small);var L=document.getElementById("vLarge"),S=document.getElementById("vSmall");if(L&&S){L.classList.toggle("active",!small);S.classList.toggle("active",!!small);}localStorage.setItem("onjongil-view",small?"compact":"large");}(function(){if(localStorage.getItem("onjongil-view")==="compact"){setView(1);}})();

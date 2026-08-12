@@ -86,7 +86,7 @@ var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4
 var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
-(function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='../admin/admin-dashboard.html';return;}t=setTimeout(function(){if(c===1){location.href='../../index.html';}c=0;},450);});})();
+(function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='../admin/admin-login.html';return;}t=setTimeout(function(){if(c===1){location.href='../../index.html';}c=0;},450);});})();
 </script>
 </body>
 </html>

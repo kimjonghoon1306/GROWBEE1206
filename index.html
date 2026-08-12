@@ -455,7 +455,7 @@ function toggleMode(){
 carRender();
 
 /* 로고 5번 탭 → 관리자 페이지 (숨김 진입) */
-(function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='pages/admin/admin-dashboard.html';return;}t=setTimeout(function(){c=0;},500);});})();
+(function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='pages/admin/admin-login.html';return;}t=setTimeout(function(){c=0;},500);});})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/auth.js"></script>

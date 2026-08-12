@@ -6,7 +6,7 @@
 <title>회원 관리 — 온종일 체험단 Admin</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
-body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--border:rgba(255,255,255,0.08);--text:#F0F0F0;--text-muted:#999;--shadow:0 4px 24px rgba(0,0,0,.5);--shadow-card:0 8px 40px rgba(0,0,0,.6);--header-bg:rgba(13,13,13,0.95);--nav-active-bg:rgba(255,255,255,0.06);}
+body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--border:rgba(255,255,255,0.12);--text:#F4F5F8;--text-muted:#AEB4C2;--shadow:0 4px 24px rgba(0,0,0,.35);--shadow-card:0 8px 32px rgba(0,0,0,.4);--header-bg:rgba(27,30,39,0.95);--nav-active-bg:rgba(255,255,255,0.08);}body.light{--bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08);}
 .admin-wrap{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
 .admin-sidebar{background:var(--bg-surface);border-right:1px solid var(--border);padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;}
 .sidebar-logo{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
@@ -15,14 +15,14 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
 .sidebar-logo-text{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--text);}
 .sidebar-logo-sub{font-size:10px;color:var(--text-muted);font-weight:600;}
 .sidebar-section{padding:14px 10px 6px;}
-.sidebar-section-label{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
+.sidebar-section-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
 .sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);transition:var(--transition);cursor:pointer;text-decoration:none;margin-bottom:2px;}
 .sidebar-link:hover{background:rgba(255,255,255,.05);color:var(--text);}
 .sidebar-link.active{background:rgba(255,71,87,.12);color:var(--brand-primary);font-weight:700;}
 .sidebar-link span.ico{font-size:15px;flex-shrink:0;}
 .sidebar-badge{margin-left:auto;background:var(--brand-primary);color:var(--text);font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
 .admin-main{background:var(--bg);overflow-y:auto;}
-.admin-topbar{position:sticky;top:0;z-index:10;background:rgba(13,13,13,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.admin-topbar{position:sticky;top:0;z-index:10;background:var(--header-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
 .admin-page-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);}
 .topbar-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:var(--transition);text-decoration:none;}
 .topbar-btn:hover{color:var(--text);background:rgba(255,255,255,.1);}
@@ -99,15 +99,11 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
   </select>
 </div>
 <div class="admin-card">
-  <div class="admin-card-title">회원 목록 (12,847명)</div>
+  <div class="admin-card-title">회원 목록 <span id="memCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
   <table class="admin-table">
-    <thead><tr><th>이름/닉네임</th><th>이메일</th><th>채널</th><th>팔로워</th><th>완료 리뷰</th><th>완료율</th><th>등급</th><th>가입일</th><th>관리</th></tr></thead>
-    <tbody>
-      <tr><td>김온미 / foodie_kimj</td><td style="color:var(--text-muted);">kimj@gmail.com</td><td style="color:var(--text-muted);">블로그</td><td style="color:var(--text-muted);">12,400</td><td style="color:var(--text-muted);">24회</td><td style="color:#2ED573;">100%</td><td><span class="s-badge s-active">골드</span></td><td style="color:var(--text-muted);">24.11.01</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
-      <tr><td>이루미 / cafe_tour_lee</td><td style="color:var(--text-muted);">lumee@naver.com</td><td style="color:var(--text-muted);">인스타</td><td style="color:var(--text-muted);">8,200</td><td style="color:var(--text-muted);">18회</td><td style="color:#2ED573;">100%</td><td><span class="s-badge s-pending">실버</span></td><td style="color:var(--text-muted);">24.09.15</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
-      <tr><td>박미트 / meat_hunter_pk</td><td style="color:var(--text-muted);">park@kakao.com</td><td style="color:var(--text-muted);">블로그</td><td style="color:var(--text-muted);">5,600</td><td style="color:var(--text-muted);">11회</td><td style="color:#FFA502;">91%</td><td><span class="s-badge s-pending">실버</span></td><td style="color:var(--text-muted);">24.08.20</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
-      <tr><td>최뷰티 / beauty_choi</td><td style="color:var(--text-muted);">beauty@naver.com</td><td style="color:var(--text-muted);">클립</td><td style="color:var(--text-muted);">3,100</td><td style="color:var(--text-muted);">7회</td><td style="color:#2ED573;">100%</td><td><span class="s-badge s-review">브론즈</span></td><td style="color:var(--text-muted);">24.12.03</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
-      <tr><td>정라멘 / ramen_jeong</td><td style="color:var(--text-muted);">ramen@gmail.com</td><td style="color:var(--text-muted);">인스타</td><td style="color:var(--text-muted);">22,000</td><td style="color:var(--text-muted);">36회</td><td style="color:#2ED573;">97%</td><td><span style="background:rgba(255,215,0,.15);color:#FFD700;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">플래티넘</span></td><td style="color:var(--text-muted);">23.06.11</td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+    <thead><tr><th>이름/닉네임</th><th>이메일</th><th>휴대폰</th><th>채널</th><th>포인트</th><th>가입일</th><th>관리</th></tr></thead>
+    <tbody id="memBody">
+      <tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">회원 정보를 불러오는 중…</td></tr>
     </tbody>
   </table>
 </div></div>
@@ -124,5 +120,42 @@ function admToggle(){var lt=document.body.classList.toggle("light");document.get
 <script>
 function admSide(){var s=document.querySelector('.admin-sidebar');var b=document.querySelector('.adm-backdrop');s.classList.toggle('open');if(b)b.classList.toggle('open');}
 (function(){if(!document.querySelector('.adm-backdrop')){var d=document.createElement('div');d.className='adm-backdrop';d.onclick=admSide;document.body.appendChild(d);}})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  var admin = await OnAuth.requireAdmin();  // admin 아니면 admin-login으로
+  if(!admin) return;
+  window.__adminReady && window.__adminReady();
+})();
+</script>
+<script>
+function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function fmtDate(iso){ if(!iso) return '-'; var d=new Date(iso); return (''+d.getFullYear()).slice(2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); }
+function fmtPhone(p){ if(!p) return '-'; p=(''+p).replace(/[^0-9]/g,''); if(p.length===11) return p.slice(0,3)+'-'+p.slice(3,7)+'-'+p.slice(7); return p; }
+window.__adminReady = async function(){
+  var body=document.getElementById('memBody');
+  var r=await OnAuth.listMembers();
+  if(r.error){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+esc(r.error.message)+'</td></tr>'; return; }
+  var rows=r.data||[];
+  document.getElementById('memCount').textContent='('+rows.length.toLocaleString()+'명)';
+  if(!rows.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">아직 가입한 회원이 없어요.</td></tr>'; return; }
+  body.innerHTML = rows.map(function(m){
+    var nm = esc(m.name||'-') + (m.nickname? ' / '+esc(m.nickname) : '');
+    return '<tr>'
+      +'<td>'+nm+'</td>'
+      +'<td style="color:var(--text-muted);">'+esc(m.email)+'</td>'
+      +'<td style="color:var(--text-muted);">'+fmtPhone(m.phone)+'</td>'
+      +'<td style="color:var(--text-muted);">'+esc(m.channel_type||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+((m.points||0).toLocaleString())+' P</td>'
+      +'<td style="color:var(--text-muted);">'+fmtDate(m.created_at)+'</td>'
+      +'<td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td>'
+      +'</tr>';
+  }).join('');
+  // 검색
+  var si=document.querySelector('.search-input');
+  if(si){ si.addEventListener('input',function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display = tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }); }
+};
 </script>
 </body></html>

@@ -6,7 +6,7 @@
 <title>캠페인 관리 — 온종일 체험단 Admin</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
-body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--border:rgba(255,255,255,0.08);--text:#F0F0F0;--text-muted:#999;--shadow:0 4px 24px rgba(0,0,0,.5);--shadow-card:0 8px 40px rgba(0,0,0,.6);--header-bg:rgba(13,13,13,0.95);--nav-active-bg:rgba(255,255,255,0.06);}
+body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--border:rgba(255,255,255,0.12);--text:#F4F5F8;--text-muted:#AEB4C2;--shadow:0 4px 24px rgba(0,0,0,.35);--shadow-card:0 8px 32px rgba(0,0,0,.4);--header-bg:rgba(27,30,39,0.95);--nav-active-bg:rgba(255,255,255,0.08);}body.light{--bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08);}
 .admin-wrap{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
 .admin-sidebar{background:var(--bg-surface);border-right:1px solid var(--border);padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;}
 .sidebar-logo{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
@@ -15,14 +15,14 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
 .sidebar-logo-text{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--text);}
 .sidebar-logo-sub{font-size:10px;color:var(--text-muted);font-weight:600;}
 .sidebar-section{padding:14px 10px 6px;}
-.sidebar-section-label{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
+.sidebar-section-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
 .sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);transition:var(--transition);cursor:pointer;text-decoration:none;margin-bottom:2px;}
 .sidebar-link:hover{background:rgba(255,255,255,.05);color:var(--text);}
 .sidebar-link.active{background:rgba(255,71,87,.12);color:var(--brand-primary);font-weight:700;}
 .sidebar-link span.ico{font-size:15px;flex-shrink:0;}
 .sidebar-badge{margin-left:auto;background:var(--brand-primary);color:var(--text);font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
 .admin-main{background:var(--bg);overflow-y:auto;}
-.admin-topbar{position:sticky;top:0;z-index:10;background:rgba(13,13,13,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.admin-topbar{position:sticky;top:0;z-index:10;background:var(--header-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
 .admin-page-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);}
 .topbar-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:var(--transition);text-decoration:none;}
 .topbar-btn:hover{color:var(--text);background:rgba(255,255,255,.1);}
@@ -127,5 +127,14 @@ function admToggle(){var lt=document.body.classList.toggle("light");document.get
 <script>
 function admSide(){var s=document.querySelector('.admin-sidebar');var b=document.querySelector('.adm-backdrop');s.classList.toggle('open');if(b)b.classList.toggle('open');}
 (function(){if(!document.querySelector('.adm-backdrop')){var d=document.createElement('div');d.className='adm-backdrop';d.onclick=admSide;document.body.appendChild(d);}})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  var admin = await OnAuth.requireAdmin();  // admin 아니면 admin-login으로
+  if(!admin) return;
+  window.__adminReady && window.__adminReady();
+})();
 </script>
 </body></html>
