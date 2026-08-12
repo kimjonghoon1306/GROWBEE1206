@@ -143,5 +143,19 @@ var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  var u = await OnAuth.requireAuth();   // 미로그인 시 login.html로
+  if(!u) return;
+  var nm = (u.user_metadata && (u.user_metadata.nickname||u.user_metadata.name)) || u.email.split('@')[0];
+  document.querySelectorAll('[data-user-name], .mp-name b').forEach(function(el){ el.textContent = nm; });
+})();
+function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.mp-logout, [data-logout]').forEach(function(a){ a.addEventListener('click', onLogout); });
+});
+</script>
 </body>
 </html>

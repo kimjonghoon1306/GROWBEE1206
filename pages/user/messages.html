@@ -88,4 +88,18 @@ if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add(
 document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('click',function(){this.parentNode.querySelectorAll('.mp-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');});});
 </script>
 <script>document.querySelectorAll(".mp-tab").forEach(function(t){t.onclick=function(){this.parentNode.querySelectorAll(".mp-tab").forEach(function(x){x.classList.remove("active")});this.classList.add("active");}});</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(async function(){
+  var u = await OnAuth.requireAuth();   // 미로그인 시 login.html로
+  if(!u) return;
+  var nm = (u.user_metadata && (u.user_metadata.nickname||u.user_metadata.name)) || u.email.split('@')[0];
+  document.querySelectorAll('[data-user-name], .mp-name b').forEach(function(el){ el.textContent = nm; });
+})();
+function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.mp-logout, [data-logout]').forEach(function(a){ a.addEventListener('click', onLogout); });
+});
+</script>
 </body></html>

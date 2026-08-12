@@ -144,10 +144,11 @@
     </div>
     <h1 class="auth-title">다시 만나서 반가워요</h1>
     <p class="auth-sub">온종일 체험단 계정으로 로그인하세요</p>
-    <div class="form-group"><label class="form-label">이메일</label><input class="form-input" type="email" placeholder="hello@onjongil.kr"></div>
-    <div class="form-group"><label class="form-label">비밀번호</label><input class="form-input" type="password" placeholder="비밀번호 입력"></div>
+    <div class="form-group"><label class="form-label">이메일</label><input id="li-email" class="form-input" type="email" placeholder="hello@onjongil.kr"></div>
+    <div class="form-group"><label class="form-label">비밀번호</label><input id="li-pw" class="form-input" type="password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <div class="remember-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" style="accent-color:var(--brand-primary);"> 로그인 상태 유지</label><a href="#">비밀번호 찾기</a></div>
-    <button class="submit-btn" onclick="location.href='../../index.html'">로그인</button>
+    <div id="li-msg" style="display:none;font-size:13px;font-weight:600;padding:11px 14px;border-radius:10px;margin-bottom:12px;"></div>
+    <button class="submit-btn" id="li-btn" onclick="doLogin()">로그인</button>
     <div class="divider"><span>또는</span></div>
     <button class="social-btn social-kakao">카카오로 로그인</button>
     <button class="social-btn social-naver">네이버로 로그인</button>
@@ -179,4 +180,22 @@ function toggleMode(){{var n=document.body.classList.toggle('night');var b=docum
 </script>
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-dashboard.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+function liMsg(t,ok){var m=document.getElementById('li-msg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(60,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#2FA46A':'#d61f56';}
+function nextParam(){var m=location.search.match(/[?&]next=([^&]+)/);return m?decodeURIComponent(m[1]):'mypage.html';}
+async function doLogin(){
+  var email=document.getElementById('li-email').value.trim();
+  var pw=document.getElementById('li-pw').value;
+  if(!email||!pw){return liMsg('이메일과 비밀번호를 입력해주세요.');}
+  var btn=document.getElementById('li-btn'); btn.disabled=true; var orig=btn.textContent; btn.textContent='로그인 중...';
+  try{
+    var r=await OnAuth.signIn(email,pw);
+    if(r.error){ liMsg('이메일 또는 비밀번호가 올바르지 않아요.'); btn.disabled=false; btn.textContent=orig; return; }
+    liMsg('로그인 성공!',true);
+    setTimeout(function(){ location.href=nextParam(); },500);
+  }catch(e){ liMsg('오류가 발생했어요. 다시 시도해주세요.'); btn.disabled=false; btn.textContent=orig; }
+}
+</script>
 </body></html>

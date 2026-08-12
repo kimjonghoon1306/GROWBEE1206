@@ -104,20 +104,21 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
 
     <div class="form-group">
       <label class="form-label">이름</label>
-      <input class="form-input" type="text" placeholder="홍길동">
+      <input id="su-name" class="form-input" type="text" placeholder="홍길동">
     </div>
     <div class="form-group">
       <label class="form-label">이메일</label>
-      <input class="form-input" type="email" placeholder="hello@onjongil.kr">
+      <input id="su-email" class="form-input" type="email" placeholder="hello@onjongil.kr">
     </div>
     <div class="form-group">
       <label class="form-label">비밀번호</label>
-      <input class="form-input" type="password" placeholder="8자 이상, 영문+숫자 조합">
+      <input id="su-pw" class="form-input" type="password" placeholder="8자 이상, 영문+숫자 조합">
     </div>
     <div class="form-group">
       <label class="form-label">비밀번호 확인</label>
-      <input class="form-input" type="password" placeholder="비밀번호를 다시 입력하세요">
+      <input id="su-pw2" class="form-input" type="password" placeholder="비밀번호를 다시 입력하세요">
     </div>
+    <div id="su-msg" style="display:none;font-size:13px;font-weight:600;padding:11px 14px;border-radius:10px;margin-bottom:12px;"></div>
 
     <div id="reviewer-section">
       <div class="form-group">
@@ -177,7 +178,7 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
       <label class="agree-item"><input class="chk agree-sub" type="checkbox"> <span>[선택] 마케팅 정보 수신에 동의합니다</span></label>
     </div>
 
-    <button class="submit-btn">가입하기</button>
+    <button class="submit-btn" id="su-btn" onclick="doSignup()">가입하기</button>
 
     <div class="divider"><span>또는 소셜 계정으로 가입</span></div>
     <div class="social-btns">
@@ -212,5 +213,27 @@ function toggleMode() {
 </script>
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-dashboard.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+function suMsg(t,ok){var m=document.getElementById('su-msg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(60,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#2FA46A':'#d61f56';}
+async function doSignup(){
+  var name=document.getElementById('su-name').value.trim();
+  var email=document.getElementById('su-email').value.trim();
+  var pw=document.getElementById('su-pw').value;
+  var pw2=document.getElementById('su-pw2').value;
+  if(!name){return suMsg('이름을 입력해주세요.');}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){return suMsg('올바른 이메일을 입력해주세요.');}
+  if(pw.length<8){return suMsg('비밀번호는 8자 이상이어야 해요.');}
+  if(pw!==pw2){return suMsg('비밀번호가 일치하지 않아요.');}
+  var btn=document.getElementById('su-btn'); btn.disabled=true; var orig=btn.textContent; btn.textContent='가입 중...';
+  try{
+    var r=await OnAuth.signUp(email,pw,{name:name,nickname:name});
+    if(r.error){ suMsg(r.error.message.indexOf('registered')>=0?'이미 가입된 이메일이에요.':r.error.message); btn.disabled=false; btn.textContent=orig; return; }
+    suMsg('가입 완료! 마이페이지로 이동합니다 :)',true);
+    setTimeout(function(){ location.href='mypage.html'; },900);
+  }catch(e){ suMsg('오류가 발생했어요. 잠시 후 다시 시도해주세요.'); btn.disabled=false; btn.textContent=orig; }
+}
+</script>
 </body>
 </html>
