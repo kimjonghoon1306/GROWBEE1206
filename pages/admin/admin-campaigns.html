@@ -83,7 +83,7 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
       <button class="topbar-btn adm-ham" onclick="admSide()" aria-label="메뉴" style="display:none;width:38px;padding:0;align-items:center;justify-content:center;margin-right:4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       <span class="admin-page-title">캠페인 관리</span>
       <div style="display:flex;gap:8px;">
-        <button style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:var(--brand-gradient);color:var(--text);border:none;cursor:pointer;">+ 새 캠페인 등록</button>
+        <button id="campNewBtn" onclick="openCampForm()" style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:700;background:var(--brand-gradient);color:#fff;border:none;cursor:pointer;">+ 새 캠페인 등록</button>
         <button class="topbar-btn" id="admThemeBtn" onclick="admToggle()" title="낮/밤" style="width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;"><svg id="admThemeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
         <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
       </div>
@@ -99,19 +99,10 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
   </select>
 </div>
 <div class="admin-card">
-  <div class="admin-card-title">캠페인 목록 (84개)</div>
+  <div class="admin-card-title">캠페인 목록 <span id="campCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
   <table class="admin-table">
     <thead><tr><th>캠페인명</th><th>광고주</th><th>지역</th><th>카테고리</th><th>모집인원</th><th>신청</th><th>마감일</th><th>상태</th><th>관리</th></tr></thead>
-    <tbody>
-      <tr><td>스시 오모 오마카세 코스</td><td style="color:var(--text-muted);">오모 레스토랑</td><td style="color:var(--text-muted);">강남구</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">30명</td><td style="color:var(--text-muted);">24명</td><td style="color:var(--text-muted);">02.05</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>카페 루미오 시그니처 음료</td><td style="color:var(--text-muted);">루미오 카페</td><td style="color:var(--text-muted);">마포구</td><td style="color:var(--text-muted);">카페</td><td style="color:var(--text-muted);">20명</td><td style="color:var(--text-muted);">8명</td><td style="color:var(--text-muted);">02.08</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>한우 프리미엄 '우진각'</td><td style="color:var(--text-muted);">우진각</td><td style="color:var(--text-muted);">서초구</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">20명</td><td style="color:var(--text-muted);">19명</td><td style="color:var(--text-muted);">02.02</td><td><span class="s-badge s-review">검토중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>클리어 스킨랩 피부 케어</td><td style="color:var(--text-muted);">클리어뷰티</td><td style="color:var(--text-muted);">강남구</td><td style="color:var(--text-muted);">뷰티</td><td style="color:var(--text-muted);">15명</td><td style="color:var(--text-muted);">5명</td><td style="color:var(--text-muted);">02.10</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>테라스 해운대 와인바</td><td style="color:var(--text-muted);">해운대비치</td><td style="color:var(--text-muted);">부산 해운대</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">25명</td><td style="color:var(--text-muted);">18명</td><td style="color:var(--text-muted);">02.06</td><td><span class="s-badge s-done">마감</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
-      <tr><td>그린테이블 비건 브런치</td><td style="color:var(--text-muted);">그린테이블</td><td style="color:var(--text-muted);">대구 수성구</td><td style="color:var(--text-muted);">카페</td><td style="color:var(--text-muted);">15명</td><td style="color:var(--text-muted);">3명</td><td style="color:var(--text-muted);">02.14</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>제주 흑돼지 '한라장'</td><td style="color:var(--text-muted);">한라장</td><td style="color:var(--text-muted);">제주시</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">20명</td><td style="color:var(--text-muted);">13명</td><td style="color:var(--text-muted);">02.08</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>가로수길 스파 '르블랑'</td><td style="color:var(--text-muted);">르블랑</td><td style="color:var(--text-muted);">강남 신사</td><td style="color:var(--text-muted);">뷰티</td><td style="color:var(--text-muted);">10명</td><td style="color:var(--text-muted);">3명</td><td style="color:var(--text-muted);">02.04</td><td><span class="s-badge s-review">검토중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-    </tbody>
+    <tbody id="campBody"><tr><td colspan="9" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
   </table>
 </div></div>
   </div>
@@ -136,6 +127,143 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
   if(!admin) return;
   window.__adminReady && window.__adminReady();
 })();
+</script>
+<style>
+.cf-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;}
+.cf-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.cf-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid var(--border);}
+.cf-title{font-size:17px;font-weight:800;color:var(--text);}
+.cf-x{background:none;border:none;color:var(--text-muted);font-size:24px;line-height:1;cursor:pointer;}
+.cf-body{padding:18px 22px 22px;}
+.cf-l{display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin:12px 0 5px;}
+.cf-in{width:100%;background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:14px;font-family:inherit;box-sizing:border-box;}
+textarea.cf-in{resize:vertical;}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;}
+.cf-check{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--text);font-weight:600;cursor:pointer;}
+.cf-check input{width:17px;height:17px;}
+.cf-actions{display:flex;align-items:center;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
+.cf-btn{border:none;border-radius:50px;padding:11px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.cf-btn.pri{background:var(--brand-gradient);color:#fff;}
+.cf-btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--text);}
+.cf-del{background:transparent;border:1.5px solid rgba(255,71,87,.4);color:var(--brand-primary);border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;cursor:pointer;}
+.cf-msg{display:none;font-size:13px;font-weight:600;padding:10px 12px;border-radius:10px;margin-top:12px;}
+@media(max-width:540px){.cf-row{grid-template-columns:1fr;}}
+</style>
+<div class="cf-overlay" id="cfOverlay"><div class="cf-card">
+  <div class="cf-head"><div class="cf-title" id="cfTitle">새 캠페인 등록</div><button class="cf-x" onclick="closeCampForm()">&times;</button></div>
+  <div class="cf-body">
+    <label class="cf-l">캠페인명 *</label><input id="cf-title" class="cf-in" placeholder="예: 스시 오모 오마카세 코스">
+    <div class="cf-row">
+      <div><label class="cf-l">광고주/매장명</label><input id="cf-store" class="cf-in" placeholder="매장 이름"></div>
+      <div><label class="cf-l">지역</label><input id="cf-region" class="cf-in" placeholder="강남구 · 역삼동"></div>
+    </div>
+    <div class="cf-row">
+      <div><label class="cf-l">카테고리</label><select id="cf-cat" class="cf-in"><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option><option>배송형</option><option>기타</option></select></div>
+      <div><label class="cf-l">채널</label><select id="cf-channel" class="cf-in"><option>블로그</option><option>인스타</option><option>클립</option></select></div>
+    </div>
+    <div class="cf-row">
+      <div><label class="cf-l">대표 이미지</label><select id="cf-img" class="cf-in"><option value="">없음</option><option value="sushi">sushi</option><option value="cafe">cafe</option><option value="hanwoo">hanwoo</option><option value="skincare">skincare</option><option value="taco">taco</option><option value="ramen">ramen</option><option value="winebar">winebar</option><option value="vegan">vegan</option></select></div>
+      <div><label class="cf-l">상태</label><select id="cf-status" class="cf-in"><option value="active">진행중</option><option value="closed">마감</option></select></div>
+    </div>
+    <div class="cf-row">
+      <div><label class="cf-l">혜택 문구</label><input id="cf-reward" class="cf-in" placeholder="15만원 상당"></div>
+      <div><label class="cf-l">적립 포인트 (리뷰완료 시)</label><input id="cf-points" class="cf-in" type="number" placeholder="10"></div>
+    </div>
+    <div class="cf-row">
+      <div><label class="cf-l">모집 인원</label><input id="cf-cap" class="cf-in" type="number" placeholder="20"></div>
+      <div><label class="cf-l">마감일</label><input id="cf-deadline" class="cf-in" type="date"></div>
+    </div>
+    <label class="cf-l">소개</label><textarea id="cf-desc" class="cf-in" rows="3" placeholder="캠페인 소개 문구"></textarea>
+    <label class="cf-check"><input type="checkbox" id="cf-hot"> 🔥 HOT 뱃지 표시</label>
+    <div id="cfMsg" class="cf-msg"></div>
+    <div class="cf-actions">
+      <button class="cf-del" id="cfDelBtn" onclick="deleteCampFromForm()" style="display:none;">삭제</button>
+      <div style="flex:1;"></div>
+      <button class="cf-btn ghost" onclick="closeCampForm()">취소</button>
+      <button class="cf-btn pri" id="cfSaveBtn" onclick="saveCampForm()">저장</button>
+    </div>
+  </div>
+</div></div>
+<script>
+function _cesc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function _cmd(d){ if(!d) return '-'; var p=String(d).slice(0,10).split('-'); return p[1]+'.'+p[2]; }
+var _editId=null;
+window.__camps={};
+function _v(id){ return (document.getElementById(id).value||'').trim(); }
+function cfMsg(t,ok){ var m=document.getElementById('cfMsg'); m.style.display='block'; m.textContent=t; m.style.background=ok?'rgba(46,213,115,.12)':'rgba(255,71,87,.12)'; m.style.color=ok?'#2ED573':'var(--brand-primary)'; }
+function openCampForm(id){
+  _editId=id||null;
+  document.getElementById('cfTitle').textContent=_editId?'캠페인 수정':'새 캠페인 등록';
+  document.getElementById('cfDelBtn').style.display=_editId?'inline-block':'none';
+  document.getElementById('cfMsg').style.display='none';
+  var c=_editId?window.__camps[_editId]:{};
+  document.getElementById('cf-title').value=c.title||'';
+  document.getElementById('cf-store').value=c.store_name||'';
+  document.getElementById('cf-region').value=c.region||'';
+  document.getElementById('cf-cat').value=c.category||'맛집';
+  document.getElementById('cf-channel').value=c.channel||'블로그';
+  document.getElementById('cf-img').value=c.image_key||'';
+  document.getElementById('cf-status').value=c.status||'active';
+  document.getElementById('cf-reward').value=c.reward_text||'';
+  document.getElementById('cf-points').value=(c.reward_points!=null?c.reward_points:'');
+  document.getElementById('cf-cap').value=(c.capacity!=null?c.capacity:'');
+  document.getElementById('cf-deadline').value=c.deadline?String(c.deadline).slice(0,10):'';
+  document.getElementById('cf-desc').value=c.description||'';
+  document.getElementById('cf-hot').checked=!!c.is_hot;
+  document.getElementById('cfOverlay').style.display='flex';
+}
+function closeCampForm(){ document.getElementById('cfOverlay').style.display='none'; }
+async function saveCampForm(){
+  var title=_v('cf-title'); if(!title){ cfMsg('캠페인명을 입력해주세요.'); return; }
+  var fields={ title:title, store_name:_v('cf-store')||null, region:_v('cf-region')||null,
+    category:_v('cf-cat'), channel:_v('cf-channel'), image_key:_v('cf-img')||null,
+    status:_v('cf-status'), reward_text:_v('cf-reward')||null,
+    reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
+    deadline:_v('cf-deadline')||null, description:_v('cf-desc')||null,
+    is_hot:document.getElementById('cf-hot').checked };
+  var btn=document.getElementById('cfSaveBtn'); btn.disabled=true; var o=btn.textContent; btn.textContent='저장 중…';
+  var r=_editId? await OnAuth.updateCampaign(_editId, fields) : await OnAuth.createCampaign(fields);
+  btn.disabled=false; btn.textContent=o;
+  if(r&&r.error){ cfMsg('저장 실패: '+r.error.message); return; }
+  closeCampForm(); loadCamps();
+}
+async function deleteCampFromForm(){
+  if(!_editId) return;
+  if(!confirm('이 캠페인을 삭제할까요?\n신청 내역도 함께 삭제됩니다. 되돌릴 수 없어요.')) return;
+  var r=await OnAuth.deleteCampaign(_editId);
+  if(r&&r.error){ cfMsg('삭제 실패: '+r.error.message); return; }
+  closeCampForm(); loadCamps();
+}
+function _statusBadge(st){ return st==='active'?'<span class="s-badge s-active">진행중</span>':'<span class="s-badge s-done">마감</span>'; }
+async function loadCamps(){
+  var body=document.getElementById('campBody');
+  var r=await OnAuth.adminListCampaigns();
+  if(r.error){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+_cesc(r.error.message)+'</td></tr>'; return; }
+  var rows=r.data||[]; window.__camps={};
+  document.getElementById('campCount').textContent='('+rows.length+'개)';
+  if(!rows.length){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 캠페인이 없어요. 우측 상단 <b>+ 새 캠페인 등록</b>으로 추가하세요.</td></tr>'; return; }
+  body.innerHTML=rows.map(function(c){ window.__camps[c.id]=c;
+    var hot=c.is_hot?' <span class="s-badge" style="background:rgba(255,71,87,.15);color:#FF5A5F;">HOT</span>':'';
+    return '<tr>'
+      +'<td>'+_cesc(c.title)+hot+'</td>'
+      +'<td style="color:var(--text-muted);">'+_cesc(c.store_name||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+_cesc(c.region||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+_cesc(c.category||'-')+'</td>'
+      +'<td style="color:var(--text-muted);">'+(c.capacity||0)+'명</td>'
+      +'<td style="color:var(--text-muted);">'+(c.applied_count||0)+'명</td>'
+      +'<td style="color:var(--text-muted);">'+_cmd(c.deadline)+'</td>'
+      +'<td>'+_statusBadge(c.status)+'</td>'
+      +'<td style="white-space:nowrap;"><a href="#" class="camp-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a> <a href="#" class="camp-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.status==='active'?'마감':'재개')+'</a></td>'
+      +'</tr>';
+  }).join('');
+  body.querySelectorAll('.camp-edit').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); openCampForm(this.getAttribute('data-id')); }); });
+  body.querySelectorAll('.camp-toggle').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); var c=window.__camps[id]; var ns=c.status==='active'?'closed':'active'; if(!confirm(ns==='closed'?'이 캠페인을 마감할까요?':'이 캠페인을 다시 진행중으로 바꿀까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:ns}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
+  // 검색
+  var si=document.querySelector('.search-input');
+  if(si){ si.oninput=function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display=tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }; }
+}
+document.addEventListener('click',function(e){ if(e.target&&e.target.id==='cfOverlay') closeCampForm(); });
+window.__adminReady = loadCamps;
 </script>
 <script src="../../assets/js/pwa.js" defer></script>
 </body></html>

@@ -167,6 +167,20 @@
       return r.data;
     },
 
+    // ── 관리자: 캠페인 CRUD (RLS가 admin만 통과) ──
+    adminListCampaigns: async function () {
+      return await sb.from('campaigns').select('*').order('created_at', { ascending: false });
+    },
+    createCampaign: async function (fields) {
+      return await sb.from('campaigns').insert(fields).select().single();
+    },
+    updateCampaign: async function (id, fields) {
+      return await sb.from('campaigns').update(fields).eq('id', id).select().single();
+    },
+    deleteCampaign: async function (id) {
+      return await sb.from('campaigns').delete().eq('id', id);
+    },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);
