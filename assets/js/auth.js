@@ -126,6 +126,12 @@
         .eq('user_id', u.id).order('created_at', { ascending: false });
       return (r && !r.error) ? (r.data || []) : [];
     },
+    // 손님: 리뷰 URL 제출 (선정된 캠페인)
+    submitReview: async function (appId, url) {
+      var r = await sb.rpc('submit_review_url', { p_app: appId, p_url: url });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
 
     // ── 포인트 ──────────────────────────────────────────
     myPointTx: async function () {
