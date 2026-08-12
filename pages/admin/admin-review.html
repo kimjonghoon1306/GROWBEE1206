@@ -106,8 +106,12 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
       </div>
     </div>
     <div class="admin-content">
-<div class="search-bar">
-  <input class="search-input" placeholder="캠페인명, 회원 이름/이메일 검색...">
+<div class="search-bar" style="flex-wrap:wrap;">
+  <input class="search-input" id="rvSearch" placeholder="캠페인명, 회원 이름/이메일 검색...">
+  <input type="date" id="rvFrom" class="rv-date" title="시작일">
+  <span style="color:var(--text-muted);align-self:center;">~</span>
+  <input type="date" id="rvTo" class="rv-date" title="종료일">
+  <button class="rv-view-btn" id="rvDateClear" onclick="rvClearDate()">기간 초기화</button>
 </div>
 
 <!-- 용어 설명 (헷갈림 방지) -->
@@ -142,10 +146,17 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
 </div>
 <div class="admin-card">
   <div class="admin-card-title" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">신청·리뷰 목록 <span id="rvCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span><span style="flex:1;"></span><span id="rvAutoStat" style="font-size:12px;font-weight:700;"></span></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
+    <button class="rv-view-btn" id="rvViewFlat" onclick="rvSetView('flat')">목록으로 보기</button>
+    <button class="rv-view-btn on" id="rvViewGroup" onclick="rvSetView('group')">캠페인별 모아보기</button>
+    <span style="flex:1;"></span>
+    <span style="font-size:11px;color:var(--text-muted);">캠페인별로 접었다 펼 수 있어요</span>
+  </div>
   <table class="admin-table">
     <thead><tr><th>캠페인</th><th>회원</th><th>신청일</th><th>리뷰 링크</th><th>상태</th><th>검수</th></tr></thead>
     <tbody id="rvBody"><tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
   </table>
+  <div class="adm-pager" id="rvPager"></div>
 </div>
   </div>
 </div>
@@ -173,6 +184,14 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 <style>
 .rv-tab{background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;}
 .rv-tab.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+.rv-view-btn{background:var(--bg-card2,transparent);border:1.5px solid var(--border);border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;}
+.rv-view-btn.on{background:var(--brand-gradient);color:#fff;border-color:transparent;}
+.rv-date{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:9px 12px;color:var(--text);font-size:13px;font-family:inherit;}
+.rv-grp{cursor:pointer;}
+.rv-grp td{background:var(--bg-card2,rgba(255,255,255,.03));font-weight:700;color:var(--text) !important;padding:12px 10px !important;}
+.rv-grp .chev{display:inline-block;transition:transform .2s;margin-right:8px;color:var(--text-muted);}
+.rv-grp.collapsed .chev{transform:rotate(-90deg);}
+.rv-grp-mini{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:50px;margin-left:6px;}
 .rv-act{border:none;border-radius:50px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;margin-right:5px;}
 .rv-act.ok{background:var(--brand-gradient);color:#fff;}
 .rv-act.ghost{background:transparent;border:1.5px solid var(--border);color:var(--text);}
@@ -202,40 +221,58 @@ window.__adminReady = async function(){
     '<span style="color:#FFA502;">재검토요청 '+appeal+'</span>';
   renderReviews();
 };
-function renderReviews(){
-  var body=document.getElementById('rvBody');
-  var rows=(RV_FILTER==='all')?RV_ALL:RV_ALL.filter(function(a){return a.status===RV_FILTER;});
-  if(!rows.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:34px 0;color:var(--text-muted);">해당하는 신청이 없어요.</td></tr>'; return; }
-  body.innerHTML=rows.map(function(a){
+var RV_VIEW='group', RV_PAGE=1, RV_PER=20, RV_COLLAPSE={};
+function rvSetView(v){ RV_VIEW=v; RV_PAGE=1;
+  document.getElementById('rvViewFlat').classList.toggle('on',v==='flat');
+  document.getElementById('rvViewGroup').classList.toggle('on',v==='group');
+  renderReviews();
+}
+function rvClearDate(){ document.getElementById('rvFrom').value=''; document.getElementById('rvTo').value=''; RV_PAGE=1; renderReviews(); }
+function _rvFiltered(){
+  var q=(document.getElementById('rvSearch').value||'').toLowerCase().trim();
+  var from=document.getElementById('rvFrom').value, to=document.getElementById('rvTo').value;
+  return RV_ALL.filter(function(a){
+    if(RV_FILTER!=='all' && a.status!==RV_FILTER) return false;
+    var d=String(a.created_at).slice(0,10);
+    if(from && d<from) return false;
+    if(to && d>to) return false;
+    if(!q) return true;
     var c=a.campaigns||{}, m=a.profiles||{};
-    var link=a.review_url?('<a href="'+esc(a.review_url)+'" target="_blank" style="color:var(--brand-primary);font-weight:600;">리뷰 열기 →</a>'):'<span style="color:var(--text-muted);">미제출</span>';
-    var autoTag='';
-    if(a.auto_passed===true) autoTag=' <span class="s-badge s-active">자동통과</span>';
-    else if(a.auto_passed===false) autoTag=' <span class="s-badge" style="background:rgba(255,71,87,.15);color:var(--brand-primary);">자동미달</span>';
-    if(a.appeal_status==='pending') autoTag+=' <span class="s-badge" style="background:rgba(255,165,2,.18);color:#FFA502;">재검토요청</span>';
-    var badge='<span class="s-badge '+(SBADGE[a.status]||'s-done')+'">'+(SLABEL[a.status]||a.status)+'</span>'+autoTag;
-    var acts='';
-    if(a.appeal_status==='pending'){ acts='<button class="rv-appeal-btn rv-act ghost" data-id="'+a.id+'">사유</button><button class="rv-act ok" data-appeal="1" data-id="'+a.id+'">승인</button><button class="rv-act ghost" data-appeal="0" data-id="'+a.id+'">거절</button>'; }
-    else if(a.status==='applied'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="selected">선정</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="rejected">탈락</button>'; }
-    else if(a.status==='selected'){ acts='<button class="rv-act ghost" data-id="'+a.id+'" data-to="applied">선정취소</button>'; }
-    else if(a.status==='reviewing'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="completed">검수완료(+'+(c.reward_points||0)+'P)</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="selected">반려</button>'; }
-    else if(a.status==='completed'){ acts='<span style="color:#2FA46A;font-size:12px;font-weight:700;">지급 완료</span>'; }
-    else { acts='<button class="rv-act ghost" data-id="'+a.id+'" data-to="applied">되돌리기</button>'; }
-    return '<tr>'
-      +'<td>'+esc(c.title||'-')+'<div style="color:var(--text-muted);font-size:11px;">'+esc(c.region||'')+(c.reward_text?(' · '+esc(c.reward_text)):'')+'</div></td>'
-      +'<td style="color:var(--text-muted);" data-label="회원">'+esc(m.name||'-')+'<div style="font-size:11px;">'+esc(m.email||'')+'</div></td>'
-      +'<td style="color:var(--text-muted);" data-label="신청일">'+fmtDate(a.created_at)+'</td>'
-      +'<td data-label="리뷰">'+link+'</td>'
-      +'<td data-label="상태">'+badge+'</td>'
-      +'<td style="white-space:nowrap;" data-label="검수">'+acts+'</td>'
-      +'</tr>';
-  }).join('');
-  body.querySelectorAll('.rv-appeal-btn').forEach(function(bn){ bn.addEventListener('click', function(){
+    return ((c.title||'')+(m.name||'')+(m.email||'')).toLowerCase().indexOf(q)>=0;
+  });
+}
+function _rvRow(a){
+  var c=a.campaigns||{}, m=a.profiles||{};
+  var link=a.review_url?('<a href="'+esc(a.review_url)+'" target="_blank" style="color:var(--brand-primary);font-weight:600;">리뷰 열기 →</a>'):'<span style="color:var(--text-muted);">미제출</span>';
+  var autoTag='';
+  if(a.auto_passed===true) autoTag=' <span class="s-badge s-active">자동통과</span>';
+  else if(a.auto_passed===false) autoTag=' <span class="s-badge" style="background:rgba(255,71,87,.15);color:var(--brand-primary);">자동미달</span>';
+  if(a.appeal_status==='pending') autoTag+=' <span class="s-badge" style="background:rgba(255,165,2,.18);color:#FFA502;">재검토요청</span>';
+  var badge='<span class="s-badge '+(SBADGE[a.status]||'s-done')+'">'+(SLABEL[a.status]||a.status)+'</span>'+autoTag;
+  var acts='';
+  if(a.appeal_status==='pending'){ acts='<button class="rv-appeal-btn rv-act ghost" data-id="'+a.id+'">사유</button><button class="rv-act ok" data-appeal="1" data-id="'+a.id+'">승인</button><button class="rv-act ghost" data-appeal="0" data-id="'+a.id+'">거절</button>'; }
+  else if(a.status==='applied'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="selected">선정</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="rejected">탈락</button>'; }
+  else if(a.status==='selected'){ acts='<button class="rv-act ghost" data-id="'+a.id+'" data-to="applied">선정취소</button>'; }
+  else if(a.status==='reviewing'){ acts='<button class="rv-act ok" data-id="'+a.id+'" data-to="completed">검수완료(+'+(c.reward_points||0)+'P)</button><button class="rv-act ghost" data-id="'+a.id+'" data-to="selected">반려</button>'; }
+  else if(a.status==='completed'){ acts='<span style="color:#2FA46A;font-size:12px;font-weight:700;">지급 완료</span>'; }
+  else { acts='<button class="rv-act ghost" data-id="'+a.id+'" data-to="applied">되돌리기</button>'; }
+  return '<tr>'
+    +'<td>'+esc(c.title||'-')+'<div style="color:var(--text-muted);font-size:11px;">'+esc(c.region||'')+(c.reward_text?(' · '+esc(c.reward_text)):'')+'</div></td>'
+    +'<td style="color:var(--text-muted);" data-label="회원">'+esc(m.name||'-')+'<div style="font-size:11px;">'+esc(m.email||'')+'</div></td>'
+    +'<td style="color:var(--text-muted);" data-label="신청일">'+fmtDate(a.created_at)+'</td>'
+    +'<td data-label="리뷰">'+link+'</td>'
+    +'<td data-label="상태">'+badge+'</td>'
+    +'<td style="white-space:nowrap;" data-label="검수">'+acts+'</td>'
+    +'</tr>';
+}
+function _rvBind(body){
+  body.querySelectorAll('.rv-grp').forEach(function(g){ g.addEventListener('click',function(){ var k=this.getAttribute('data-grp'); RV_COLLAPSE[k]=!RV_COLLAPSE[k]; renderReviews(); }); });
+  body.querySelectorAll('.rv-appeal-btn').forEach(function(bn){ bn.addEventListener('click', function(e){ e.stopPropagation();
     var a=RV_ALL.filter(function(x){return x.id===bn.getAttribute('data-id');})[0]; if(!a) return;
     var det=''; if(a.auto_result&&a.auto_result.checks){ var ch=a.auto_result.checks; det='\n\n[자동판정] 글자'+ch.chars.got+'/'+ch.chars.need+', 이미지'+ch.images.got+'/'+ch.images.need+', 영상'+ch.videos.got+'/'+ch.videos.need+(ch.keyword.word?(', 키워드 "'+ch.keyword.word+'" '+ch.keyword.got+'/'+ch.keyword.need):'')+', 배너'+(ch.banner.got?'O':'X'); }
     alert('[재검토 사유]\n'+(a.appeal_text||'(없음)')+det+'\n\n리뷰: '+(a.review_url||'-'));
   }); });
-  body.querySelectorAll('.rv-act').forEach(function(bn){ bn.addEventListener('click', async function(){
+  body.querySelectorAll('.rv-act').forEach(function(bn){ bn.addEventListener('click', async function(e){ e.stopPropagation();
     var id=this.getAttribute('data-id'), to=this.getAttribute('data-to'), ap=this.getAttribute('data-appeal');
     if(ap!==null){
       if(!confirm(ap==='1'?'재검토를 승인하고 포인트를 지급할까요?':'재검토를 거절할까요?')) return;
@@ -249,10 +286,49 @@ function renderReviews(){
     var res=await OnAuth.setAppStatus(id, to);
     if(res&&res.ok){ window.__adminReady(); } else { alert((res&&res.msg)||'처리 실패'); this.disabled=false; }
   }); });
-  var si=document.querySelector('.search-input');
-  if(si){ si.oninput=function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display=tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }; }
 }
-(function(){ var tabs=document.querySelectorAll('#rvTabs .rv-tab'); tabs.forEach(function(t){ t.addEventListener('click',function(){ tabs.forEach(function(x){x.classList.remove('active');}); this.classList.add('active'); RV_FILTER=this.getAttribute('data-f'); renderReviews(); }); }); })();
+function renderReviews(){
+  var body=document.getElementById('rvBody'), pager=document.getElementById('rvPager');
+  var rows=_rvFiltered();
+  document.getElementById('rvCount').textContent='('+rows.length+'건'+(rows.length!==RV_ALL.length?(' / 전체 '+RV_ALL.length):'')+')';
+  if(!rows.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:34px 0;color:var(--text-muted);">해당하는 신청이 없어요.</td></tr>'; pager.innerHTML=''; return; }
+  if(RV_VIEW==='group'){
+    // 캠페인별 모아보기: 요약 한 줄 + 접기
+    pager.innerHTML='';
+    var groups={}, order=[];
+    rows.forEach(function(a){ var c=a.campaigns||{}; var k=c.title||'(캠페인 없음)'; if(!groups[k]){ groups[k]=[]; order.push(k); } groups[k].push(a); });
+    var html='';
+    order.forEach(function(k){
+      var list=groups[k];
+      var nApplied=list.filter(function(a){return a.status==='applied';}).length;
+      var nSel=list.filter(function(a){return a.status==='selected';}).length;
+      var nReviewing=list.filter(function(a){return a.status==='reviewing';}).length;
+      var nDone=list.filter(function(a){return a.status==='completed';}).length;
+      var collapsed=RV_COLLAPSE[k];
+      var mini='<span class="rv-grp-mini" style="background:rgba(255,255,255,.08);color:var(--text-muted);">신청 '+list.length+'</span>'
+        +(nReviewing?'<span class="rv-grp-mini" style="background:rgba(255,165,2,.18);color:#FFA502;">검수대기 '+nReviewing+'</span>':'')
+        +(nSel?'<span class="rv-grp-mini" style="background:rgba(46,213,115,.15);color:#2ED573;">선정 '+nSel+'</span>':'')
+        +(nDone?'<span class="rv-grp-mini" style="background:rgba(255,255,255,.08);color:var(--text-muted);">완료 '+nDone+'</span>':'')
+        +(nApplied?'<span class="rv-grp-mini" style="background:rgba(84,160,255,.15);color:#54A0FF;">대기 '+nApplied+'</span>':'');
+      html+='<tr class="rv-grp'+(collapsed?' collapsed':'')+'" data-grp="'+esc(k)+'"><td colspan="6"><span class="chev">▾</span>'+esc(k)+' '+mini+'</td></tr>';
+      if(!collapsed){ html+=list.map(_rvRow).join(''); }
+    });
+    body.innerHTML=html;
+  } else {
+    // 목록 보기 + 페이지네이션
+    var pages=Math.max(1,Math.ceil(rows.length/RV_PER));
+    if(RV_PAGE>pages) RV_PAGE=pages;
+    var slice=rows.slice((RV_PAGE-1)*RV_PER, RV_PAGE*RV_PER);
+    body.innerHTML=slice.map(_rvRow).join('');
+    if(pages<=1){ pager.innerHTML=''; }
+    else { var ph=''; for(var i=1;i<=pages;i++){ ph+='<button class="'+(i===RV_PAGE?'active':'')+'" data-p="'+i+'">'+i+'</button>'; } pager.innerHTML=ph; pager.querySelectorAll('button').forEach(function(bn){ bn.onclick=function(){ RV_PAGE=parseInt(this.getAttribute('data-p'),10); renderReviews(); }; }); }
+  }
+  _rvBind(body);
+}
+(function(){
+  var tabs=document.querySelectorAll('#rvTabs .rv-tab'); tabs.forEach(function(t){ t.addEventListener('click',function(){ tabs.forEach(function(x){x.classList.remove('active');}); this.classList.add('active'); RV_FILTER=this.getAttribute('data-f'); RV_PAGE=1; renderReviews(); }); });
+  ['rvSearch','rvFrom','rvTo'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener('input',function(){ RV_PAGE=1; renderReviews(); }); });
+})();
 </script>
 <style>
 .mv-susp{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(255,71,87,.15);color:var(--brand-primary);margin-left:6px;vertical-align:1px;}
