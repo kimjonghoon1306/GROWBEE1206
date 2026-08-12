@@ -84,7 +84,13 @@
 
   <!-- MAIN -->
   <main class="mp-main">
-    <h1 class="mp-title"><b>tarry</b> 님의<br>캠페인 리스트입니다.</h1>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px;">
+      <h1 class="mp-title" style="margin-bottom:0;"><b>tarry</b> 님의<br>캠페인 리스트입니다.</h1>
+      <div class="clock-card">
+        <div class="clock-date"><span id="clkDate">–</span><span class="clock-dow" id="clkDow">–</span></div>
+        <div class="clock-time" id="clkTime">--:--:--</div>
+      </div>
+    </div>
 
     <div class="mp-card">
       <div class="flow">
@@ -161,6 +167,21 @@ function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.mp-logout, [data-logout]').forEach(function(a){ a.addEventListener('click', onLogout); });
 });
+</script>
+<script>
+(function(){
+  var W=['일','월','화','수','목','금','토'];
+  function tick(){
+    var d=new Date();
+    var ap=d.getHours()<12?'오전':'오후'; var h=d.getHours()%12; if(h===0)h=12;
+    var mm=('0'+d.getMinutes()).slice(-2), ss=('0'+d.getSeconds()).slice(-2);
+    var de=document.getElementById('clkDate'), dw=document.getElementById('clkDow'), tm=document.getElementById('clkTime');
+    if(de) de.textContent = d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일';
+    if(dw) dw.textContent = W[d.getDay()]+'요일';
+    if(tm) tm.textContent = ap+' '+h+':'+mm+':'+ss;
+  }
+  tick(); setInterval(tick,1000);
+})();
 </script>
 </body>
 </html>

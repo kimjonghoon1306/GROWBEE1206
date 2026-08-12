@@ -144,3 +144,10 @@
   .logo-main { font-size: 16px; }
   .h-ico[aria-label="낮/밤"] { display: none; } /* 아주 좁으면 낮밤도 숨김(마이페이지 안에 있음) */
 }
+
+/* 실시간 시계 카드 (마이페이지) */
+.clock-card { background: linear-gradient(135deg,#EE3E6D 0%,#F4743B 100%); color:#fff; border-radius:16px; padding:14px 20px; box-shadow:0 8px 20px rgba(236,58,102,.24); text-align:right; min-width:190px; }
+.clock-date { display:flex; align-items:center; justify-content:flex-end; gap:8px; font-size:14px; font-weight:700; opacity:.95; }
+.clock-dow { background:rgba(255,255,255,.22); border-radius:999px; padding:2px 9px; font-size:12px; }
+.clock-time { font-family:var(--font-serif); font-size:26px; font-weight:700; letter-spacing:.5px; margin-top:3px; font-variant-numeric:tabular-nums; }
+@media (max-width:520px){ .clock-card{ width:100%; text-align:left; } .clock-date{ justify-content:flex-start; } }

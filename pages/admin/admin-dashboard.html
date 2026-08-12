@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
 /* Force night mode for admin */
-body { --bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--border:rgba(255,255,255,0.08);--text:#F0F0F0;--text-muted:#999;--shadow:0 4px 24px rgba(0,0,0,.5);--shadow-card:0 8px 40px rgba(0,0,0,.6);--header-bg:rgba(13,13,13,0.95);--nav-active-bg:rgba(255,255,255,0.06); }
+body { --bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--border:rgba(255,255,255,0.12);--text:#F4F5F8;--text-muted:#AEB4C2;--shadow:0 4px 24px rgba(0,0,0,.35);--shadow-card:0 8px 32px rgba(0,0,0,.4);--header-bg:rgba(27,30,39,0.95);--nav-active-bg:rgba(255,255,255,0.08); }
 body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08); }
 
 .admin-wrap { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
@@ -45,7 +45,7 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
 .sidebar-link span.ico { font-size: 15px; flex-shrink: 0; }
 .sidebar-badge {
   margin-left: auto; background: var(--brand-primary);
-  color: #fff; font-size: 10px; font-weight: 700;
+  color:var(--text); font-size: 10px; font-weight: 700;
   padding: 2px 7px; border-radius: 50px;
 }
 
@@ -63,7 +63,7 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
 .topbar-btn {
   padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 600;
   background: rgba(255,255,255,.06); border: 1px solid var(--border);
-  color: #ccc; cursor: pointer; transition: var(--transition); text-decoration: none;
+  color:var(--text-muted); cursor: pointer; transition: var(--transition); text-decoration: none;
 }
 .topbar-btn:hover { color:var(--text); background: rgba(255,255,255,.1); }
 .topbar-exit { color: var(--brand-primary); border-color: rgba(255,71,87,.3); background: rgba(255,71,87,.08); }
@@ -105,9 +105,9 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
 /* TABLE */
 .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .admin-table th { font-size: 11px; font-weight: 700; color: #666; text-align: left; padding: 0 0 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-.admin-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.04); color: #ccc; vertical-align: middle; }
+.admin-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.04); color:var(--text-muted); vertical-align: middle; }
 .admin-table tr:last-child td { border: none; }
-.admin-table td:first-child { color: #e0e0e0; font-weight: 600; }
+.admin-table td:first-child { color:var(--text); font-weight: 600; }
 
 /* STATUS BADGES */
 .s-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 50px; white-space: nowrap; }
@@ -127,13 +127,25 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
 .activity-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-primary); flex-shrink: 0; margin-top: 5px; }
 .activity-dot.green { background: #2ED573; }
 .activity-dot.blue { background: #54A0FF; }
-.activity-txt { font-size: 13px; color: #ccc; line-height: 1.5; flex: 1; }
+.activity-txt { font-size: 13px; color:var(--text-muted); line-height: 1.5; flex: 1; }
 .activity-txt strong { color:var(--text); }
 .activity-time { font-size: 11px; color: #666; white-space: nowrap; margin-top: 2px; }
 
 @media(max-width:768px) {
   .admin-wrap { grid-template-columns: 1fr; }
-  .admin-sidebar { display: none; }
+  /* 모바일 상단바 정리 + 사이드바 드로어 */
+  .admin-topbar { padding: 10px 14px !important; gap: 8px; }
+  .admin-topbar-left span[style*="12px"] { display: none; }  /* 날짜 숨김 */
+  .admin-page-title { font-size: 18px !important; }
+  .admin-topbar-right { gap: 6px; }
+  .admin-topbar-right .topbar-btn { padding: 8px 10px !important; font-size: 12px !important; white-space: nowrap; }
+  .admin-topbar-right a.topbar-btn:not(.topbar-exit) { display: none; }  /* +캠페인등록은 모바일서 숨김 */
+  .adm-ham { display: inline-flex !important; }
+  .admin-sidebar { display: block !important; position: fixed; top: 0; left: 0; bottom: 0; width: 240px; z-index: 200; transform: translateX(-100%); transition: transform .28s ease; box-shadow: 0 0 40px rgba(0,0,0,.5); }
+  .admin-sidebar.open { transform: translateX(0); }
+  .adm-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 150; }
+  .adm-backdrop.open { display: block; }
+
   .kpi-grid { grid-template-columns: repeat(2,1fr); }
   .admin-grid-2 { grid-template-columns: 1fr; }
   .admin-content { padding: 16px; }
@@ -180,7 +192,7 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
     <div class="admin-topbar">
       <div class="admin-topbar-left">
         <span class="admin-page-title">대시보드</span>
-        <span style="font-size:12px;color:#666;">2025년 1월 30일 · 오전 9:00 업데이트</span>
+        <span id="admClock" style="font-size:12px;color:var(--text-muted);"></span>
       </div>
       <div class="admin-topbar-right">
         <a href="admin-campaigns.html" class="topbar-btn">+ 캠페인 등록</a>
@@ -237,11 +249,11 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
           <table class="admin-table">
             <thead><tr><th>지역</th><th>캠페인</th><th>비율</th></tr></thead>
             <tbody>
-              <tr><td>서울</td><td style="color:#ccc;">38개</td><td style="width:120px;"><div class="bar-wrap"><div class="bar-fill" style="width:76%"></div></div></td></tr>
-              <tr><td>경기·인천</td><td style="color:#ccc;">14개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:28%"></div></div></td></tr>
-              <tr><td>부산</td><td style="color:#ccc;">11개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:22%"></div></div></td></tr>
-              <tr><td>제주</td><td style="color:#ccc;">9개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:18%"></div></div></td></tr>
-              <tr><td>대구</td><td style="color:#ccc;">7개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:14%"></div></div></td></tr>
+              <tr><td>서울</td><td style="color:var(--text-muted);">38개</td><td style="width:120px;"><div class="bar-wrap"><div class="bar-fill" style="width:76%"></div></div></td></tr>
+              <tr><td>경기·인천</td><td style="color:var(--text-muted);">14개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:28%"></div></div></td></tr>
+              <tr><td>부산</td><td style="color:var(--text-muted);">11개</td><td><div class="bar-wrap"><div class="bar-fill" style="width:22%"></div></div></td></tr>
+              <tr><td>제주</td><td style="color:var(--text-muted);">9개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:18%"></div></div></td></tr>
+              <tr><td>대구</td><td style="color:var(--text-muted);">7개</td><td><div class="bar-wrap"><div class="bar-fill green" style="width:14%"></div></div></td></tr>
             </tbody>
           </table>
         </div>
@@ -282,6 +294,25 @@ var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.
 var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function admToggle(){var lt=document.body.classList.toggle("light");document.getElementById("admThemeIcon").innerHTML=lt?_sun:_moon;localStorage.setItem("onjongil-admin-theme",lt?"light":"dark");}
 (function(){if(localStorage.getItem("onjongil-admin-theme")==="light"){document.body.classList.add("light");var i=document.getElementById("admThemeIcon");if(i)i.innerHTML=_sun;}})();
+</script>
+
+<script>
+function admSide(){var s=document.querySelector('.admin-sidebar');var b=document.querySelector('.adm-backdrop');s.classList.toggle('open');if(b)b.classList.toggle('open');}
+(function(){if(!document.querySelector('.adm-backdrop')){var d=document.createElement('div');d.className='adm-backdrop';d.onclick=admSide;document.body.appendChild(d);}})();
+</script>
+<script>
+(function(){
+  var W=['일','월','화','수','목','금','토'];
+  function tick(){
+    var d=new Date();
+    var ap=d.getHours()<12?'오전':'오후';
+    var h=d.getHours()%12; if(h===0)h=12;
+    var mm=('0'+d.getMinutes()).slice(-2), ss=('0'+d.getSeconds()).slice(-2);
+    var el=document.getElementById('admClock');
+    if(el) el.textContent = d.getFullYear()+'년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+W[d.getDay()]+') · '+ap+' '+h+':'+mm+':'+ss;
+  }
+  tick(); setInterval(tick,1000);
+})();
 </script>
 </body>
 </html>

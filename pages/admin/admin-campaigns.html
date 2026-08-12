@@ -13,28 +13,28 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
 .sidebar-logo-mark{width:30px;height:30px;border-radius:9px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;}
 .sidebar-logo-mark svg{width:16px;height:16px;}
 .sidebar-logo-text{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--text);}
-.sidebar-logo-sub{font-size:10px;color:#666;font-weight:600;}
+.sidebar-logo-sub{font-size:10px;color:var(--text-muted);font-weight:600;}
 .sidebar-section{padding:14px 10px 6px;}
 .sidebar-section-label{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
 .sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);transition:var(--transition);cursor:pointer;text-decoration:none;margin-bottom:2px;}
 .sidebar-link:hover{background:rgba(255,255,255,.05);color:var(--text);}
 .sidebar-link.active{background:rgba(255,71,87,.12);color:var(--brand-primary);font-weight:700;}
 .sidebar-link span.ico{font-size:15px;flex-shrink:0;}
-.sidebar-badge{margin-left:auto;background:var(--brand-primary);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
+.sidebar-badge{margin-left:auto;background:var(--brand-primary);color:var(--text);font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
 .admin-main{background:var(--bg);overflow-y:auto;}
 .admin-topbar{position:sticky;top:0;z-index:10;background:rgba(13,13,13,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
 .admin-page-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);}
-.topbar-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#ccc;cursor:pointer;transition:var(--transition);text-decoration:none;}
+.topbar-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:var(--transition);text-decoration:none;}
 .topbar-btn:hover{color:var(--text);background:rgba(255,255,255,.1);}
 .topbar-exit{color:var(--brand-primary);border-color:rgba(255,71,87,.3);background:rgba(255,71,87,.08);}
 .admin-content{padding:28px;}
 .admin-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:20px;}
 .admin-card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:18px;}
 .admin-table{width:100%;border-collapse:collapse;font-size:13px;}
-.admin-table th{font-size:11px;font-weight:700;color:#666;text-align:left;padding:0 0 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
-.admin-table td{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);color:#ccc;vertical-align:middle;}
+.admin-table th{font-size:11px;font-weight:700;color:var(--text-muted);text-align:left;padding:0 0 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.admin-table td{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-muted);vertical-align:middle;}
 .admin-table tr:last-child td{border:none;}
-.admin-table td:first-child{color:#e0e0e0;font-weight:600;}
+.admin-table td:first-child{color:var(--text);font-weight:600;}
 .s-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;white-space:nowrap;}
 .s-active{background:rgba(46,213,115,.15);color:#2ED573;}
 .s-review{background:rgba(255,165,2,.15);color:#FFA502;}
@@ -43,7 +43,7 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
 .search-bar{display:flex;gap:10px;margin-bottom:20px;}
 .search-input{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 16px;color:var(--text);font-size:13px;font-family:var(--font-display);outline:none;}
 .search-input:focus{border-color:rgba(255,71,87,.4);}
-.search-input::placeholder{color:#666;}
+.search-input::placeholder{color:var(--text-muted);}
 @media(max-width:768px){.admin-wrap{grid-template-columns:1fr;}.admin-sidebar{display:none;}.admin-content{padding:16px;}}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
@@ -82,7 +82,7 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
     <div class="admin-topbar">
       <span class="admin-page-title">캠페인 관리</span>
       <div style="display:flex;gap:8px;">
-        <button style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:var(--brand-gradient);color:#fff;border:none;cursor:pointer;">+ 새 캠페인 등록</button>
+        <button style="padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:var(--brand-gradient);color:var(--text);border:none;cursor:pointer;">+ 새 캠페인 등록</button>
         <button class="topbar-btn" id="admThemeBtn" onclick="admToggle()" title="낮/밤" style="width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;"><svg id="admThemeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
         <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
       </div>
@@ -90,10 +90,10 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
     <div class="admin-content">
 <div class="search-bar">
   <input class="search-input" placeholder="캠페인명, 광고주, 지역 검색...">
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:#ccc;font-size:13px;font-family:inherit;">
+  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
     <option>전체 상태</option><option>진행중</option><option>검토중</option><option>마감</option>
   </select>
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:#ccc;font-size:13px;font-family:inherit;">
+  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
     <option>전체 지역</option><option>서울</option><option>부산</option><option>대구</option><option>제주</option>
   </select>
 </div>
@@ -102,14 +102,14 @@ body{--bg:#0D0D0D;--bg-surface:#111318;--bg-card:#1A1D24;--bg-card2:#1E2128;--bo
   <table class="admin-table">
     <thead><tr><th>캠페인명</th><th>광고주</th><th>지역</th><th>카테고리</th><th>모집인원</th><th>신청</th><th>마감일</th><th>상태</th><th>관리</th></tr></thead>
     <tbody>
-      <tr><td>스시 오모 오마카세 코스</td><td style="color:#ccc;">오모 레스토랑</td><td style="color:#ccc;">강남구</td><td style="color:#ccc;">맛집</td><td style="color:#ccc;">30명</td><td style="color:#ccc;">24명</td><td style="color:var(--text-muted);">02.05</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>카페 루미오 시그니처 음료</td><td style="color:#ccc;">루미오 카페</td><td style="color:#ccc;">마포구</td><td style="color:#ccc;">카페</td><td style="color:#ccc;">20명</td><td style="color:#ccc;">8명</td><td style="color:var(--text-muted);">02.08</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>한우 프리미엄 '우진각'</td><td style="color:#ccc;">우진각</td><td style="color:#ccc;">서초구</td><td style="color:#ccc;">맛집</td><td style="color:#ccc;">20명</td><td style="color:#ccc;">19명</td><td style="color:var(--text-muted);">02.02</td><td><span class="s-badge s-review">검토중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>클리어 스킨랩 피부 케어</td><td style="color:#ccc;">클리어뷰티</td><td style="color:#ccc;">강남구</td><td style="color:#ccc;">뷰티</td><td style="color:#ccc;">15명</td><td style="color:#ccc;">5명</td><td style="color:var(--text-muted);">02.10</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>테라스 해운대 와인바</td><td style="color:#ccc;">해운대비치</td><td style="color:#ccc;">부산 해운대</td><td style="color:#ccc;">맛집</td><td style="color:#ccc;">25명</td><td style="color:#ccc;">18명</td><td style="color:var(--text-muted);">02.06</td><td><span class="s-badge s-done">마감</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
-      <tr><td>그린테이블 비건 브런치</td><td style="color:#ccc;">그린테이블</td><td style="color:#ccc;">대구 수성구</td><td style="color:#ccc;">카페</td><td style="color:#ccc;">15명</td><td style="color:#ccc;">3명</td><td style="color:var(--text-muted);">02.14</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>제주 흑돼지 '한라장'</td><td style="color:#ccc;">한라장</td><td style="color:#ccc;">제주시</td><td style="color:#ccc;">맛집</td><td style="color:#ccc;">20명</td><td style="color:#ccc;">13명</td><td style="color:var(--text-muted);">02.08</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
-      <tr><td>가로수길 스파 '르블랑'</td><td style="color:#ccc;">르블랑</td><td style="color:#ccc;">강남 신사</td><td style="color:#ccc;">뷰티</td><td style="color:#ccc;">10명</td><td style="color:#ccc;">3명</td><td style="color:var(--text-muted);">02.04</td><td><span class="s-badge s-review">검토중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>스시 오모 오마카세 코스</td><td style="color:var(--text-muted);">오모 레스토랑</td><td style="color:var(--text-muted);">강남구</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">30명</td><td style="color:var(--text-muted);">24명</td><td style="color:var(--text-muted);">02.05</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>카페 루미오 시그니처 음료</td><td style="color:var(--text-muted);">루미오 카페</td><td style="color:var(--text-muted);">마포구</td><td style="color:var(--text-muted);">카페</td><td style="color:var(--text-muted);">20명</td><td style="color:var(--text-muted);">8명</td><td style="color:var(--text-muted);">02.08</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>한우 프리미엄 '우진각'</td><td style="color:var(--text-muted);">우진각</td><td style="color:var(--text-muted);">서초구</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">20명</td><td style="color:var(--text-muted);">19명</td><td style="color:var(--text-muted);">02.02</td><td><span class="s-badge s-review">검토중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>클리어 스킨랩 피부 케어</td><td style="color:var(--text-muted);">클리어뷰티</td><td style="color:var(--text-muted);">강남구</td><td style="color:var(--text-muted);">뷰티</td><td style="color:var(--text-muted);">15명</td><td style="color:var(--text-muted);">5명</td><td style="color:var(--text-muted);">02.10</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>테라스 해운대 와인바</td><td style="color:var(--text-muted);">해운대비치</td><td style="color:var(--text-muted);">부산 해운대</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">25명</td><td style="color:var(--text-muted);">18명</td><td style="color:var(--text-muted);">02.06</td><td><span class="s-badge s-done">마감</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td></tr>
+      <tr><td>그린테이블 비건 브런치</td><td style="color:var(--text-muted);">그린테이블</td><td style="color:var(--text-muted);">대구 수성구</td><td style="color:var(--text-muted);">카페</td><td style="color:var(--text-muted);">15명</td><td style="color:var(--text-muted);">3명</td><td style="color:var(--text-muted);">02.14</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>제주 흑돼지 '한라장'</td><td style="color:var(--text-muted);">한라장</td><td style="color:var(--text-muted);">제주시</td><td style="color:var(--text-muted);">맛집</td><td style="color:var(--text-muted);">20명</td><td style="color:var(--text-muted);">13명</td><td style="color:var(--text-muted);">02.08</td><td><span class="s-badge s-active">진행중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
+      <tr><td>가로수길 스파 '르블랑'</td><td style="color:var(--text-muted);">르블랑</td><td style="color:var(--text-muted);">강남 신사</td><td style="color:var(--text-muted);">뷰티</td><td style="color:var(--text-muted);">10명</td><td style="color:var(--text-muted);">3명</td><td style="color:var(--text-muted);">02.04</td><td><span class="s-badge s-review">검토중</span></td><td><a href="#" style="color:var(--brand-primary);font-size:12px;font-weight:600;">수정</a></td></tr>
     </tbody>
   </table>
 </div></div>
@@ -121,5 +121,10 @@ var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.
 var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function admToggle(){var lt=document.body.classList.toggle("light");document.getElementById("admThemeIcon").innerHTML=lt?_sun:_moon;localStorage.setItem("onjongil-admin-theme",lt?"light":"dark");}
 (function(){if(localStorage.getItem("onjongil-admin-theme")==="light"){document.body.classList.add("light");var i=document.getElementById("admThemeIcon");if(i)i.innerHTML=_sun;}})();
+</script>
+
+<script>
+function admSide(){var s=document.querySelector('.admin-sidebar');var b=document.querySelector('.adm-backdrop');s.classList.toggle('open');if(b)b.classList.toggle('open');}
+(function(){if(!document.querySelector('.adm-backdrop')){var d=document.createElement('div');d.className='adm-backdrop';d.onclick=admSide;document.body.appendChild(d);}})();
 </script>
 </body></html>
