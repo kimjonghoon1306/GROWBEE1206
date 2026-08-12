@@ -141,7 +141,7 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
   <button class="rv-tab" data-f="completed">검수완료 <b>0</b></button>
 </div>
 <div class="admin-card">
-  <div class="admin-card-title">신청·리뷰 목록 <span id="rvCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
+  <div class="admin-card-title" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">신청·리뷰 목록 <span id="rvCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span><span style="flex:1;"></span><span id="rvAutoStat" style="font-size:12px;font-weight:700;"></span></div>
   <table class="admin-table">
     <thead><tr><th>캠페인</th><th>회원</th><th>신청일</th><th>리뷰 링크</th><th>상태</th><th>검수</th></tr></thead>
     <tbody id="rvBody"><tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
@@ -170,36 +170,6 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
   window.__adminReady && window.__adminReady();
 })();
 </script>
-<script>
-function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
-function fmtDate(iso){ if(!iso) return '-'; var d=new Date(iso); return (''+d.getFullYear()).slice(2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); }
-function fmtPhone(p){ if(!p) return '-'; p=(''+p).replace(/[^0-9]/g,''); if(p.length===11) return p.slice(0,3)+'-'+p.slice(3,7)+'-'+p.slice(7); return p; }
-window.__adminReady = async function(){
-  var body=document.getElementById('memBody');
-  var r=await OnAuth.listMembers();
-  if(r.error){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+esc(r.error.message)+'</td></tr>'; return; }
-  var rows=r.data||[];
-  document.getElementById('memCount').textContent='('+rows.length.toLocaleString()+'명)';
-  if(!rows.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px 0;color:var(--text-muted);">아직 가입한 회원이 없어요.</td></tr>'; return; }
-  body.innerHTML = rows.map(function(m){
-    var nm = esc(m.name||'-') + (m.nickname? ' / '+esc(m.nickname) : '') + (m.suspended? ' <span class="mv-susp">정지</span>' : '');
-    return '<tr data-uid="'+m.id+'">'
-      +'<td>'+nm+'</td>'
-      +'<td style="color:var(--text-muted);">'+esc(m.email)+'</td>'
-      +'<td style="color:var(--text-muted);">'+fmtPhone(m.phone)+'</td>'
-      +'<td style="color:var(--text-muted);">'+esc(m.channel_type||'-')+'</td>'
-      +'<td style="color:var(--text-muted);">'+((m.points||0).toLocaleString())+' P</td>'
-      +'<td style="color:var(--text-muted);">'+fmtDate(m.created_at)+'</td>'
-      +'<td><a href="#" class="mv-view" data-uid="'+m.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:600;">보기</a></td>'
-      +'</tr>';
-  }).join('');
-  window.__members={}; rows.forEach(function(m){ window.__members[m.id]=m; });
-  body.querySelectorAll('.mv-view').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); openMember(this.getAttribute('data-uid')); }); });
-  // 검색
-  var si=document.querySelector('.search-input');
-  if(si){ si.addEventListener('input',function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display = tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }); }
-};
-</script>
 <style>
 .rv-tab{background:var(--bg-card2,transparent);border:1px solid var(--border);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;}
 .rv-tab.active{background:var(--brand-gradient);color:#fff;border-color:transparent;}
@@ -222,6 +192,14 @@ window.__adminReady = async function(){
   var cnt={all:RV_ALL.length,applied:0,selected:0,reviewing:0,completed:0};
   RV_ALL.forEach(function(a){ if(cnt[a.status]!=null) cnt[a.status]++; });
   document.querySelectorAll('#rvTabs .rv-tab').forEach(function(t){ var f=t.getAttribute('data-f'); var bEl=t.querySelector('b'); if(bEl) bEl.textContent=cnt[f]!=null?cnt[f]:0; });
+  // 자동검수 통계
+  var autoPass=RV_ALL.filter(function(a){return a.auto_passed===true;}).length;
+  var autoFail=RV_ALL.filter(function(a){return a.auto_passed===false;}).length;
+  var appeal=RV_ALL.filter(function(a){return a.appeal_status==='pending';}).length;
+  document.getElementById('rvAutoStat').innerHTML=
+    '<span style="color:#2ED573;">🤖 자동통과 '+autoPass+'</span> &nbsp; '+
+    '<span style="color:var(--brand-primary);">자동미달 '+autoFail+'</span> &nbsp; '+
+    '<span style="color:#FFA502;">재검토요청 '+appeal+'</span>';
   renderReviews();
 };
 function renderReviews(){
