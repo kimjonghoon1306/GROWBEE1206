@@ -83,6 +83,7 @@
 <div class="mp-card">
 <div class="wg-sec-h" style="margin-bottom:16px;"><span class="n">1</span> 기본정보 수정</div>
 <div class="grid-2" style="gap:16px 20px;">
+ <div style="grid-column:1/-1;"><label class="form-label">이메일 (아이디)</label><input id="pf-email" class="form-input" type="email" readonly placeholder="이메일" style="opacity:.85;cursor:not-allowed;"></div>
  <div><label class="form-label">성함</label><input id="pf-name" class="form-input" placeholder="이름"></div>
  <div><label class="form-label">닉네임</label><input id="pf-nick" class="form-input" placeholder="닉네임"></div>
  <div><label class="form-label">휴대폰 번호</label><input id="pf-phone" class="form-input" type="tel" placeholder="010-1234-5678"></div>
@@ -139,6 +140,7 @@ document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('cli
   document.querySelectorAll('.mp-point').forEach(function(el){ var svg=el.querySelector('svg'); el.textContent=' '+pstr; if(svg) el.insertBefore(svg, el.firstChild); });
   document.querySelectorAll('.mp-mini').forEach(function(el){ el.textContent = pstr; });
   // 기본정보 폼 채우기
+  if(document.getElementById('pf-email')) document.getElementById('pf-email').value = u.email || '';
   try{ var pr = p || await OnAuth.getProfile();
     if(pr){
       if(document.getElementById('pf-name')) document.getElementById('pf-name').value = pr.name||'';
