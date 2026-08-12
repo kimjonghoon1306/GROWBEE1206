@@ -114,8 +114,13 @@
 
       <div id="dBannerBox" style="background:rgba(236,58,102,.05);border:1px solid rgba(236,58,102,.25);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
         <h3 style="font-size:15px;font-weight:700;margin-bottom:6px;color:var(--brand-primary);">블로그 상단 배너 (필수)</h3>
-        <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px;">아래 배너를 <strong style="color:var(--text);">블로그 글 맨 위</strong>에 넣어주세요. 이미지를 길게 눌러 저장하거나, HTML 복사 버튼을 쓰면 돼요.</p>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:14px;">아래 배너를 <strong style="color:var(--text);">블로그 글 맨 위</strong>에 넣어주세요. <strong style="color:var(--brand-primary);">배너를 누르면 온종일 체험단으로 연결</strong>돼서, 이웃들이 보고 함께 신청할 수 있어요.<br><span style="color:var(--text);">· 티스토리·워드프레스</span> → <strong style="color:var(--text);">HTML 코드 복사</strong> (링크 자동 연결)<br><span style="color:var(--text);">· 네이버 블로그</span> → <strong style="color:var(--text);">배너 이미지 복사</strong>로 그림 넣고, 그 이미지에 아래 <strong style="color:var(--text);">링크 주소</strong>를 걸어주세요.</p>
         <img id="dBannerImg" src="../../assets/img/review_banner.png" alt="온종일 체험단 배너" style="width:100%;max-width:420px;border-radius:12px;display:block;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:8px 10px;margin-bottom:12px;">
+          <span style="font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0;">연결 링크</span>
+          <input id="dLinkUrl" readonly style="flex:1;min-width:0;border:none;background:transparent;color:var(--text);font-size:12px;outline:none;" value="">
+          <button type="button" id="dCopyLink" style="background:rgba(236,58,102,.1);color:var(--brand-primary);border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;">링크 복사</button>
+        </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" id="dCopyImg" style="background:var(--brand-gradient);color:#fff;border:none;border-radius:50px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;">배너 이미지 복사</button>
           <button type="button" id="dCopyHtml" style="background:transparent;color:var(--text);border:1.5px solid var(--border);border-radius:50px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;">HTML 코드 복사</button>
@@ -209,9 +214,15 @@
   }
   // 배너 필수 아니면 배너박스 숨김
   if(c.require_banner===false){ var bb=document.getElementById('dBannerBox'); if(bb) bb.style.display='none'; }
-  // 배너 복사
+  // 배너 복사 — 배너를 누르면 온종일 체험단 홈으로 유입(?ref=blog 로 블로그 유입 추적)
   var bannerAbs=location.origin+'/assets/img/review_banner.png';
-  var copyImg=document.getElementById('dCopyImg'), copyHtml=document.getElementById('dCopyHtml');
+  var landing=location.origin+'/index.html?ref=blog';
+  var linkInput=document.getElementById('dLinkUrl'); if(linkInput) linkInput.value=landing;
+  var copyImg=document.getElementById('dCopyImg'), copyHtml=document.getElementById('dCopyHtml'), copyLink=document.getElementById('dCopyLink');
+  if(copyLink) copyLink.onclick=async function(){
+    try{ await navigator.clipboard.writeText(landing); copyLink.textContent='복사됨!'; setTimeout(function(){copyLink.textContent='링크 복사';},1500); }
+    catch(e){ if(linkInput){ linkInput.focus(); linkInput.select(); } prompt('아래 링크를 복사하세요', landing); }
+  };
   if(copyImg) copyImg.onclick=async function(){
     try{ var blob=await (await fetch('../../assets/img/review_banner.png')).blob();
       await navigator.clipboard.write([new ClipboardItem({[blob.type]:blob})]);
@@ -219,7 +230,7 @@
     }catch(e){ window.open('../../assets/img/review_banner.png','_blank'); }
   };
   if(copyHtml) copyHtml.onclick=async function(){
-    var html='<a href="'+location.origin+'/pages/user/campaign-detail.html?id='+id+'"><img src="'+bannerAbs+'" alt="온종일 체험단" style="max-width:100%;"></a>';
+    var html='<a href="'+landing+'"><img src="'+bannerAbs+'" alt="온종일 체험단" style="max-width:100%;"></a>';
     try{ await navigator.clipboard.writeText(html); copyHtml.textContent='복사됨!'; setTimeout(function(){copyHtml.textContent='HTML 코드 복사';},1500); }
     catch(e){ prompt('아래 HTML을 복사하세요', html); }
   };

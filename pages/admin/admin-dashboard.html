@@ -151,6 +151,22 @@ body.light { --bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F
   .admin-grid-2 { grid-template-columns: 1fr; }
   .admin-content { padding: 16px; }
 }
+.admin-table td{word-break:keep-all;}
+@media(max-width:768px){
+  .admin-card{padding:14px;}
+  .admin-table thead{display:none;}
+  .admin-table,.admin-table tbody,.admin-table tr,.admin-table td{display:block;width:100%;}
+  .admin-table tr{border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:var(--bg-card2);}
+  .admin-table tr:last-child td{border:none;}
+  .admin-table td{border:none;padding:7px 0;display:flex;justify-content:space-between;align-items:baseline;gap:14px;text-align:right;flex-wrap:wrap;}
+  .admin-table td::before{content:attr(data-label);font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0;text-align:left;}
+  .admin-table td:not([data-label]):not(:first-child)::before{content:none;}
+  .admin-table td:first-child{flex-direction:column;align-items:flex-start;text-align:left;font-size:15px;padding:2px 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+  .admin-table td:first-child::before,.admin-table td[colspan]::before{content:none;}
+  .admin-table td[colspan]{display:block;text-align:center;}
+  .admin-table td>div{text-align:right;}
+  .admin-table td:first-child>div{text-align:left;}
+}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
