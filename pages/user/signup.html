@@ -49,7 +49,7 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
 .agree-item a{font-size:12px;color:var(--brand-primary);text-decoration:underline;}
 .chk{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);background:var(--bg-card2);appearance:none;cursor:pointer;flex-shrink:0;transition:var(--transition);position:relative;}
 .chk:checked{background:var(--brand-primary);border-color:var(--brand-primary);}
-.chk:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:#fff;font-weight:700;}
+.chk:checked::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:#fff;font-weight:700;}
 
 .submit-btn{width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;margin-top:8px;box-shadow:0 4px 20px rgba(255,71,87,.35);transition:var(--transition);}
 .submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,71,87,.5);}
@@ -73,6 +73,7 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
   .channel-grid{grid-template-columns:1fr;}
 }
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -81,8 +82,8 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
       <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity="0.9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
       <div><div class="logo-main">GROW BEE</div><span class="logo-sub">체험단 플랫폼</span></div>
     </a>
-    <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-    <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+    <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
   </div>
 </header>
 
@@ -95,8 +96,8 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
     <p class="auth-sub">리뷰어 또는 광고주로 시작하세요</p>
 
     <div class="type-tabs">
-      <div class="type-tab active reviewer" onclick="setType('reviewer',this)">🧑‍💻 리뷰어로 가입</div>
-      <div class="type-tab advertiser" onclick="setType('advertiser',this)">🏪 광고주로 가입</div>
+      <div class="type-tab active reviewer" onclick="setType('reviewer',this)"> 리뷰어로 가입</div>
+      <div class="type-tab advertiser" onclick="setType('advertiser',this)">광고주로 가입</div>
     </div>
 
     <div class="form-group">
@@ -120,10 +121,10 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
       <div class="form-group">
         <label class="form-label">활동 채널 선택 (중복 가능)</label>
         <div class="channel-grid">
-          <div class="channel-btn active" onclick="this.classList.toggle('active')">📝 네이버 블로그</div>
-          <div class="channel-btn" onclick="this.classList.toggle('active')">📸 인스타그램</div>
-          <div class="channel-btn" onclick="this.classList.toggle('active')">🎬 유튜브</div>
-          <div class="channel-btn" onclick="this.classList.toggle('active')">📹 네이버 클립</div>
+          <div class="channel-btn active" onclick="this.classList.toggle('active')"> 네이버 블로그</div>
+          <div class="channel-btn" onclick="this.classList.toggle('active')"> 인스타그램</div>
+          <div class="channel-btn" onclick="this.classList.toggle('active')"> 유튜브</div>
+          <div class="channel-btn" onclick="this.classList.toggle('active')"> 네이버 클립</div>
         </div>
       </div>
       <div class="form-group">
@@ -178,8 +179,8 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
 
     <div class="divider"><span>또는 소셜 계정으로 가입</span></div>
     <div class="social-btns">
-      <button class="social-btn social-kakao">🟡 카카오로 시작하기</button>
-      <button class="social-btn social-naver">🟢 네이버로 시작하기</button>
+      <button class="social-btn social-kakao">카카오로 시작하기</button>
+      <button class="social-btn social-naver">네이버로 시작하기</button>
     </div>
 
     <div class="auth-footer">이미 계정이 있으신가요? <a href="login.html">로그인</a></div>
@@ -198,13 +199,12 @@ function toggleAll(el) {
 }
 function toggleMode() {
   var isNight = document.body.classList.toggle('night');
-  document.getElementById('modeBtn').textContent = isNight ? '☀️' : '🌙';
+  document.getElementById('modeBtn').textContent = isNight ? '' : '';
   localStorage.setItem('growbee-mode', isNight ? 'night' : 'day');
 }
 (function() {
   if (localStorage.getItem('growbee-mode') === 'night') {
     document.body.classList.add('night');
-    document.getElementById('modeBtn').textContent = '☀️';
   }
 })();
 </script>

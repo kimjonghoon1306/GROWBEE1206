@@ -69,6 +69,7 @@
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;gap:24px;}.footer-links{grid-template-columns:repeat(2,1fr);}.footer-bottom{flex-direction:column;}.grid-4{grid-template-columns:repeat(2,1fr)!important;}.grid-3{grid-template-columns:repeat(2,1fr)!important;}}
 @media(max-width:480px){.grid-4{grid-template-columns:1fr!important;}.grid-3{grid-template-columns:1fr!important;}}
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -87,28 +88,28 @@
       <a href="advertiser.html" class="nav-link ">사장님</a>
     </nav>
     <div class="header-right">
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
       <a href="login.html" class="btn-outline">로그인</a>
       <a href="signup.html" class="btn-primary">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-menu" id="mm">
-    <a href="../../index.html">🏠 홈</a>
-    <a href="campaigns.html">🎯 체험단 모집</a>
-    <a href="regions.html">📍 지역별</a>
-    <a href="categories.html">🗂️ 카테고리</a>
-    <a href="review.html">⭐ 리뷰 현황</a>
-    <a href="notice.html">📢 공지사항</a>
-    <a href="advertiser.html">🏪 사장님</a>
-    <a href="../admin/admin-dashboard.html">⚙️ 관리자</a>
-    <a href="login.html">🔑 로그인</a>
+    <a href="../../index.html">홈</a>
+    <a href="campaigns.html">체험단 모집</a>
+    <a href="regions.html">지역별</a>
+    <a href="categories.html">카테고리</a>
+    <a href="review.html">리뷰 현황</a>
+    <a href="notice.html">공지사항</a>
+    <a href="advertiser.html">사장님</a>
+    <a href="../admin/admin-dashboard.html">관리자</a>
+    <a href="login.html">로그인</a>
     <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
 <div class="page-hero"><div class="page-hero-inner">
-  <div class="page-badge">🎯 체험단 모집</div>
+  <div class="page-badge">체험단 모집</div>
   <h1 class="page-title">전국 <span>체험단</span> 모집 현황</h1>
   <p class="page-desc">지역·카테고리·채널 타입별로 나에게 맞는 체험단을 찾아보세요.</p>
 </div></div>
@@ -122,22 +123,22 @@
   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--border);border-radius:40px;padding:8px 14px;margin-bottom:28px;box-shadow:var(--shadow);">
     <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;background:var(--brand-gradient);color:#fff;border:none;cursor:pointer;">전체 (84)</button>
     <span style="width:1px;height:18px;background:var(--border);"></span>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">🍽️ 맛집 (28)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">☕ 카페 (18)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">🍰 디저트 (12)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">💄 뷰티 (9)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">🏋️ 피트니스 (6)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">📦 배송형 (6)</button>
+    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">맛집 (28)</button>
+    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;"> 카페 (18)</button>
+    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;"> 디저트 (12)</button>
+    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;"> 뷰티 (9)</button>
+    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">피트니스 (6)</button>
+    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">배송형 (6)</button>
   </div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#1a0a10,#2a1018);">🍣<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-5</div></div><div class="camp-body"><div class="camp-region">📍 강남구 · 역삼동</div><div class="camp-name">스시 오모 — 오마카세 코스</div><div class="camp-desc">15만원 상당 2인 오마카세 코스를 무료로 체험하고 블로그 리뷰를 작성해주세요.</div><div class="camp-meta"><span class="camp-reward">✅ 15만원 상당</span><span class="camp-slots">24/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:80%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a1210,#0e1e18);">☕<div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">📍 마포구 · 홍대입구</div><div class="camp-name">카페 루미오 시그니처 음료</div><div class="camp-desc">감성 카페 루미오 음료 2잔 + 디저트 1종 체험. 인스타그램 피드 포스팅.</div><div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">8/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#12080a,#1e0c10);">🥩<div class="camp-badges"><span class="badge badge-red">마감임박</span></div><div class="camp-d">D-2</div></div><div class="camp-body"><div class="camp-region">📍 서초구 · 방배동</div><div class="camp-name">한우 프리미엄 '우진각'</div><div class="camp-desc">1++ 등급 한우 세트 3인 9만원 상당 무료 제공. 방배동 핫플레이스.</div><div class="camp-meta"><span class="camp-reward">✅ 9만원 상당</span><span class="camp-slots">19/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:95%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a0c1a,#10122a);">💆<div class="camp-badges"><span class="badge badge-blue">클립</span><span class="badge badge-orange">원고료</span></div><div class="camp-d">D-10</div></div><div class="camp-body"><div class="camp-region">📍 강남구 · 청담동</div><div class="camp-name">클리어 스킨랩 피부 케어</div><div class="camp-desc">청담 프리미엄 피부샵 1회 체험 + 원고료 3만원 지급. 클립 영상 리뷰.</div><div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩30,000</span><span class="camp-slots">5/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:33%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a1410,#0d1e16);">🌮<div class="camp-badges"><span class="badge badge-green">블로그</span></div><div class="camp-d">D-12</div></div><div class="camp-body"><div class="camp-region">📍 용산구 · 이태원</div><div class="camp-name">멕시코리아 타코 & 바</div><div class="camp-desc">이태원 멕시칸. 타코 + 칵테일 2잔 무료. 2인 방문 기준.</div><div class="camp-meta"><span class="camp-reward">✅ 6만원 상당</span><span class="camp-slots">12/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:48%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#14100a,#22180e);">🍜<div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-7</div></div><div class="camp-body"><div class="camp-region">📍 성동구 · 성수동</div><div class="camp-name">성수 라멘하우스 '호시'</div><div class="camp-desc">성수동 핫플 라멘 2그릇 + 사이드 무료. 인스타 릴스 업로드.</div><div class="camp-meta"><span class="camp-reward">✅ 4만원 상당</span><span class="camp-slots">6/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:30%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a0e1a,#0e1424);">🍷<div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-6</div></div><div class="camp-body"><div class="camp-region">📍 부산 · 해운대구</div><div class="camp-name">테라스 해운대 와인바</div><div class="camp-desc">해운대 루프탑 와인 1병 + 치즈플래터 무료. 야경 감성 사진 필수.</div><div class="camp-meta"><span class="camp-reward">✅ 8만원 상당</span><span class="camp-slots">18/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:72%"></div></div></div></a>
-    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0e140a,#161e0e);">🥗<div class="camp-badges"><span class="badge badge-blue">클립</span></div><div class="camp-d">D-14</div></div><div class="camp-body"><div class="camp-region">📍 대구 · 수성구</div><div class="camp-name">그린테이블 비건 브런치</div><div class="camp-desc">대구 수성구 비건 브런치 풀코스 체험. 클립 및 블로그 동시 작성 우대.</div><div class="camp-meta"><span class="camp-reward">✅ 5만원 상당</span><span class="camp-slots">3/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:20%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#1a0a10,#2a1018);"><div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-5</div></div><div class="camp-body"><div class="camp-region">강남구 · 역삼동</div><div class="camp-name">스시 오모 — 오마카세 코스</div><div class="camp-desc">15만원 상당 2인 오마카세 코스를 무료로 체험하고 블로그 리뷰를 작성해주세요.</div><div class="camp-meta"><span class="camp-reward">15만원 상당</span><span class="camp-slots">24/30명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:80%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a1210,#0e1e18);"><div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-8</div></div><div class="camp-body"><div class="camp-region">마포구 · 홍대입구</div><div class="camp-name">카페 루미오 시그니처 음료</div><div class="camp-desc">감성 카페 루미오 음료 2잔 + 디저트 1종 체험. 인스타그램 피드 포스팅.</div><div class="camp-meta"><span class="camp-reward">3만원 상당</span><span class="camp-slots">8/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#12080a,#1e0c10);"><div class="camp-badges"><span class="badge badge-red">마감임박</span></div><div class="camp-d">D-2</div></div><div class="camp-body"><div class="camp-region">서초구 · 방배동</div><div class="camp-name">한우 프리미엄 '우진각'</div><div class="camp-desc">1++ 등급 한우 세트 3인 9만원 상당 무료 제공. 방배동 핫플레이스.</div><div class="camp-meta"><span class="camp-reward">9만원 상당</span><span class="camp-slots">19/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:95%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a0c1a,#10122a);"><div class="camp-badges"><span class="badge badge-blue">클립</span><span class="badge badge-orange">원고료</span></div><div class="camp-d">D-10</div></div><div class="camp-body"><div class="camp-region">강남구 · 청담동</div><div class="camp-name">클리어 스킨랩 피부 케어</div><div class="camp-desc">청담 프리미엄 피부샵 1회 체험 + 원고료 3만원 지급. 클립 영상 리뷰.</div><div class="camp-meta"><span class="camp-reward">체험 + ₩30,000</span><span class="camp-slots">5/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:33%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a1410,#0d1e16);"><div class="camp-badges"><span class="badge badge-green">블로그</span></div><div class="camp-d">D-12</div></div><div class="camp-body"><div class="camp-region">용산구 · 이태원</div><div class="camp-name">멕시코리아 타코 & 바</div><div class="camp-desc">이태원 멕시칸. 타코 + 칵테일 2잔 무료. 2인 방문 기준.</div><div class="camp-meta"><span class="camp-reward">6만원 상당</span><span class="camp-slots">12/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:48%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#14100a,#22180e);"><div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div><div class="camp-d">D-7</div></div><div class="camp-body"><div class="camp-region">성동구 · 성수동</div><div class="camp-name">성수 라멘하우스 '호시'</div><div class="camp-desc">성수동 핫플 라멘 2그릇 + 사이드 무료. 인스타 릴스 업로드.</div><div class="camp-meta"><span class="camp-reward">4만원 상당</span><span class="camp-slots">6/20명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:30%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0a0e1a,#0e1424);"><div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div><div class="camp-d">D-6</div></div><div class="camp-body"><div class="camp-region">부산 · 해운대구</div><div class="camp-name">테라스 해운대 와인바</div><div class="camp-desc">해운대 루프탑 와인 1병 + 치즈플래터 무료. 야경 감성 사진 필수.</div><div class="camp-meta"><span class="camp-reward">8만원 상당</span><span class="camp-slots">18/25명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:72%"></div></div></div></a>
+    <a href="campaign-detail.html" class="card" style="cursor:pointer;text-decoration:none;"><div class="camp-img" style="background:linear-gradient(135deg,#0e140a,#161e0e);"><div class="camp-badges"><span class="badge badge-blue">클립</span></div><div class="camp-d">D-14</div></div><div class="camp-body"><div class="camp-region">대구 · 수성구</div><div class="camp-name">그린테이블 비건 브런치</div><div class="camp-desc">대구 수성구 비건 브런치 풀코스 체험. 클립 및 블로그 동시 작성 우대.</div><div class="camp-meta"><span class="camp-reward">5만원 상당</span><span class="camp-slots">3/15명</span></div><div class="camp-bar"><div class="camp-bar-fill" style="width:20%"></div></div></div></a>
   </div>
   <div style="display:flex;justify-content:center;gap:6px;margin-top:32px;">
     <button style="width:36px;height:36px;border-radius:var(--radius-md);background:var(--brand-gradient);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;">1</button>
@@ -166,7 +167,7 @@
   </div>
 </footer>
 <script>
-function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');if(b)b.textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}}
-(function(){{if(localStorage.getItem('growbee-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}}}());
+function toggleMode(){{var n=document.body.classList.toggle('night');var b=document.getElementById('modeBtn');localStorage.setItem('growbee-mode',n?'night':'day');}}
+(function(){{if(localStorage.getItem('growbee-mode')==='night'){{document.body.classList.add('night');var b=document.getElementById('modeBtn');}}}}());
 </script>
 </body></html>

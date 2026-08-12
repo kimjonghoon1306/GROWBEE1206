@@ -3,384 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GROW BEE 체험단 — 전국 맛집·카페·뷰티 체험단 플랫폼</title>
+<title>GROW BEE — 전국 맛집·카페·뷰티 체험단 플랫폼</title>
 <link rel="stylesheet" href="assets/css/design-system.css">
 <style>
 /* ===== HEADER ===== */
 .site-header {
   position: sticky; top: 0; z-index: 100;
   background: var(--header-bg);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.3s;
+  border-bottom: var(--bw) solid var(--ink);
 }
-.header-inner {
-  display: flex; align-items: center; height: 64px; gap: 24px;
-}
-.logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.header-inner { display: flex; align-items: center; height: 66px; gap: 22px; }
+.logo { display: flex; align-items: center; gap: 11px; flex-shrink: 0; }
 .logo-mark {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: var(--brand-gradient);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 6px;
+  background: var(--accent); border: var(--bw) solid var(--ink);
+  box-shadow: var(--hard-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .logo-mark svg { width: 22px; height: 22px; }
 .logo-text { display: flex; flex-direction: column; line-height: 1; }
-.logo-main {
-  font-family: var(--font-display);
-  font-size: 18px; font-weight: 800;
-  color: var(--text); letter-spacing: -0.5px;
-}
-.logo-sub {
-  font-size: 9px; font-weight: 700;
-  color: var(--brand-primary);
-  letter-spacing: 1.5px; margin-top: 1px;
-}
+.logo-main { font-family: var(--font-display); font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -.5px; }
+.logo-sub { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; margin-top: 3px; }
 .main-nav { display: flex; align-items: center; gap: 2px; flex: 1; }
 .nav-link {
-  font-size: 13px; font-weight: 500;
-  color: var(--text-muted);
-  padding: 7px 12px; border-radius: 8px;
-  transition: var(--transition); white-space: nowrap;
+  font-size: 14px; font-weight: 700; color: var(--text);
+  padding: 8px 12px; border-radius: 4px; border: 2px solid transparent;
+  transition: var(--t); white-space: nowrap;
 }
-.nav-link:hover { color: var(--text); background: var(--nav-active-bg); }
-.nav-link.active { color: var(--brand-primary); background: rgba(255,71,87,0.08); font-weight: 700; }
+.nav-link:hover { border-color: var(--ink); background: var(--accent); color:#141414; }
+.nav-link.active { background: var(--ink); color: var(--bg); }
 
-/* Day/Night + Admin + Actions */
 .header-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-.mode-btn {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: var(--nav-active-bg);
-  border: 1px solid var(--border);
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 5px;
+  background: var(--bg-card); border: var(--bw) solid var(--ink);
+  box-shadow: var(--hard-sm);
   display: flex; align-items: center; justify-content: center;
-  font-size: 17px; transition: var(--transition); flex-shrink: 0;
+  transition: var(--t); flex-shrink: 0; color: var(--text);
 }
-.mode-btn:hover { background: rgba(255,71,87,0.1); border-color: rgba(255,71,87,0.3); }
-.admin-btn {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: var(--nav-active-bg);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px; transition: var(--transition); flex-shrink: 0;
-  text-decoration: none;
-}
-.admin-btn:hover { background: rgba(255,71,87,0.1); border-color: rgba(255,71,87,0.3); }
-.hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  padding: 8px; flex-shrink: 0;
-}
-.hamburger span {
-  display: block; width: 22px; height: 2px;
-  background: var(--text); border-radius: 2px; transition: var(--transition);
-}
+.icon-btn:hover { transform: translate(-2px,-2px); box-shadow: var(--hard); background: var(--accent); color:#141414; }
+.icon-btn:active { transform: translate(2px,2px); box-shadow: 0 0 0 var(--ink); }
+.icon-btn svg { width: 20px; height: 20px; }
+.hamburger { display: none; flex-direction: column; gap: 5px; padding: 10px; flex-shrink: 0; }
+.hamburger span { display: block; width: 22px; height: 3px; background: var(--text); border-radius: 2px; }
 .mobile-menu {
   display: none; flex-direction: column;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
-  padding: 8px 16px 16px;
+  background: var(--bg-card); border-bottom: var(--bw) solid var(--ink); padding: 10px 16px 18px;
 }
 .mobile-menu.open { display: flex; }
-.mobile-menu a {
-  padding: 13px 4px; font-size: 15px; font-weight: 500;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
-}
+.mobile-menu a { padding: 14px 6px; font-size: 16px; font-weight: 700; color: var(--text); border-bottom: 2px solid var(--ink); }
 .mobile-menu a:last-child { border: none; }
-.mobile-menu .m-cta { color: var(--brand-primary); font-weight: 700; border: none; margin-top: 8px; }
 .mobile-menu .m-cta-btn {
-  display: block; text-align: center;
-  background: var(--brand-gradient); color: #fff;
-  padding: 13px; border-radius: 50px; font-weight: 700; font-size: 15px;
-  margin-top: 8px; box-shadow: 0 4px 16px rgba(255,71,87,0.35);
+  display: block; text-align: center; background: var(--accent); color: #141414;
+  padding: 14px; border-radius: 4px; font-weight: 800; font-size: 16px;
+  margin-top: 12px; border: var(--bw) solid var(--ink); box-shadow: var(--hard-sm);
 }
 
 /* ===== TICKER ===== */
-.ticker {
-  background: var(--brand-primary); color: #fff;
-  padding: 9px 0; overflow: hidden;
-}
-.ticker-inner {
-  display: flex; align-items: center;
-  animation: ticker 35s linear infinite;
-  white-space: nowrap;
-}
-.ticker-item {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: 12px; font-weight: 600; padding: 0 36px;
-}
-.ticker-dot { width: 5px; height: 5px; background: rgba(255,255,255,0.6); border-radius: 50%; }
+.ticker { background: var(--ink); color: var(--bg); padding: 0; overflow: hidden; border-bottom: var(--bw) solid var(--ink); }
+.ticker-inner { display: flex; align-items: center; animation: ticker 32s linear infinite; white-space: nowrap; }
+.ticker-item { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; padding: 11px 30px; text-transform: uppercase; letter-spacing:.5px; }
+.ticker-item b { color: var(--accent); }
+.ticker-star { color: var(--accent); font-size:13px; }
 @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 /* ===== HERO ===== */
-.hero {
-  padding: 64px 0 56px;
-  background: radial-gradient(ellipse 60% 70% at 60% 50%, rgba(255,71,87,0.07) 0%, transparent 70%);
-}
-.hero-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 48px; align-items: center;
-}
+.hero { padding: 60px 0 52px; position: relative; overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 44px; align-items: center; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,71,87,0.12); border: 1px solid rgba(255,71,87,0.3);
-  border-radius: 50px; padding: 6px 16px;
-  font-size: 12px; font-weight: 700; color: var(--brand-primary);
-  margin-bottom: 20px;
+  background: var(--coral); color:#fff; border: var(--bw) solid var(--ink); box-shadow: var(--hard-sm);
+  border-radius: 4px; padding: 7px 14px; font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700; margin-bottom: 22px; letter-spacing:.3px;
 }
-.hero-badge::before {
-  content: ''; width: 7px; height: 7px;
-  background: var(--brand-primary); border-radius: 50%;
-  animation: pulse 1.8s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 58px);
-  font-weight: 800; line-height: 1.08;
-  letter-spacing: -1.5px; margin-bottom: 18px;
-  color: var(--text);
-}
-.hero-title .hl { color: var(--brand-primary); }
-.hero-desc { font-size: 15px; color: var(--text-muted); line-height: 1.75; margin-bottom: 32px; }
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-.hero-stats {
-  display: flex; gap: 28px; flex-wrap: wrap;
-  padding-top: 28px; border-top: 1px solid var(--border);
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 26px; font-weight: 800; line-height: 1;
-  color: var(--text);
-}
-.stat-num em { color: var(--brand-primary); font-style: normal; }
-.stat-label { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.hero-badge::before { content:''; width: 8px; height: 8px; background: var(--accent); border:2px solid #141414; border-radius: 50%; animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(.55)} }
+.hero-title { font-size: clamp(38px, 6vw, 74px); font-weight: 900; line-height: .98; letter-spacing: -2.5px; margin-bottom: 22px; color: var(--text); }
+.hero-title .mark { background: var(--accent); color:#141414; padding: 0 .1em; box-decoration-break: clone; -webkit-box-decoration-break: clone; border:3px solid #141414; box-shadow: 5px 5px 0 #141414; display:inline-block; transform: rotate(-1.5deg); }
+.hero-title .brand { font-family: var(--font-display); color: var(--coral); }
+.hero-desc { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 30px; font-weight:500; max-width: 460px; }
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 38px; }
+.hero-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: var(--bw) solid var(--ink); border-radius: 6px; overflow:hidden; box-shadow: var(--hard-sm); background: var(--bg-card); }
+.stat-cell { padding: 16px 14px; border-right: var(--bw) solid var(--ink); }
+.stat-cell:last-child { border-right: none; }
+.stat-num { font-family: var(--font-display); font-size: 26px; font-weight: 800; line-height: 1; color: var(--text); }
+.stat-num em { color: var(--coral); font-style: normal; }
+.stat-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-top: 5px; text-transform:uppercase; letter-spacing:.5px; }
 
-/* ===== HERO VISUAL — 카드 3장 깔끔하게 ===== */
-.hero-visual { position: relative; height: 400px; }
-.hv-card {
-  position: absolute;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-}
-.hv-card-main {
-  width: 260px; top: 0; left: 50%; transform: translateX(-50%);
-  animation: hv1 6s ease-in-out infinite;
-  z-index: 3;
-}
-.hv-card-right {
-  width: 195px; bottom: 20px; right: 0;
-  animation: hv2 7s ease-in-out infinite 0.5s;
-  z-index: 2;
-}
-.hv-card-left {
-  width: 175px; bottom: 60px; left: 0;
-  animation: hv3 5s ease-in-out infinite 1s;
-  z-index: 1;
-}
-@keyframes hv1 { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-10px)} }
-@keyframes hv2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-@keyframes hv3 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(9px)} }
-.hv-img {
-  width: 100%; height: 140px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 50px; position: relative;
-}
-.hv-img-sm { height: 110px; font-size: 38px; }
-.hv-body { padding: 14px; }
-.hv-tag { font-size: 10px; font-weight: 700; color: var(--brand-primary); margin-bottom: 5px; }
-.hv-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.hv-info { font-size: 11px; color: var(--text-muted); }
-.hv-foot {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 9px 14px; border-top: 1px solid var(--border);
-  font-size: 11px;
-}
-.hv-foot-apply { color: var(--brand-primary); font-weight: 700; }
-.hv-foot-d { color: var(--text-muted); }
-.hv-badges {
-  position: absolute; top: 10px; left: 10px;
-  display: flex; gap: 5px; z-index: 1;
-}
-.hv-d-badge {
-  position: absolute; top: 10px; right: 10px;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-  border-radius: 6px; padding: 3px 7px;
-  font-size: 10px; font-weight: 700; color: #fff;
-}
+/* ===== HERO VISUAL — brutalist image collage ===== */
+.hero-visual { position: relative; height: 440px; }
+.hv-card { position: absolute; background: var(--bg-card); border: var(--bw) solid var(--ink); border-radius: 8px; overflow: hidden; box-shadow: var(--hard); }
+.hv-card-main { width: 270px; top: 8px; left: 50%; margin-left:-135px; z-index: 3; transform: rotate(2deg); animation: hvfloat 6s ease-in-out infinite; }
+.hv-card-right { width: 190px; bottom: 8px; right: -4px; z-index: 2; transform: rotate(-4deg); animation: hvfloat 7s ease-in-out infinite .6s; }
+.hv-card-left { width: 172px; bottom: 44px; left: -6px; z-index: 4; transform: rotate(-6deg); animation: hvfloat 5.5s ease-in-out infinite 1s; }
+@keyframes hvfloat { 0%,100%{translate:0 0} 50%{translate:0 -12px} }
+.hv-img { width: 100%; height: 150px; object-fit: cover; border-bottom: var(--bw) solid var(--ink); }
+.hv-img-sm { height: 116px; }
+.hv-body { padding: 12px; }
+.hv-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--coral); margin-bottom: 5px; text-transform:uppercase; }
+.hv-name { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px; letter-spacing:-.3px; }
+.hv-info { font-size: 11px; color: var(--text-muted); font-weight:500; }
+.hv-foot { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-top: var(--bw) solid var(--ink); font-size: 11px; font-weight:700; }
+.hv-foot-apply { color: var(--text); font-family: var(--font-mono); }
+.hv-foot-d { background: var(--accent); color:#141414; padding: 2px 7px; border:2px solid #141414; border-radius:3px; font-family: var(--font-mono); }
+.hv-sticker { position:absolute; top:-16px; left:-18px; z-index:5; background: var(--coral); color:#fff; font-family: var(--font-mono); font-weight:700; font-size:12px; padding:8px 12px; border:var(--bw) solid var(--ink); border-radius:50%; transform: rotate(-12deg); box-shadow: var(--hard-sm); width:64px;height:64px; display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.1; }
+
+/* ===== SECTION HEADER ===== */
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 26px; flex-wrap: wrap; gap: 12px; }
+.see-all { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px; border:2px solid var(--ink); padding:7px 12px; border-radius:4px; transition: var(--t); text-transform:uppercase; }
+.see-all:hover { background: var(--accent); color:#141414; transform: translate(-2px,-2px); box-shadow: var(--hard-sm); }
 
 /* ===== FILTER BAR ===== */
-.filter-section { padding: 40px 0 0; }
-.filter-bar {
-  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl); padding: 8px 14px;
-  box-shadow: var(--shadow);
-}
+.filter-section { padding: 8px 0 0; }
+.filter-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 2px 0; }
 .filter-tag {
-  padding: 7px 15px; border-radius: 50px;
-  font-size: 12px; font-weight: 600;
-  color: var(--text-muted);
-  background: transparent; border: 1.5px solid transparent;
-  transition: var(--transition); cursor: pointer; white-space: nowrap;
+  padding: 9px 16px; border-radius: 4px; font-size: 13px; font-weight: 800;
+  color: var(--text); background: var(--bg-card); border: var(--bw) solid var(--ink);
+  transition: var(--t); cursor: pointer; white-space: nowrap;
 }
-.filter-tag:hover { color: var(--text); background: var(--nav-active-bg); }
-.filter-tag.active { background: var(--brand-gradient); color: #fff; border-color: transparent; }
-.filter-divider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+.filter-tag:hover { transform: translate(-2px,-2px); box-shadow: var(--hard-sm); }
+.filter-tag.active { background: var(--ink); color: var(--bg); }
 
-/* ===== CAMPAIGN SECTION ===== */
-.campaigns-section { padding: 36px 0 56px; }
-.section-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
-}
-.see-all {
-  font-size: 12px; font-weight: 600; color: var(--text-muted);
-  display: flex; align-items: center; gap: 4px;
-  transition: var(--transition);
-}
-.see-all:hover { color: var(--brand-primary); }
-
-/* ===== CAMPAIGN CARD ===== */
-.camp-card { cursor: pointer; }
-.camp-img {
-  width: 100%; height: 190px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 56px; position: relative; overflow: hidden;
-}
-.camp-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 5px; }
-.camp-d { position: absolute; top: 10px; right: 10px;
-  background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
-  border-radius: 6px; padding: 3px 8px;
-  font-size: 10px; font-weight: 700; color: #fff;
-}
+/* ===== CAMPAIGNS ===== */
+.campaigns-section { padding: 34px 0 56px; }
+.camp-card { cursor: pointer; display:block; }
+.camp-imgwrap { position: relative; height: 200px; overflow: hidden; border-bottom: var(--bw) solid var(--ink); }
+.camp-img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.camp-card:hover .camp-img { transform: scale(1.06); }
+.camp-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+.camp-d { position: absolute; top: 10px; right: 10px; background: var(--ink); color: var(--bg); border:2px solid var(--bg); border-radius: 4px; padding: 3px 9px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
 .camp-body { padding: 14px; }
-.camp-region { font-size: 10px; color: var(--text-muted); margin-bottom: 5px; }
-.camp-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; line-height: 1.3; }
-.camp-desc {
-  font-size: 12px; color: var(--text-muted); line-height: 1.5;
-  margin-bottom: 11px;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.camp-meta {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 10px; border-top: 1px solid var(--border);
-}
-.camp-reward { font-size: 12px; font-weight: 700; color: var(--brand-secondary); }
-.camp-slots { font-size: 11px; color: var(--text-muted); }
-.camp-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 7px; overflow: hidden; }
-.camp-bar-fill { height: 100%; background: var(--brand-gradient); border-radius: 2px; }
+.camp-region { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); margin-bottom: 6px; text-transform:uppercase; letter-spacing:.4px; }
+.camp-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; line-height: 1.25; letter-spacing:-.3px; }
+.camp-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; font-weight:500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.camp-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 11px; border-top: 2px solid var(--ink); }
+.camp-reward { font-size: 12px; font-weight: 800; color: #141414; background: var(--accent); border:2px solid #141414; padding:3px 8px; border-radius:3px; }
+.camp-slots { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); font-weight:700; }
+.camp-bar { height: 8px; background: var(--bg-card2); border: 2px solid var(--ink); border-radius: 3px; margin-top: 9px; overflow: hidden; }
+.camp-bar-fill { height: 100%; background: var(--coral); }
 
 /* ===== REGIONS ===== */
-.regions-section { padding: 56px 0; background: var(--bg-surface); }
-.region-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: 12px; margin-top: 24px;
-}
-.region-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 18px 12px;
-  text-align: center; cursor: pointer; transition: var(--transition);
-  box-shadow: var(--shadow);
-}
-.region-card:hover { border-color: rgba(255,71,87,0.4); transform: translateY(-3px); background: rgba(255,71,87,0.04); }
-.region-emoji { font-size: 26px; margin-bottom: 7px; }
-.region-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.region-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.regions-section { padding: 56px 0; background: var(--bg-surface); border-top: var(--bw) solid var(--ink); border-bottom: var(--bw) solid var(--ink); }
+.region-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 26px; }
+.region-card { background: var(--bg-card); border: var(--bw) solid var(--ink); border-radius: 6px; padding: 20px 14px; cursor: pointer; transition: var(--t); box-shadow: var(--hard-sm); display:flex; align-items:center; gap:12px; }
+.region-card:hover { transform: translate(-3px,-3px); box-shadow: var(--hard); background: var(--accent); }
+.region-ic { width: 34px; height: 34px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:2px solid var(--ink); border-radius:5px; background:var(--bg); }
+.region-card:hover .region-ic { background:#fff; }
+.region-ic svg { width:18px; height:18px; }
+.region-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.region-card:hover .region-name, .region-card:hover .region-count { color:#141414; }
+.region-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
 /* ===== CATEGORIES ===== */
 .cats-section { padding: 56px 0; }
-.cats-grid {
-  display: grid; grid-template-columns: repeat(6, 1fr);
-  gap: 10px; margin-top: 22px;
-}
-.cat-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 20px 10px;
-  text-align: center; cursor: pointer; transition: var(--transition);
-  box-shadow: var(--shadow);
-}
-.cat-card:hover { border-color: rgba(255,71,87,0.3); transform: translateY(-3px); }
-.cat-icon { font-size: 28px; margin-bottom: 7px; }
-.cat-name { font-size: 12px; font-weight: 600; color: var(--text); }
-.cat-cnt { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.cats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 24px; }
+.cat-card { background: var(--bg-card); border: var(--bw) solid var(--ink); border-radius: 6px; padding: 22px 12px; text-align: center; cursor: pointer; transition: var(--t); box-shadow: var(--hard-sm); }
+.cat-card:hover { transform: translate(-3px,-3px) rotate(-1.5deg); box-shadow: var(--hard); background: var(--accent); }
+.cat-ic { width:46px;height:46px;margin:0 auto 12px; border:var(--bw) solid var(--ink); border-radius:6px; background:var(--bg); display:flex;align-items:center;justify-content:center; }
+.cat-card:hover .cat-ic { background:#fff; }
+.cat-ic svg { width:24px; height:24px; }
+.cat-name { font-size: 13px; font-weight: 800; color: var(--text); }
+.cat-cnt { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.cat-card:hover .cat-name, .cat-card:hover .cat-cnt { color:#141414; }
 
 /* ===== HOW ===== */
-.how-section { padding: 56px 0; background: var(--bg-surface); }
-.how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 32px; }
-.how-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 28px 22px;
-  position: relative; overflow: hidden; box-shadow: var(--shadow);
-}
-.how-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: var(--brand-gradient);
-}
-.how-num {
-  font-family: var(--font-display);
-  font-size: 44px; font-weight: 800;
-  color: rgba(255,71,87,0.10); line-height: 1; margin-bottom: 12px;
-}
-.how-icon { font-size: 28px; margin-bottom: 12px; }
-.how-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
-.how-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.how-section { padding: 60px 0; background: var(--accent); border-top: var(--bw) solid var(--ink); border-bottom: var(--bw) solid var(--ink); }
+.how-section .tag-label { background:#141414; color:var(--accent); }
+.how-section .section-title { color:#141414; }
+.how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 34px; }
+.how-card { background: #fff; border: var(--bw) solid #141414; border-radius: 8px; padding: 26px 22px; position: relative; box-shadow: 6px 6px 0 #141414; }
+.how-num { font-family: var(--font-display); font-size: 46px; font-weight: 800; color: #141414; line-height: 1; margin-bottom: 14px; }
+.how-ic { position:absolute; top:24px; right:22px; width:38px;height:38px;border:2px solid #141414;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--accent); }
+.how-ic svg{width:20px;height:20px;color:#141414;}
+.how-title { font-size: 17px; font-weight: 800; color: #141414; margin-bottom: 8px; }
+.how-desc { font-size: 13px; color: #333; line-height: 1.6; font-weight:500; }
 
 /* ===== CTA ===== */
 .cta-section { padding: 72px 0; }
-.cta-box {
-  background: var(--bg-card); border: 1px solid rgba(255,71,87,0.2);
-  border-radius: var(--radius-xl); padding: 56px 40px;
-  text-align: center; position: relative; overflow: hidden;
-  box-shadow: var(--shadow-card);
-}
-.cta-box::before {
-  content: ''; position: absolute; top: -40px; right: -40px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(255,71,87,0.1) 0%, transparent 70%);
-  border-radius: 50%;
-}
-.cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(26px, 4vw, 40px); font-weight: 800;
-  margin-bottom: 14px; line-height: 1.1; color: var(--text);
-}
-.cta-desc { font-size: 15px; color: var(--text-muted); margin-bottom: 28px; }
-.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-box { background: var(--ink); color: var(--bg); border: var(--bw) solid var(--ink); border-radius: 12px; padding: 58px 40px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--hard-lg); }
+.cta-box .tag-label { background: var(--accent); color:#141414; }
+.cta-title { font-size: clamp(28px, 4.5vw, 48px); font-weight: 900; margin-bottom: 16px; line-height: 1.02; color: var(--bg); letter-spacing:-1.5px; }
+.cta-title .mark { background: var(--accent); color:#141414; padding:0 .1em; border:3px solid var(--accent); }
+.cta-desc { font-size: 16px; color: var(--bg); opacity:.75; margin-bottom: 30px; font-weight:500; }
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.cta-box .btn-outline { background: transparent; color: var(--bg); border-color: var(--bg); box-shadow: 4px 4px 0 var(--accent); }
+.cta-box .btn-outline:hover { background: var(--bg); color: var(--ink); }
 
 /* ===== FOOTER ===== */
-.site-footer {
-  background: var(--bg-surface);
-  border-top: 1px solid var(--border);
-  padding: 48px 0 24px;
-}
-.footer-top {
-  display: grid; grid-template-columns: 260px 1fr;
-  gap: 48px; padding-bottom: 40px;
-  border-bottom: 1px solid var(--border);
-}
+.site-footer { background: var(--bg-surface); border-top: var(--bw) solid var(--ink); padding: 48px 0 24px; }
+.footer-top { display: grid; grid-template-columns: 280px 1fr; gap: 48px; padding-bottom: 40px; border-bottom: var(--bw) solid var(--ink); }
 .footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.footer-col h4 { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
-.footer-col a { display: block; font-size: 12px; color: var(--text-muted); padding: 3px 0; transition: var(--transition); }
-.footer-col a:hover { color: var(--brand-primary); }
-.footer-social { display: flex; gap: 8px; margin-top: 18px; }
-.social-ico {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: var(--nav-active-bg); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; transition: var(--transition);
-}
-.social-ico:hover { background: rgba(255,71,87,0.1); border-color: rgba(255,71,87,0.3); }
-.footer-bottom {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 20px; font-size: 11px; color: var(--text-muted);
-  flex-wrap: wrap; gap: 8px;
-}
+.footer-col h4 { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 14px; text-transform:uppercase; letter-spacing:.5px; }
+.footer-col a { display: block; font-size: 13px; color: var(--text-muted); padding: 4px 0; transition: var(--t); font-weight:500; }
+.footer-col a:hover { color: var(--coral); transform: translateX(3px); }
+.footer-social { display: flex; gap: 10px; margin-top: 18px; }
+.social-ico { width: 40px; height: 40px; border-radius: 5px; background: var(--bg-card); border: var(--bw) solid var(--ink); box-shadow: var(--hard-sm); display: flex; align-items: center; justify-content: center; transition: var(--t); color: var(--text); }
+.social-ico:hover { background: var(--accent); color:#141414; transform: translate(-2px,-2px); box-shadow: var(--hard); }
+.social-ico svg { width: 19px; height: 19px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); flex-wrap: wrap; gap: 8px; }
 .footer-bottom-links { display: flex; gap: 16px; }
 
 /* ===== MOBILE ===== */
@@ -394,30 +214,22 @@
 @media (max-width: 768px) {
   .main-nav { display: none; }
   .hamburger { display: flex; }
-  .header-right .btn-outline,
-  .header-right .btn-primary { display: none; }
-  .hero { padding: 40px 0 36px; }
-  .hero-title { font-size: clamp(28px, 8vw, 42px); }
-  .hero-stats { gap: 16px; }
-  .region-grid { grid-template-columns: repeat(2, 1fr); }
-  .cats-grid { grid-template-columns: repeat(3, 1fr); }
-  .how-grid { grid-template-columns: 1fr 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 28px; }
-  .footer-links { grid-template-columns: repeat(2, 1fr); }
-  .cta-box { padding: 36px 22px; }
-}
-@media (max-width: 480px) {
-  .hero-badge { font-size: 11px; }
-  .hero-actions { flex-direction: column; }
-  .hero-actions .btn-primary,
-  .hero-actions .btn-outline { justify-content: center; }
+  .header-right .btn-outline, .header-right .btn-primary { display: none; }
+  .hero { padding: 38px 0 34px; }
+  .hero-stats { grid-template-columns: repeat(2,1fr); }
+  .stat-cell:nth-child(2){ border-right:none; }
+  .stat-cell:nth-child(1),.stat-cell:nth-child(2){ border-bottom: var(--bw) solid var(--ink); }
   .region-grid { grid-template-columns: repeat(2, 1fr); }
   .cats-grid { grid-template-columns: repeat(2, 1fr); }
   .how-grid { grid-template-columns: 1fr; }
-  .footer-links { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .footer-links { grid-template-columns: repeat(2, 1fr); }
+  .cta-box { padding: 40px 22px; }
+}
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column; }
+  .region-grid, .cats-grid { grid-template-columns: 1fr; }
   .cta-btns { flex-direction: column; }
-  .cta-btns .btn-primary,
-  .cta-btns .btn-outline { justify-content: center; }
 }
 </style>
 </head>
@@ -429,10 +241,9 @@
     <div class="header-inner">
       <a href="index.html" class="logo">
         <div class="logo-mark">
-          <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity="0.9"/>
-            <circle cx="11" cy="11" r="3" fill="white"/>
-            <path d="M8 9L11 6L14 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="14" rx="5" ry="6"/><path d="M7 12h10M7 16h10"/>
+            <path d="M9 6l-3-2M15 6l3-2"/><circle cx="12" cy="8" r="1" fill="#141414"/>
           </svg>
         </div>
         <div class="logo-text">
@@ -450,26 +261,30 @@
         <a href="pages/user/advertiser.html" class="nav-link">사장님</a>
       </nav>
       <div class="header-right">
-        <button class="mode-btn" id="modeBtn" onclick="toggleMode()" title="낮/밤 모드">🌙</button>
-        <a href="pages/admin/admin-dashboard.html" class="admin-btn" title="관리자 페이지">⚙️</a>
-        <a href="pages/user/login.html" class="btn-outline" style="padding:9px 16px;font-size:13px;">로그인</a>
-        <a href="pages/user/signup.html" class="btn-primary" style="padding:9px 16px;font-size:13px;">무료 가입</a>
-        <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+        <button class="icon-btn" id="modeBtn" onclick="toggleMode()" title="낮/밤 모드" aria-label="낮/밤 모드">
+          <svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <a href="pages/admin/admin-dashboard.html" class="icon-btn" title="관리자" aria-label="관리자">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </a>
+        <a href="pages/user/login.html" class="btn-outline" style="padding:10px 16px;">로그인</a>
+        <a href="pages/user/signup.html" class="btn-primary" style="padding:10px 18px;">무료 가입</a>
+        <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="메뉴">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html">🏠 홈</a>
-    <a href="pages/user/campaigns.html">🎯 체험단 모집</a>
-    <a href="pages/user/regions.html">📍 지역별</a>
-    <a href="pages/user/categories.html">🗂️ 카테고리</a>
-    <a href="pages/user/review.html">⭐ 리뷰 현황</a>
-    <a href="pages/user/notice.html">📢 공지사항</a>
-    <a href="pages/user/advertiser.html">🏪 사장님 페이지</a>
-    <a href="pages/admin/admin-dashboard.html" class="m-cta">⚙️ 관리자 페이지</a>
-    <a href="pages/user/login.html">🔑 로그인</a>
+    <a href="index.html">홈</a>
+    <a href="pages/user/campaigns.html">체험단 모집</a>
+    <a href="pages/user/regions.html">지역별</a>
+    <a href="pages/user/categories.html">카테고리</a>
+    <a href="pages/user/review.html">리뷰 현황</a>
+    <a href="pages/user/notice.html">공지사항</a>
+    <a href="pages/user/advertiser.html">사장님 페이지</a>
+    <a href="pages/admin/admin-dashboard.html">관리자 페이지</a>
+    <a href="pages/user/login.html">로그인</a>
     <a href="pages/user/signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
@@ -477,16 +292,16 @@
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner">
-    <span class="ticker-item"><span class="ticker-dot"></span>🔥 강남구 오마카세 스시 OMO 체험단 모집 중</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>📢 마포구 카페 LUMIO 블로그 체험단 마감 D-3</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>✨ 부산 해운대 브런치 레스토랑 인스타그램 체험단</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>🍰 성수동 디저트 카페 '단단' 클립 체험단 오픈</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>💄 청담동 프리미엄 피부샵 뷰티 체험단 원고료 지급</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>🔥 강남구 오마카세 스시 OMO 체험단 모집 중</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>📢 마포구 카페 LUMIO 블로그 체험단 마감 D-3</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>✨ 부산 해운대 브런치 레스토랑 인스타그램 체험단</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>🍰 성수동 디저트 카페 '단단' 클립 체험단 오픈</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>💄 청담동 프리미엄 피부샵 뷰티 체험단 원고료 지급</span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 강남구 오마카세 스시 OMO 체험단 <b>모집중</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 마포구 카페 LUMIO 블로그 체험단 <b>D-3 마감</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 부산 해운대 브런치 레스토랑 <b>인스타 체험단</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 성수동 디저트 카페 '단단' <b>클립 체험단</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 청담동 프리미엄 피부샵 <b>원고료 지급</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 강남구 오마카세 스시 OMO 체험단 <b>모집중</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 마포구 카페 LUMIO 블로그 체험단 <b>D-3 마감</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 부산 해운대 브런치 레스토랑 <b>인스타 체험단</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 성수동 디저트 카페 '단단' <b>클립 체험단</b></span>
+    <span class="ticker-item"><span class="ticker-star">★</span> 청담동 프리미엄 피부샵 <b>원고료 지급</b></span>
   </div>
 </div>
 
@@ -495,80 +310,50 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="hero-badge">🚀 지금 신규 캠페인 84개 모집 중</div>
-        <h1 class="hero-title">
-          전국 맛집부터<br>
-          뷰티·라이프까지<br>
-          <span class="hl">GROW BEE</span>에서
-        </h1>
-        <p class="hero-desc">블로거·인플루언서와 전국 매장을 연결하는 체험단 플랫폼.<br>무료 체험 + 원고료까지, 지금 바로 시작하세요.</p>
+        <div class="hero-badge">지금 신규 캠페인 84개 모집중</div>
+        <h1 class="hero-title">전국 맛집부터<br>뷰티까지<br><span class="mark">공짜로 즐기고</span><br>돈까지 <span class="brand">GROW BEE</span></h1>
+        <p class="hero-desc">블로거·인플루언서와 전국 매장을 연결하는 체험단 플랫폼. 무료 체험 + 원고료까지, 지금 바로 시작하세요.</p>
         <div class="hero-actions">
-          <a href="pages/user/campaigns.html" class="btn-primary" style="font-size:15px;padding:14px 28px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <a href="pages/user/campaigns.html" class="btn-primary" style="font-size:16px;padding:15px 28px;">
             체험단 신청하기
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <a href="pages/user/advertiser.html" class="btn-outline" style="font-size:15px;padding:14px 28px;">사장님 시작하기</a>
+          <a href="pages/user/advertiser.html" class="btn-outline" style="font-size:16px;padding:15px 26px;">사장님 시작하기</a>
         </div>
         <div class="hero-stats">
-          <div><div class="stat-num">12,<em>400</em>+</div><div class="stat-label">활성 리뷰어</div></div>
-          <div><div class="stat-num">3,<em>800</em>+</div><div class="stat-label">등록 매장</div></div>
-          <div><div class="stat-num">84</div><div class="stat-label">진행중 캠페인</div></div>
-          <div><div class="stat-num">97<em>%</em></div><div class="stat-label">사장님 만족도</div></div>
+          <div class="stat-cell"><div class="stat-num">12,<em>400</em>+</div><div class="stat-label">활성 리뷰어</div></div>
+          <div class="stat-cell"><div class="stat-num">3,<em>800</em>+</div><div class="stat-label">등록 매장</div></div>
+          <div class="stat-cell"><div class="stat-num">84</div><div class="stat-label">진행중 캠페인</div></div>
+          <div class="stat-cell"><div class="stat-num">97<em>%</em></div><div class="stat-label">사장님 만족도</div></div>
         </div>
       </div>
       <div class="hero-visual">
-        <!-- 메인 카드 -->
+        <div class="hv-sticker">NO<br>부담 ZERO</div>
         <div class="hv-card hv-card-main">
-          <div class="hv-img" style="background:linear-gradient(135deg,#1a0a0e,#2d1015);">
-            🍣
-            <div class="hv-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div>
-            <div class="hv-d-badge">D-5</div>
-          </div>
+          <img class="hv-img" src="assets/img/sushi.jpg" alt="오마카세 스시">
           <div class="hv-body">
-            <div class="hv-tag">📍 강남구 · 오마카세</div>
+            <div class="hv-tag">강남구 · 오마카세</div>
             <div class="hv-name">스시 오모 — 오마카세 코스</div>
             <div class="hv-info">15만원 상당 2인 코스 무료 체험</div>
           </div>
-          <div class="hv-foot">
-            <span class="hv-foot-apply">신청 24/30명</span>
-            <span class="hv-foot-d">D-5 마감</span>
-          </div>
+          <div class="hv-foot"><span class="hv-foot-apply">신청 24/30명</span><span class="hv-foot-d">D-5</span></div>
         </div>
-        <!-- 오른쪽 카드 -->
         <div class="hv-card hv-card-right">
-          <div class="hv-img hv-img-sm" style="background:linear-gradient(135deg,#0a1210,#0d2218);">☕</div>
+          <img class="hv-img hv-img-sm" src="assets/img/cafe.jpg" alt="카페 루미오">
           <div class="hv-body" style="padding:11px;">
-            <div class="hv-tag">📍 마포구 · 카페</div>
-            <div class="hv-name" style="font-size:12px;">카페 루미오</div>
+            <div class="hv-tag">마포구 · 카페</div>
+            <div class="hv-name" style="font-size:13px;">카페 루미오</div>
             <div class="hv-info">음료 2잔 체험</div>
           </div>
         </div>
-        <!-- 왼쪽 카드 -->
         <div class="hv-card hv-card-left">
-          <div class="hv-img hv-img-sm" style="background:linear-gradient(135deg,#0a0a1a,#12102a);">💆</div>
+          <img class="hv-img hv-img-sm" src="assets/img/skincare.jpg" alt="피부 케어">
           <div class="hv-body" style="padding:11px;">
-            <div class="hv-tag">📍 청담 · 뷰티</div>
-            <div class="hv-name" style="font-size:12px;">원고료 지급</div>
+            <div class="hv-tag">청담 · 뷰티</div>
+            <div class="hv-name" style="font-size:13px;">원고료 지급</div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- FILTER -->
-<section class="filter-section">
-  <div class="container">
-    <div class="filter-bar">
-      <button class="filter-tag active" onclick="filterClick(this)">전체</button>
-      <span class="filter-divider"></span>
-      <button class="filter-tag" onclick="filterClick(this)">🍽️ 맛집</button>
-      <button class="filter-tag" onclick="filterClick(this)">☕ 카페</button>
-      <button class="filter-tag" onclick="filterClick(this)">🍰 디저트</button>
-      <button class="filter-tag" onclick="filterClick(this)">💄 뷰티</button>
-      <button class="filter-tag" onclick="filterClick(this)">🏋️ 피트니스</button>
-      <button class="filter-tag" onclick="filterClick(this)">🏨 숙박</button>
-      <button class="filter-tag" onclick="filterClick(this)">📦 배송형</button>
     </div>
   </div>
 </section>
@@ -577,111 +362,116 @@
 <section class="campaigns-section">
   <div class="container">
     <div class="section-header">
-      <div><div class="tag-label">HOT CAMPAIGNS</div><h2 class="section-title">지금 <span>인기</span> 체험단</h2></div>
+      <div><div class="tag-label">HOT CAMPAIGNS</div><h2 class="section-title">지금 <span class="mark">인기</span> 체험단</h2></div>
       <a href="pages/user/campaigns.html" class="see-all">전체보기 →</a>
+    </div>
+    <!-- FILTER -->
+    <div class="filter-section" style="margin-bottom:26px;">
+      <div class="filter-bar">
+        <button class="filter-tag active" onclick="filterClick(this)">전체</button>
+        <button class="filter-tag" onclick="filterClick(this)">맛집</button>
+        <button class="filter-tag" onclick="filterClick(this)">카페</button>
+        <button class="filter-tag" onclick="filterClick(this)">디저트</button>
+        <button class="filter-tag" onclick="filterClick(this)">뷰티</button>
+        <button class="filter-tag" onclick="filterClick(this)">피트니스</button>
+        <button class="filter-tag" onclick="filterClick(this)">숙박</button>
+        <button class="filter-tag" onclick="filterClick(this)">배송형</button>
+      </div>
     </div>
     <div class="grid-4">
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#1a0a10,#2a1018);">🍣
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/sushi.jpg" alt="스시 오모">
           <div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div>
-          <div class="camp-d">D-5</div>
-        </div>
+          <div class="camp-d">D-5</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 강남구 · 역삼동</div>
+          <div class="camp-region">강남구 · 역삼동</div>
           <div class="camp-name">스시 오모 — 오마카세 코스 체험단</div>
           <div class="camp-desc">15만원 상당 2인 오마카세 코스를 무료로 체험하고 블로그 리뷰를 작성해주세요.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 15만원 상당</span><span class="camp-slots">24/30명</span></div>
+          <div class="camp-meta"><span class="camp-reward">15만원 상당</span><span class="camp-slots">24/30명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:80%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#0a1210,#0e1e18);">☕
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/cafe.jpg" alt="카페 루미오">
           <div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div>
-          <div class="camp-d">D-8</div>
-        </div>
+          <div class="camp-d">D-8</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 마포구 · 홍대입구</div>
+          <div class="camp-region">마포구 · 홍대입구</div>
           <div class="camp-name">카페 루미오 — 시그니처 음료 체험단</div>
           <div class="camp-desc">감성 카페 루미오의 시그니처 음료 2잔 + 디저트 1종 체험. 인스타그램 피드 포스팅.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 3만원 상당</span><span class="camp-slots">8/20명</span></div>
+          <div class="camp-meta"><span class="camp-reward">3만원 상당</span><span class="camp-slots">8/20명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:40%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#12080a,#1e0c10);">🥩
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/hanwoo.jpg" alt="한우 우진각">
           <div class="camp-badges"><span class="badge badge-red">마감임박</span><span class="badge badge-green">블로그</span></div>
-          <div class="camp-d">D-2</div>
-        </div>
+          <div class="camp-d">D-2</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 서초구 · 방배동</div>
+          <div class="camp-region">서초구 · 방배동</div>
           <div class="camp-name">한우 프리미엄 '우진각' 체험단</div>
           <div class="camp-desc">1++ 등급 한우. 3인 기준 9만원 상당 고기 세트 무료 제공. 방배동 핫플레이스.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 9만원 상당</span><span class="camp-slots">19/20명</span></div>
+          <div class="camp-meta"><span class="camp-reward">9만원 상당</span><span class="camp-slots">19/20명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:95%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#0a0c1a,#10122a);">💆
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/skincare.jpg" alt="클리어 스킨랩">
           <div class="camp-badges"><span class="badge badge-blue">클립</span><span class="badge badge-orange">원고료</span></div>
-          <div class="camp-d">D-10</div>
-        </div>
+          <div class="camp-d">D-10</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 강남구 · 청담동</div>
+          <div class="camp-region">강남구 · 청담동</div>
           <div class="camp-name">클리어 스킨랩 피부 케어 체험단</div>
           <div class="camp-desc">청담동 프리미엄 피부샵 1회 체험 + 원고료 3만원 지급. 네이버 클립 영상 리뷰 필수.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 체험 + ₩30,000</span><span class="camp-slots">5/15명</span></div>
+          <div class="camp-meta"><span class="camp-reward">체험 + ₩30,000</span><span class="camp-slots">5/15명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:33%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#0a1410,#0d1e16);">🌮
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/taco.jpg" alt="멕시코리아 타코">
           <div class="camp-badges"><span class="badge badge-green">블로그</span></div>
-          <div class="camp-d">D-12</div>
-        </div>
+          <div class="camp-d">D-12</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 용산구 · 이태원</div>
+          <div class="camp-region">용산구 · 이태원</div>
           <div class="camp-name">멕시코리아 타코 & 바 체험단</div>
           <div class="camp-desc">이태원 감성 멕시칸. 타코 플레이트 + 칵테일 2잔 무료. 2인 방문 기준.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 6만원 상당</span><span class="camp-slots">12/25명</span></div>
+          <div class="camp-meta"><span class="camp-reward">6만원 상당</span><span class="camp-slots">12/25명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:48%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#14100a,#22180e);">🍜
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/ramen.jpg" alt="라멘하우스 호시">
           <div class="camp-badges"><span class="badge badge-blue">인스타</span><span class="badge badge-orange">신규</span></div>
-          <div class="camp-d">D-7</div>
-        </div>
+          <div class="camp-d">D-7</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 성동구 · 성수동</div>
+          <div class="camp-region">성동구 · 성수동</div>
           <div class="camp-name">성수 라멘하우스 '호시' 체험단</div>
           <div class="camp-desc">성수동 핫플 라멘 전문점. 라멘 2그릇 + 사이드 무료 제공. 인스타 릴스 업로드.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 4만원 상당</span><span class="camp-slots">6/20명</span></div>
+          <div class="camp-meta"><span class="camp-reward">4만원 상당</span><span class="camp-slots">6/20명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:30%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#0a0e1a,#0e1424);">🍷
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/winebar.jpg" alt="해운대 와인바">
           <div class="camp-badges"><span class="badge badge-red">HOT</span><span class="badge badge-green">블로그</span></div>
-          <div class="camp-d">D-6</div>
-        </div>
+          <div class="camp-d">D-6</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 부산 · 해운대구</div>
+          <div class="camp-region">부산 · 해운대구</div>
           <div class="camp-name">테라스 해운대 오션뷰 와인바</div>
           <div class="camp-desc">해운대 루프탑 와인바. 와인 1병 + 치즈플래터 무료. 야경 감성 사진 필수.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 8만원 상당</span><span class="camp-slots">18/25명</span></div>
+          <div class="camp-meta"><span class="camp-reward">8만원 상당</span><span class="camp-slots">18/25명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:72%"></div></div>
         </div>
       </a>
       <a href="pages/user/campaign-detail.html" class="card camp-card">
-        <div class="camp-img" style="background:linear-gradient(135deg,#0e140a,#161e0e);">🥗
+        <div class="camp-imgwrap"><img class="camp-img" src="assets/img/vegan.jpg" alt="그린테이블 비건">
           <div class="camp-badges"><span class="badge badge-blue">클립</span></div>
-          <div class="camp-d">D-14</div>
-        </div>
+          <div class="camp-d">D-14</div></div>
         <div class="camp-body">
-          <div class="camp-region">📍 대구 · 수성구</div>
+          <div class="camp-region">대구 · 수성구</div>
           <div class="camp-name">그린테이블 비건 브런치 카페</div>
           <div class="camp-desc">대구 수성구 비건 브런치 풀코스 체험. 클립 및 블로그 동시 작성 우대.</div>
-          <div class="camp-meta"><span class="camp-reward">✅ 5만원 상당</span><span class="camp-slots">3/15명</span></div>
+          <div class="camp-meta"><span class="camp-reward">5만원 상당</span><span class="camp-slots">3/15명</span></div>
           <div class="camp-bar"><div class="camp-bar-fill" style="width:20%"></div></div>
         </div>
       </a>
@@ -693,18 +483,18 @@
 <section class="regions-section">
   <div class="container">
     <div class="tag-label">REGION</div>
-    <h2 class="section-title">지역별 <span>체험단</span> 찾기</h2>
+    <h2 class="section-title">지역별 <span class="mark">체험단</span> 찾기</h2>
     <div class="region-grid">
-      <a href="pages/user/regions.html#seoul" class="region-card"><div class="region-emoji">🏙️</div><div class="region-name">서울</div><div class="region-count">38개 캠페인</div></a>
-      <a href="pages/user/regions.html#gyeonggi" class="region-card"><div class="region-emoji">🌆</div><div class="region-name">경기·인천</div><div class="region-count">14개 캠페인</div></a>
-      <a href="pages/user/regions.html#busan" class="region-card"><div class="region-emoji">🌊</div><div class="region-name">부산</div><div class="region-count">11개 캠페인</div></a>
-      <a href="pages/user/regions.html#daegu" class="region-card"><div class="region-emoji">🍲</div><div class="region-name">대구</div><div class="region-count">7개 캠페인</div></a>
-      <a href="pages/user/regions.html#jeju" class="region-card"><div class="region-emoji">🍊</div><div class="region-name">제주</div><div class="region-count">9개 캠페인</div></a>
-      <a href="pages/user/regions.html#daejeon" class="region-card"><div class="region-emoji">🧪</div><div class="region-name">대전·세종</div><div class="region-count">5개 캠페인</div></a>
-      <a href="pages/user/regions.html#gwangju" class="region-card"><div class="region-emoji">🎨</div><div class="region-name">광주</div><div class="region-count">4개 캠페인</div></a>
-      <a href="pages/user/regions.html#jeonju" class="region-card"><div class="region-emoji">🏯</div><div class="region-name">전주</div><div class="region-count">6개 캠페인</div></a>
-      <a href="pages/user/regions.html#gangwon" class="region-card"><div class="region-emoji">⛷️</div><div class="region-name">강원</div><div class="region-count">5개 캠페인</div></a>
-      <a href="pages/user/regions.html#online" class="region-card" style="border-color:rgba(46,213,115,0.3);"><div class="region-emoji">📦</div><div class="region-name">배송형</div><div class="region-count">전국 12개</div></a>
+      <a href="pages/user/regions.html#seoul" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">서울</div><div class="region-count">38개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#gyeonggi" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">경기·인천</div><div class="region-count">14개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#busan" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">부산</div><div class="region-count">11개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#daegu" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">대구</div><div class="region-count">7개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#jeju" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">제주</div><div class="region-count">9개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#daejeon" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">대전·세종</div><div class="region-count">5개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#gwangju" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">광주</div><div class="region-count">4개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#jeonju" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">전주</div><div class="region-count">6개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#gangwon" class="region-card"><span class="region-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><div class="region-name">강원</div><div class="region-count">5개 캠페인</div></div></a>
+      <a href="pages/user/regions.html#online" class="region-card"><span class="region-ic" style="background:var(--coral);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M3 9h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 9l2-4h14l2 4M12 5v4"/></svg></span><div><div class="region-name">배송형</div><div class="region-count">전국 12개</div></div></a>
     </div>
   </div>
 </section>
@@ -713,16 +503,16 @@
 <section class="cats-section">
   <div class="container">
     <div class="section-header">
-      <div><div class="tag-label">CATEGORIES</div><h2 class="section-title">카테고리별 <span>탐색</span></h2></div>
+      <div><div class="tag-label">CATEGORIES</div><h2 class="section-title">카테고리별 <span class="mark">탐색</span></h2></div>
       <a href="pages/user/categories.html" class="see-all">전체보기 →</a>
     </div>
     <div class="cats-grid">
-      <a href="pages/user/categories.html#restaurant" class="cat-card"><div class="cat-icon">🍽️</div><div class="cat-name">식당·맛집</div><div class="cat-cnt">28개</div></a>
-      <a href="pages/user/categories.html#cafe" class="cat-card"><div class="cat-icon">☕</div><div class="cat-name">카페</div><div class="cat-cnt">18개</div></a>
-      <a href="pages/user/categories.html#dessert" class="cat-card"><div class="cat-icon">🍰</div><div class="cat-name">디저트</div><div class="cat-cnt">12개</div></a>
-      <a href="pages/user/categories.html#beauty" class="cat-card"><div class="cat-icon">💄</div><div class="cat-name">뷰티·헤어</div><div class="cat-cnt">9개</div></a>
-      <a href="pages/user/categories.html#fitness" class="cat-card"><div class="cat-icon">🏋️</div><div class="cat-name">피트니스</div><div class="cat-cnt">6개</div></a>
-      <a href="pages/user/categories.html#hotel" class="cat-card"><div class="cat-icon">🏨</div><div class="cat-name">숙박</div><div class="cat-cnt">5개</div></a>
+      <a href="pages/user/categories.html#restaurant" class="cat-card"><span class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.1"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10M18 3c-1.5 0-3 1.5-3 5s1.5 4 3 4v9"/></svg></span><div class="cat-name">식당·맛집</div><div class="cat-cnt">28개</div></a>
+      <a href="pages/user/categories.html#cafe" class="cat-card"><span class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.1"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M6 3v2M10 3v2M14 3v2"/></svg></span><div class="cat-name">카페</div><div class="cat-cnt">18개</div></a>
+      <a href="pages/user/categories.html#dessert" class="cat-card"><span class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.1"><path d="M4 21h16M6 21v-6h12v6M8 15a4 4 0 0 1 8 0M12 3v3M12 6c-1.5 0-2 1-2 2h4c0-1-.5-2-2-2z"/></svg></span><div class="cat-name">디저트</div><div class="cat-cnt">12개</div></a>
+      <a href="pages/user/categories.html#beauty" class="cat-card"><span class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.1"><path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span><div class="cat-name">뷰티·헤어</div><div class="cat-cnt">9개</div></a>
+      <a href="pages/user/categories.html#fitness" class="cat-card"><span class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.1"><path d="M6.5 6.5v11M17.5 6.5v11M3 9v6M21 9v6M6.5 12h11"/></svg></span><div class="cat-name">피트니스</div><div class="cat-cnt">6개</div></a>
+      <a href="pages/user/categories.html#hotel" class="cat-card"><span class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.1"><path d="M3 18v-6a2 2 0 0 1 2-2h9a4 4 0 0 1 4 4v4M3 18h18M3 18v2M21 14v6M3 10V6"/></svg></span><div class="cat-name">숙박</div><div class="cat-cnt">5개</div></a>
     </div>
   </div>
 </section>
@@ -731,12 +521,12 @@
 <section class="how-section">
   <div class="container">
     <div class="tag-label">HOW IT WORKS</div>
-    <h2 class="section-title">4단계로 <span>완성</span>되는 체험</h2>
+    <h2 class="section-title">4단계로 완성되는 체험</h2>
     <div class="how-grid">
-      <div class="how-card"><div class="how-num">01</div><div class="how-icon">✍️</div><div class="how-title">회원가입</div><div class="how-desc">블로그·인스타 채널 등록 후 GROW BEE 회원이 되세요. 30초면 완료.</div></div>
-      <div class="how-card"><div class="how-num">02</div><div class="how-icon">🔍</div><div class="how-title">캠페인 탐색</div><div class="how-desc">지역별·카테고리별 체험단 필터링 후 원하는 캠페인에 신청하세요.</div></div>
-      <div class="how-card"><div class="how-num">03</div><div class="how-icon">🍽️</div><div class="how-title">현장 방문</div><div class="how-desc">선정 알림 후 매장 방문해 생생한 콘텐츠를 제작하세요.</div></div>
-      <div class="how-card"><div class="how-num">04</div><div class="how-icon">📝</div><div class="how-title">리뷰 제출</div><div class="how-desc">지정 채널 리뷰 URL 제출하면 완료! 원고료 지급 캠페인은 자동 정산.</div></div>
+      <div class="how-card"><div class="how-num">01</div><div class="how-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-8 0v2M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg></div><div class="how-title">회원가입</div><div class="how-desc">블로그·인스타 채널 등록 후 GROW BEE 회원이 되세요. 30초면 완료.</div></div>
+      <div class="how-card"><div class="how-num">02</div><div class="how-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div><div class="how-title">캠페인 탐색</div><div class="how-desc">지역별·카테고리별 체험단 필터링 후 원하는 캠페인에 신청하세요.</div></div>
+      <div class="how-card"><div class="how-num">03</div><div class="how-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="how-title">현장 방문</div><div class="how-desc">선정 알림 후 매장 방문해 생생한 콘텐츠를 제작하세요.</div></div>
+      <div class="how-card"><div class="how-num">04</div><div class="how-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 20h16M6 16l9-9a2 2 0 0 1 3 3l-9 9-4 1z"/></svg></div><div class="how-title">리뷰 제출</div><div class="how-desc">지정 채널 리뷰 URL 제출하면 완료! 원고료 캠페인은 자동 정산.</div></div>
     </div>
   </div>
 </section>
@@ -746,11 +536,11 @@
   <div class="container">
     <div class="cta-box">
       <div class="tag-label">JOIN GROW BEE</div>
-      <h2 class="cta-title">지금 바로 시작하세요<br><span style="color:var(--brand-primary)">무료로, 쉽게</span></h2>
+      <h2 class="cta-title">지금 바로 시작하세요<br><span class="mark">무료로, 쉽게</span></h2>
       <p class="cta-desc">리뷰어로 무료 체험을 즐기거나, 사장님으로 효과적인 마케팅을 시작하세요.</p>
       <div class="cta-btns">
-        <a href="pages/user/signup.html" class="btn-primary" style="font-size:15px;padding:14px 32px;">🎯 리뷰어로 가입하기</a>
-        <a href="pages/user/advertiser.html" class="btn-outline" style="font-size:15px;padding:14px 32px;">🏪 사장님 시작하기</a>
+        <a href="pages/user/signup.html" class="btn-primary" style="font-size:16px;padding:15px 32px;">리뷰어로 가입하기</a>
+        <a href="pages/user/advertiser.html" class="btn-outline" style="font-size:16px;padding:15px 32px;">사장님 시작하기</a>
       </div>
     </div>
   </div>
@@ -761,45 +551,27 @@
   <div class="container">
     <div class="footer-top">
       <div>
-        <a href="index.html" class="logo" style="margin-bottom:12px;">
-          <div class="logo-mark" style="width:32px;height:32px;">
-            <svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity="0.9"/><circle cx="11" cy="11" r="3" fill="white"/></svg>
+        <a href="index.html" class="logo" style="margin-bottom:14px;">
+          <div class="logo-mark" style="width:34px;height:34px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14" rx="5" ry="6"/><path d="M7 12h10M7 16h10"/><path d="M9 6l-3-2M15 6l3-2"/></svg>
           </div>
-          <span style="font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--text);">GROW BEE 체험단</span>
+          <span style="font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);">GROW BEE</span>
         </a>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.7;max-width:240px;">전국 맛집·카페·뷰티·라이프스타일 체험단을 한 곳에서. 리뷰어와 사장님을 이어주는 GROW BEE.</p>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.7;max-width:250px;font-weight:500;">전국 맛집·카페·뷰티·라이프스타일 체험단을 한 곳에서. 리뷰어와 사장님을 이어주는 GROW BEE.</p>
         <div class="footer-social">
-          <a href="#" class="social-ico">📷</a>
-          <a href="#" class="social-ico">💬</a>
-          <a href="#" class="social-ico">▶️</a>
+          <a href="#" class="social-ico" aria-label="인스타그램"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" class="social-ico" aria-label="카카오"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4C7 4 3 7.2 3 11c0 2.4 1.7 4.6 4.2 5.8L6.5 20l3.7-2.2c.6.1 1.2.2 1.8.2 5 0 9-3.2 9-7s-4-7-9-7z"/></svg></a>
+          <a href="#" class="social-ico" aria-label="유튜브"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 9l4 3-4 3z" fill="currentColor" stroke="none"/></svg></a>
         </div>
       </div>
       <div class="footer-links">
-        <div class="footer-col">
-          <h4>체험단</h4>
-          <a href="pages/user/campaigns.html">전체 캠페인</a>
-          <a href="pages/user/regions.html">지역별 모집</a>
-          <a href="pages/user/categories.html">카테고리</a>
-          <a href="pages/user/review.html">리뷰 현황</a>
-        </div>
-        <div class="footer-col">
-          <h4>광고주</h4>
-          <a href="pages/user/advertiser.html">캠페인 등록</a>
-          <a href="pages/user/advertiser.html">요금 안내</a>
-          <a href="pages/user/advertiser.html">진행 방법</a>
-          <a href="pages/user/faq.html">FAQ</a>
-        </div>
-        <div class="footer-col">
-          <h4>고객센터</h4>
-          <a href="pages/user/notice.html">공지사항</a>
-          <a href="pages/user/faq.html">자주 묻는 질문</a>
-          <a href="pages/user/contact.html">1:1 문의</a>
-          <a href="#">이용약관</a>
-        </div>
+        <div class="footer-col"><h4>체험단</h4><a href="pages/user/campaigns.html">전체 캠페인</a><a href="pages/user/regions.html">지역별 모집</a><a href="pages/user/categories.html">카테고리</a><a href="pages/user/review.html">리뷰 현황</a></div>
+        <div class="footer-col"><h4>광고주</h4><a href="pages/user/advertiser.html">캠페인 등록</a><a href="pages/user/advertiser.html">요금 안내</a><a href="pages/user/advertiser.html">진행 방법</a><a href="pages/user/faq.html">FAQ</a></div>
+        <div class="footer-col"><h4>고객센터</h4><a href="pages/user/notice.html">공지사항</a><a href="pages/user/faq.html">자주 묻는 질문</a><a href="pages/user/contact.html">1:1 문의</a><a href="#">이용약관</a></div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 GROW BEE. All rights reserved.</p>
+      <p>© 2025 GROW BEE. ALL RIGHTS RESERVED.</p>
       <div class="footer-bottom-links"><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div>
     </div>
   </div>
@@ -810,15 +582,19 @@ function filterClick(el) {
   el.closest('.filter-bar').querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
 }
+var sunIcon = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var moonIcon = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode() {
   const isNight = document.body.classList.toggle('night');
-  document.getElementById('modeBtn').textContent = isNight ? '☀️' : '🌙';
+  document.getElementById('modeIcon').innerHTML = isNight ? sunIcon : moonIcon;
   localStorage.setItem('growbee-mode', isNight ? 'night' : 'day');
 }
 (function() {
   if (localStorage.getItem('growbee-mode') === 'night') {
     document.body.classList.add('night');
-    document.getElementById('modeBtn').textContent = '☀️';
+    document.getElementById('modeIcon').innerHTML = sunIcon;
+  } else {
+    document.getElementById('modeIcon').innerHTML = moonIcon;
   }
 })();
 </script>

@@ -47,6 +47,7 @@
 .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -65,15 +66,15 @@
       <a href="advertiser.html" class="nav-link ">사장님</a>
     </nav>
     <div class="header-right">
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
       <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
       <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-menu" id="mm">
-    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="../../index.html">홈</a><a href="campaigns.html">체험단</a><a href="regions.html">지역별</a><a href="advertiser.html">사장님</a><a href="login.html">로그인</a>
     <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
@@ -85,19 +86,19 @@
 .form-group{margin-bottom:16px;}
 </style>
 <div class="page-hero"><div class="page-hero-inner">
-  <div class="page-badge">💬 1:1 문의</div>
+  <div class="page-badge"> 1:1 문의</div>
   <h1 class="page-title">무엇이 <span>궁금</span>하신가요?</h1>
   <p class="page-desc">평일 09:00 ~ 18:00 운영 (점심시간 12:00 ~ 13:00 제외)<br>빠른 답변을 원하시면 카카오 채널을 이용해주세요.</p>
 </div></div>
 <div class="sec" style="max-width:760px;">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">
     <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);">
-      <div style="font-size:28px;margin-bottom:8px;">💬</div>
+      <div style="font-size:28px;margin-bottom:8px;"></div>
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">카카오 채널</div>
       <div style="font-size:12px;color:var(--text-muted);">@growbee 검색 · 평균 1시간 내 응답</div>
     </div>
     <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);">
-      <div style="font-size:28px;margin-bottom:8px;">📧</div>
+      <div style="font-size:28px;margin-bottom:8px;"></div>
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">이메일 문의</div>
       <div style="font-size:12px;color:var(--text-muted);">help@growbee.kr · 1~2영업일 내 답변</div>
     </div>
@@ -124,5 +125,5 @@
   </div>
   <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
 </div></footer>
-<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());</script>
 </body></html>

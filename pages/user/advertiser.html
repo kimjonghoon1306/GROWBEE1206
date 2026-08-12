@@ -47,6 +47,7 @@
 .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -65,15 +66,15 @@
       <a href="advertiser.html" class="nav-link active">사장님</a>
     </nav>
     <div class="header-right">
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
       <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
       <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-menu" id="mm">
-    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="../../index.html">홈</a><a href="campaigns.html">체험단</a><a href="regions.html">지역별</a><a href="advertiser.html">사장님</a><a href="login.html">로그인</a>
     <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
@@ -90,7 +91,7 @@
 .price-features{list-style:none;margin-bottom:28px;}
 .price-features li{font-size:13px;color:var(--text-muted);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
 .price-features li:last-child{border:none;}
-.price-features li::before{content:"✓";color:#2ED573;font-weight:700;flex-shrink:0;}
+.price-features li::before{content:"";color:#2ED573;font-weight:700;flex-shrink:0;}
 .step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;}
 .step-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 20px;position:relative;overflow:hidden;box-shadow:var(--shadow);}
 .step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand-gradient);}
@@ -102,11 +103,11 @@
 @media(max-width:480px){.step-grid{grid-template-columns:1fr;}}
 </style>
 <div class="page-hero"><div class="page-hero-inner">
-  <div class="page-badge">🏪 광고주 (사장님)</div>
+  <div class="page-badge">광고주 (사장님)</div>
   <h1 class="page-title">효과적인 <span>인플루언서</span><br>마케팅, 이제 쉽게</h1>
   <p class="page-desc">GROW BEE에서 전국 12,400명+ 리뷰어와 직접 연결하세요.<br>복잡한 대행 없이 캠페인 등록부터 리뷰 관리까지.</p>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;">
-    <a href="signup.html" class="btn-primary" style="font-size:15px;padding:14px 28px;">🚀 지금 시작하기 — 무료</a>
+    <a href="signup.html" class="btn-primary" style="font-size:15px;padding:14px 28px;"> 지금 시작하기 — 무료</a>
     <a href="faq.html" class="btn-outline" style="font-size:15px;padding:14px 28px;">자주 묻는 질문</a>
   </div>
 </div></div>
@@ -127,10 +128,10 @@
   <h2 style="font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--text);margin-bottom:4px;">캠페인 진행 <span style="color:var(--brand-primary);">4단계</span></h2>
   <p style="font-size:13px;color:var(--text-muted);margin-bottom:0;">가입부터 리뷰 완료까지 빠르게 진행됩니다</p>
   <div class="step-grid">
-    <div class="step-card"><div class="step-n">01</div><div class="step-ico">📝</div><div class="step-t">캠페인 등록</div><div class="step-d">매장 정보, 체험 혜택, 리뷰 조건을 입력하고 캠페인을 등록하세요.</div></div>
-    <div class="step-card"><div class="step-n">02</div><div class="step-ico">🎯</div><div class="step-t">리뷰어 모집</div><div class="step-d">GROW BEE가 최적의 리뷰어를 자동 매칭하거나 직접 선정하세요.</div></div>
-    <div class="step-card"><div class="step-n">03</div><div class="step-ico">🍽️</div><div class="step-t">방문 & 체험</div><div class="step-d">선정된 리뷰어가 매장을 방문하고 생생한 콘텐츠를 제작합니다.</div></div>
-    <div class="step-card"><div class="step-n">04</div><div class="step-ico">✅</div><div class="step-t">리뷰 확인</div><div class="step-d">제출된 리뷰 URL을 확인하고 성과를 분석하세요. 완료!</div></div>
+    <div class="step-card"><div class="step-n">01</div><div class="step-ico"></div><div class="step-t">캠페인 등록</div><div class="step-d">매장 정보, 체험 혜택, 리뷰 조건을 입력하고 캠페인을 등록하세요.</div></div>
+    <div class="step-card"><div class="step-n">02</div><div class="step-ico"></div><div class="step-t">리뷰어 모집</div><div class="step-d">GROW BEE가 최적의 리뷰어를 자동 매칭하거나 직접 선정하세요.</div></div>
+    <div class="step-card"><div class="step-n">03</div><div class="step-ico"></div><div class="step-t">방문 & 체험</div><div class="step-d">선정된 리뷰어가 매장을 방문하고 생생한 콘텐츠를 제작합니다.</div></div>
+    <div class="step-card"><div class="step-n">04</div><div class="step-ico"></div><div class="step-t">리뷰 확인</div><div class="step-d">제출된 리뷰 URL을 확인하고 성과를 분석하세요. 완료!</div></div>
   </div>
 </div>
 
@@ -154,7 +155,7 @@
         <a href="signup.html" class="btn-outline" style="width:100%;justify-content:center;display:flex;">시작하기</a>
       </div>
       <div class="price-card featured">
-        <div class="price-pop">⭐ 가장 인기</div>
+        <div class="price-pop">가장 인기</div>
         <div class="price-name">GROWTH</div>
         <div class="price-val hl">129,000<small>원</small></div>
         <div class="price-period">월 / VAT 별도</div>
@@ -194,5 +195,5 @@
   </div>
   <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
 </div></footer>
-<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());</script>
 </body></html>

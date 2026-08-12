@@ -75,6 +75,7 @@
 .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;gap:24px;}.footer-links{grid-template-columns:repeat(2,1fr);}.footer-bottom{flex-direction:column;}}
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -93,29 +94,29 @@
       <a href="advertiser.html" class="nav-link ">사장님</a>
     </nav>
     <div class="header-right">
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자">⚙️</a>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn" title="관리자"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
       <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
       <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-menu" id="mm">
-    <a href="../../index.html">🏠 홈</a>
-    <a href="campaigns.html">🎯 체험단 모집</a>
-    <a href="regions.html">📍 지역별</a>
-    <a href="categories.html">🗂️ 카테고리</a>
-    <a href="review.html">⭐ 리뷰 현황</a>
-    <a href="notice.html">📢 공지사항</a>
-    <a href="advertiser.html">🏪 사장님</a>
-    <a href="../admin/admin-dashboard.html">⚙️ 관리자</a>
-    <a href="login.html">🔑 로그인</a>
+    <a href="../../index.html">홈</a>
+    <a href="campaigns.html">체험단 모집</a>
+    <a href="regions.html">지역별</a>
+    <a href="categories.html">카테고리</a>
+    <a href="review.html">리뷰 현황</a>
+    <a href="notice.html">공지사항</a>
+    <a href="advertiser.html">사장님</a>
+    <a href="../admin/admin-dashboard.html">관리자</a>
+    <a href="login.html">로그인</a>
     <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
 
 <div class="page-hero"><div class="page-hero-inner">
-  <div class="page-badge">⭐ 리뷰 현황</div>
+  <div class="page-badge">리뷰 현황</div>
   <h1 class="page-title">실제 <span>리뷰어</span>들의 생생 후기</h1>
   <p class="page-desc">그로우비 체험단을 통해 작성된 리뷰들을 확인해보세요.</p>
 </div></div>
@@ -129,7 +130,7 @@
   <div class="tag-label">LATEST REVIEWS</div>
   <h2 class="section-title" style="margin-bottom:24px;">최근 <span>제출된</span> 리뷰</h2>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;"><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#1a0a10,#2a1018);">🍣</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">f</div>
@@ -141,7 +142,7 @@
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.28 · 스시 오모</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0a1210,#0e1e18);">☕</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">c</div>
@@ -153,19 +154,19 @@
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.25 · 카페 루미오</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#12080a,#1e0c10);">🥩</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">m</div>
       <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">meat_hunter_park</div></div>
       <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">블로그</span>
     </div>
-    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★☆</div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
     <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">방배동 우진각 진짜 소문대로네요. 1++ 등급 한우를 숯불에 구워먹는 맛이 일품이었습니다. 고기 두께도 두툼하게 썰어주시고 밑반찬도 정갈했어요. 된장찌개도 맛있었고 전체적으로 만족스러운 방문이었습니다.</div>
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.22 · 한우 우진각</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0a0a1a,#12102a);">💆</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">b</div>
@@ -177,7 +178,7 @@
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.20 · 클리어 스킨랩</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#14100a,#22180e);">🍜</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">r</div>
@@ -189,7 +190,7 @@
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.18 · 라멘 호시</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0a0e1a,#0e1424);">🍷</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">w</div>
@@ -201,19 +202,19 @@
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.15 · 테라스 해운대</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#0e140a,#161e0e);">🥗</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">g</div>
       <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text);">greeneater_park</div></div>
       <span style="font-size:10px;font-weight:700;color:var(--brand-primary);background:rgba(255,71,87,.1);padding:2px 8px;border-radius:50px;">클립</span>
     </div>
-    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★☆</div>
+    <div style="color:#FFD700;font-size:13px;letter-spacing:-1px;margin-bottom:7px;">★★★★★</div>
     <div style="font-size:13px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">대구에서 이렇게 제대로 된 비건 메뉴를 맛볼 수 있을 줄 몰랐어요. 음식 하나하나 플레이팅도 예쁘고 맛도 있어서 비건이 아닌 저도 완전 반했습니다. 다음에 또 방문하고 싶네요.</div>
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.12 · 그린테이블</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#141a0a,#1e2a0e);">🥩</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">j</div>
@@ -225,7 +226,7 @@
     <div style="font-size:11px;color:var(--text-muted);margin-top:9px;opacity:.7;">2025.01.10 · 제주 한라장</div>
   </div>
 </div><div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-  <div style="height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;background:linear-gradient(135deg,#1a0e0a,#281814);">🍕</div>
+  <div class="rev-img"></div>
   <div style="padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="width:32px;height:32px;border-radius:50%;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">p</div>
@@ -259,7 +260,7 @@
   </div>
 </footer>
 <script>
-function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}
-(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());
+function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('growbee-mode',n?'night':'day');}
+(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());
 </script>
 </body></html>

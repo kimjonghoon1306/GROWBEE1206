@@ -47,6 +47,7 @@
 .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -65,15 +66,15 @@
       <a href="advertiser.html" class="nav-link ">사장님</a>
     </nav>
     <div class="header-right">
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
       <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
       <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-menu" id="mm">
-    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="../../index.html">홈</a><a href="campaigns.html">체험단</a><a href="regions.html">지역별</a><a href="advertiser.html">사장님</a><a href="login.html">로그인</a>
     <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
@@ -109,7 +110,7 @@
     <div class="profile-card">
       <div class="profile-avatar">김</div>
       <div class="profile-name">김그로우</div>
-      <div style="text-align:center;"><span class="profile-tier">🌟 골드 리뷰어</span></div>
+      <div style="text-align:center;"><span class="profile-tier"> 골드 리뷰어</span></div>
       <div class="profile-stats">
         <div class="pstat"><div class="pstat-n">24</div><div class="pstat-l">완료 리뷰</div></div>
         <div class="pstat"><div class="pstat-n">3</div><div class="pstat-l">진행 중</div></div>
@@ -117,13 +118,13 @@
         <div class="pstat"><div class="pstat-n">100%</div><div class="pstat-l">완료율</div></div>
       </div>
       <div class="profile-menu">
-        <a href="#" class="act">📋 나의 신청 현황</a>
-        <a href="#">✍️ 리뷰 제출 현황</a>
-        <a href="#">💰 정산 내역</a>
-        <a href="#">♡ 찜한 캠페인</a>
-        <a href="#">🔍 채널 정보 관리</a>
-        <a href="#" style="border-top:1px solid var(--border);margin-top:8px;padding-top:14px;">⚙️ 계정 설정</a>
-        <a href="login.html" style="color:var(--brand-primary);">🚪 로그아웃</a>
+        <a href="#" class="act">나의 신청 현황</a>
+        <a href="#">리뷰 제출 현황</a>
+        <a href="#"> 정산 내역</a>
+        <a href="#"> 찜한 캠페인</a>
+        <a href="#"> 채널 정보 관리</a>
+        <a href="#" style="border-top:1px solid var(--border);margin-top:8px;padding-top:14px;">계정 설정</a>
+        <a href="login.html" style="color:var(--brand-primary);"> 로그아웃</a>
       </div>
     </div>
   </div>
@@ -139,11 +140,11 @@
         <button class="my-tab">선정됨 (2)</button>
         <button class="my-tab">완료 (2)</button>
       </div>
-      <div class="app-item"><div class="app-ico">🍣</div><div style="flex:1;"><div class="app-name">스시 오모 — 오마카세 코스 체험단</div><div class="app-meta">📍 강남구 · 신청일 2025.01.28 · 혜택 15만원</div></div><span class="s-wait">검토 중</span></div>
-      <div class="app-item"><div class="app-ico">☕</div><div style="flex:1;"><div class="app-name">카페 루미오 — 시그니처 음료 체험단</div><div class="app-meta">📍 마포구 · 신청일 2025.01.25 · 혜택 3만원</div></div><span class="s-ok">선정됨</span></div>
-      <div class="app-item"><div class="app-ico">💆</div><div style="flex:1;"><div class="app-name">클리어 스킨랩 — 피부 케어 체험단</div><div class="app-meta">📍 청담동 · 방문일 2025.01.20 · 원고료 3만원</div></div><span class="s-sub">리뷰 제출 대기</span></div>
-      <div class="app-item"><div class="app-ico">🥩</div><div style="flex:1;"><div class="app-name">한우 프리미엄 '우진각' 체험단</div><div class="app-meta">📍 방배동 · 완료일 2025.01.15 · 혜택 9만원</div></div><span class="s-done">완료</span></div>
-      <div class="app-item"><div class="app-ico">🍜</div><div style="flex:1;"><div class="app-name">성수 라멘하우스 '호시' 체험단</div><div class="app-meta">📍 성수동 · 완료일 2025.01.10 · 혜택 4만원</div></div><span class="s-done">완료</span></div>
+      <div class="app-item"><div class="app-ico"></div><div style="flex:1;"><div class="app-name">스시 오모 — 오마카세 코스 체험단</div><div class="app-meta">강남구 · 신청일 2025.01.28 · 혜택 15만원</div></div><span class="s-wait">검토 중</span></div>
+      <div class="app-item"><div class="app-ico"></div><div style="flex:1;"><div class="app-name">카페 루미오 — 시그니처 음료 체험단</div><div class="app-meta">마포구 · 신청일 2025.01.25 · 혜택 3만원</div></div><span class="s-ok">선정됨</span></div>
+      <div class="app-item"><div class="app-ico"></div><div style="flex:1;"><div class="app-name">클리어 스킨랩 — 피부 케어 체험단</div><div class="app-meta">청담동 · 방문일 2025.01.20 · 원고료 3만원</div></div><span class="s-sub">리뷰 제출 대기</span></div>
+      <div class="app-item"><div class="app-ico"></div><div style="flex:1;"><div class="app-name">한우 프리미엄 '우진각' 체험단</div><div class="app-meta">방배동 · 완료일 2025.01.15 · 혜택 9만원</div></div><span class="s-done">완료</span></div>
+      <div class="app-item"><div class="app-ico"></div><div style="flex:1;"><div class="app-name">성수 라멘하우스 '호시' 체험단</div><div class="app-meta">성수동 · 완료일 2025.01.10 · 혜택 4만원</div></div><span class="s-done">완료</span></div>
     </div>
   </div>
 </div>
@@ -154,5 +155,5 @@
   </div>
   <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
 </div></footer>
-<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());</script>
 </body></html>

@@ -47,6 +47,7 @@
 .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
 </style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
 <body>
 <header class="site-header">
@@ -65,26 +66,26 @@
       <a href="advertiser.html" class="nav-link ">사장님</a>
     </nav>
     <div class="header-right">
-      <button class="mode-btn" id="modeBtn" onclick="toggleMode()">🌙</button>
-      <a href="../admin/admin-dashboard.html" class="admin-btn">⚙️</a>
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <a href="../admin/admin-dashboard.html" class="admin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
       <a href="login.html" class="btn-outline" style="padding:8px 16px;font-size:13px;">로그인</a>
       <a href="signup.html" class="btn-primary" style="padding:8px 16px;font-size:13px;">무료 가입</a>
       <button class="hamburger" onclick="document.getElementById('mm').classList.toggle('open')"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-menu" id="mm">
-    <a href="../../index.html">🏠 홈</a><a href="campaigns.html">🎯 체험단</a><a href="regions.html">📍 지역별</a><a href="advertiser.html">🏪 사장님</a><a href="login.html">🔑 로그인</a>
+    <a href="../../index.html">홈</a><a href="campaigns.html">체험단</a><a href="regions.html">지역별</a><a href="advertiser.html">사장님</a><a href="login.html">로그인</a>
     <a href="signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
 </header>
 
 <div class="page-hero"><div class="page-hero-inner">
-  <div class="page-badge">❓ FAQ</div>
+  <div class="page-badge"> FAQ</div>
   <h1 class="page-title">자주 묻는 <span>질문</span></h1>
   <p class="page-desc">궁금한 점을 빠르게 찾아보세요. 추가 문의는 1:1 문의를 이용해주세요.</p>
 </div></div>
 <div class="sec" style="max-width:800px;">
-  <div style="font-size:12px;font-weight:700;color:var(--brand-primary);margin-bottom:12px;letter-spacing:.5px;">🧑‍💻 리뷰어 (체험단 신청자)</div>
+  <div style="font-size:12px;font-weight:700;color:var(--brand-primary);margin-bottom:12px;letter-spacing:.5px;"> 리뷰어 (체험단 신청자)</div>
 <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
   <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
     그로우비 체험단은 어떻게 신청하나요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
@@ -111,7 +112,7 @@
   </div>
   <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">네, 블로그·인스타·유튜브·네이버 클립 등 여러 채널을 마이페이지에서 등록할 수 있습니다. 각 캠페인별로 요구하는 채널이 다르니 등록 시 확인해주세요.</div>
 </div>
-  <div style="font-size:12px;font-weight:700;color:var(--brand-primary);margin:28px 0 12px;letter-spacing:.5px;">🏪 광고주 (사장님)</div>
+  <div style="font-size:12px;font-weight:700;color:var(--brand-primary);margin:28px 0 12px;letter-spacing:.5px;">광고주 (사장님)</div>
 <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow);">
   <div style="padding:18px 20px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(45deg)':'';">
     캠페인 등록 비용은 얼마인가요? <span class="faq-arrow" style="font-size:20px;color:var(--brand-primary);transition:.2s;flex-shrink:0;">+</span>
@@ -134,7 +135,7 @@
   <div style="display:none;padding:0 20px 18px;font-size:13px;color:var(--text-muted);line-height:1.75;border-top:1px solid var(--border);">모집 기간 중에는 일부 항목(모집 인원, 방문 가능 기간 등) 수정이 가능합니다. 단, 혜택 내용과 리뷰 조건은 선정 후 변경이 제한될 수 있습니다. 관리자 페이지에서 직접 수정하시거나 고객센터에 문의해주세요.</div>
 </div>
   <div style="margin-top:36px;background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.2);border-radius:var(--radius-lg);padding:24px;text-align:center;">
-    <div style="font-size:24px;margin-bottom:10px;">💬</div>
+    <div style="font-size:24px;margin-bottom:10px;"></div>
     <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">원하는 답변을 찾지 못하셨나요?</div>
     <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">1:1 문의를 통해 빠르게 도움받으세요.</div>
     <a href="contact.html" class="btn-primary" style="font-size:14px;padding:12px 28px;">1:1 문의하기</a>
@@ -147,5 +148,5 @@
   </div>
   <div class="footer-bottom"><span>© 2025 GROW BEE. All rights reserved.</span><div style="display:flex;gap:14px;"><a href="#" style="color:var(--text-muted);font-size:11px;">이용약관</a><a href="#" style="color:var(--text-muted);font-size:11px;">개인정보처리방침</a></div></div>
 </div></footer>
-<script>function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeBtn').textContent=n?'☀️':'🌙';localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');if(b)b.textContent='☀️';}}());</script>
+<script>function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('growbee-mode',n?'night':'day');}(function(){if(localStorage.getItem('growbee-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());</script>
 </body></html>
