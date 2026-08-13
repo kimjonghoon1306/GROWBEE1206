@@ -320,6 +320,38 @@
       return r.data;
     },
 
+    // 광고주: 내 캠페인 목록 (owner_id = 본인, RLS 통과)
+    advMyCampaigns: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('campaigns').select('*').eq('owner_id', u.id).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 광고주: 캠페인 등록 (owner_id 자동 = 본인)
+    advCreateCampaign: async function (fields) {
+      var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };
+      fields = fields || {}; fields.owner_id = u.id;
+      return await sb.from('campaigns').insert(fields).select().single();
+    },
+    advUpdateCampaign: async function (id, fields) {
+      var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };
+      return await sb.from('campaigns').update(fields).eq('id', id).eq('owner_id', u.id).select().single();
+    },
+    advDeleteCampaign: async function (id) {
+      var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };
+      return await sb.from('campaigns').delete().eq('id', id).eq('owner_id', u.id);
+    },
+    // 광고주: 특정 캠페인 신청자 목록 (+프로필 결합, 본인 캠페인만 RPC가 검증)
+    advApplicants: async function (campaignId) {
+      var r = await sb.rpc('advertiser_campaign_applicants', { p_campaign: campaignId });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied)
+    advSelect: async function (appId, status) {
+      var r = await sb.rpc('advertiser_select', { p_app: appId, p_status: status });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);
