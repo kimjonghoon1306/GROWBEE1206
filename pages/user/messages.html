@@ -43,7 +43,7 @@
       <a href="mypage.html#reviewed" class="mp-link">리뷰한 캠페인 <span class="mp-arrow">›</span></a>
     </div>
     <div class="mp-divider"></div>
-    <a href="messages.html" class="mp-link active">나의 메시지 <span class="mp-cnt">10</span></a>
+    <a href="messages.html" class="mp-link active">나의 메시지 <span class="mp-cnt" style="display:none;">0</span></a>
     <a href="sns.html" class="mp-link">SNS 계정 연동 <span class="mp-arrow">›</span></a>
     <a href="penalty.html" class="mp-link">페널티 현황 <span class="mp-arrow">›</span></a>
     <div class="mp-divider"></div>
@@ -72,12 +72,8 @@
 <main class="mp-main">
 <h1 class="mp-title"><b>tarry</b> 님의<br>메시지 함</h1>
 <div class="mp-card">
-<div class="mp-tabs"><div class="mp-tab active">전체</div><div class="mp-tab">선정</div><div class="mp-tab">일정</div><div class="mp-tab">사장님</div><div class="mp-tab">기타</div></div>
-<div class="rev-row"><div class="rev-info"><span class="rev-badge">일정</span> <span class="rev-meta">2026.03.27 10:01</span><div class="rev-name" style="margin-top:6px;">[[지니스램프] 아이긴 달콤토닉 수박맛] 리뷰 요청 D-1</div><div class="rev-meta">체험종료 안내 및 리뷰 마감 안내</div></div><span class="h-badge" style="position:static;">N</span></div>
-<div class="rev-row"><div class="rev-info"><span class="rev-badge">일정</span> <span class="rev-meta">2026.03.25 11:00</span><div class="rev-name" style="margin-top:6px;">[[지니스램프] 아이긴 달콤토닉 수박맛] 리뷰 요청</div><div class="rev-meta">tarry 님! 당첨되신 캠페인의 리뷰 작성 기간입니다.</div></div><span class="h-badge" style="position:static;">N</span></div>
-<div class="rev-row"><div class="rev-info"><span class="rev-badge">선정</span> <span class="rev-meta">2026.03.13 01:20</span><div class="rev-name" style="margin-top:6px;">tarry 님, 축하드려요! 신청하신 캠페인에 선정되셨습니다.</div><div class="rev-meta">방문 일정을 확인하고 리뷰를 준비해주세요.</div></div><span class="h-badge" style="position:static;">N</span></div>
-<div class="rev-row"><div class="rev-info"><span class="rev-badge">사장님</span> <span class="rev-meta">2026.03.02 09:12</span><div class="rev-name" style="margin-top:6px;">[카페 루미오] 방문 관련 안내드립니다.</div><div class="rev-meta">예약은 방문 3일 전까지 부탁드립니다.</div></div><span class="h-badge" style="position:static;">N</span></div>
-
+<div class="mp-tabs"><div class="mp-tab active" data-cat="all">전체</div><div class="mp-tab" data-cat="선정">선정</div><div class="mp-tab" data-cat="일정">일정</div><div class="mp-tab" data-cat="기타">기타</div></div>
+<div id="msgList"><div class="rev-meta" style="padding:24px 4px;">불러오는 중…</div></div>
 </div>
 </main></div>
 <script>
@@ -85,9 +81,7 @@ var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4
 var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
-document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('click',function(){this.parentNode.querySelectorAll('.mp-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active');});});
 </script>
-<script>document.querySelectorAll(".mp-tab").forEach(function(t){t.onclick=function(){this.parentNode.querySelectorAll(".mp-tab").forEach(function(x){x.classList.remove("active")});this.classList.add("active");}});</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../../assets/js/auth.js"></script>
 <script>
@@ -101,7 +95,54 @@ document.querySelectorAll('.mp-tab').forEach(function(t){t.addEventListener('cli
   var pstr = pts.toLocaleString() + ' P';
   document.querySelectorAll('.mp-point').forEach(function(el){ var svg=el.querySelector('svg'); el.textContent=' '+pstr; if(svg) el.insertBefore(svg, el.firstChild); });
   document.querySelectorAll('.mp-mini').forEach(function(el){ el.textContent = pstr; });
+  document.querySelector('.mp-title').innerHTML = '<b>'+esc(nm)+'</b> 님의<br>메시지 함';
+
+  // ── 실제 알림 피드 렌더 ──
+  var MSGS = [];
+  var seenBefore = OnAuth.getMsgSeen();
+  try { MSGS = await OnAuth.myMessages(); } catch(e){ MSGS = []; }
+  function relTime(ts){
+    var diff = Date.now() - ts; var m = Math.floor(diff/60000);
+    if (m < 1) return '방금 전';
+    if (m < 60) return m + '분 전';
+    var h = Math.floor(m/60); if (h < 24) return h + '시간 전';
+    var d = new Date(ts);
+    return d.getFullYear()+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2);
+  }
+  var curCat = 'all';
+  function render(){
+    var box = document.getElementById('msgList');
+    var list = curCat==='all' ? MSGS : MSGS.filter(function(m){ return m.cat===curCat; });
+    if (!list.length){
+      box.innerHTML = '<div style="text-align:center;padding:48px 16px;color:var(--text-muted);">'
+        + '<img src="../../assets/img/mascot.png" alt="온미" style="width:96px;height:96px;object-fit:contain;opacity:.85;margin-bottom:12px;">'
+        + '<div style="font-size:14px;font-weight:700;">아직 도착한 메시지가 없어요</div>'
+        + '<div style="font-size:12.5px;margin-top:6px;line-height:1.6;">캠페인에 신청하면 선정·리뷰·검수 소식을<br>이곳으로 알려드려요.</div></div>';
+      return;
+    }
+    box.innerHTML = list.map(function(m){
+      var isNew = m.ts > seenBefore;
+      return '<div class="rev-row"><div class="rev-info"><span class="rev-badge">'+esc(m.cat)+'</span> '
+        + '<span class="rev-meta">'+relTime(m.ts)+'</span>'
+        + '<div class="rev-name" style="margin-top:6px;">'+esc(m.title)+'</div>'
+        + '<div class="rev-meta">'+esc(m.desc)+'</div></div>'
+        + (isNew ? '<span class="h-badge" style="position:static;">N</span>' : '') + '</div>';
+    }).join('');
+  }
+  render();
+  document.querySelectorAll('.mp-tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      this.parentNode.querySelectorAll('.mp-tab').forEach(function(x){ x.classList.remove('active'); });
+      this.classList.add('active');
+      curCat = this.getAttribute('data-cat') || 'all';
+      render();
+    });
+  });
+  // 메시지함을 열었으니 읽음 처리 → 사이드바 안읽음 배지·헤더 갱신
+  OnAuth.markMsgSeen();
+  if (OnAuth.refreshMsgCount) OnAuth.refreshMsgCount();
 })();
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 window.addEventListener('pageshow', function(ev){ if(ev.persisted){ OnAuth.getUser().then(function(u){ if(!u) location.reload(); }); } });
 function onLogout(e){ if(e)e.preventDefault(); OnAuth.signOut(); }
 document.addEventListener('DOMContentLoaded',function(){

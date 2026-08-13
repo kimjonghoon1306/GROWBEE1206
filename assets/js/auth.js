@@ -243,6 +243,54 @@
       return (r && !r.error) ? (r.data || []) : [];
     },
 
+    // ── 메시지/알림 피드 ─────────────────────────────────
+    // 별도 테이블 없이 내 실데이터(신청·문의·출금)에서 알림을 파생해 시간순으로 정렬
+    myMessages: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var out = [];
+      try {
+        var apps = await Auth.myApplications();
+        (apps || []).forEach(function (a) {
+          var c = a.campaigns || {};
+          var name = c.title || '캠페인';
+          var ts = new Date(a.created_at || Date.now()).getTime();
+          if (a.status === 'selected') {
+            out.push({ cat: '선정', ts: ts, title: '[' + name + '] 캠페인에 선정되셨어요!', desc: '축하드려요 :) 방문 일정을 확인하고 리뷰를 준비해 주세요.' });
+          } else if (a.status === 'reviewing') {
+            var d = c.complete_days ? ('선정일로부터 ' + c.complete_days + '일 안에 방문·리뷰까지 완료해 주세요.') : '리뷰 작성 기간입니다.';
+            out.push({ cat: '일정', ts: ts, title: '[' + name + '] 리뷰 작성을 요청드려요', desc: '당첨되신 캠페인의 리뷰 작성 기간입니다. ' + d });
+          } else if (a.status === 'completed') {
+            var rp = c.reward_points ? (' ' + Number(c.reward_points).toLocaleString() + 'P가 적립되었어요.') : '';
+            out.push({ cat: '선정', ts: ts, title: '[' + name + '] 리뷰 검수가 완료됐어요', desc: '리뷰가 승인되었습니다.' + rp + ' 참여해 주셔서 감사합니다!' });
+          } else if (a.status === 'rejected') {
+            out.push({ cat: '기타', ts: ts, title: '[' + name + '] 아쉽게 이번엔 선정되지 않았어요', desc: '다음 기회에 다시 도전해 주세요. 더 좋은 캠페인으로 찾아뵐게요.' });
+          } else if (a.status === 'applied') {
+            out.push({ cat: '기타', ts: ts, title: '[' + name + '] 신청이 접수되었어요', desc: '선정 결과를 기다려 주세요. 결과는 이 메시지함으로 안내드려요.' });
+          }
+        });
+      } catch (e) {}
+      try {
+        var inqs = await Auth.myInquiries();
+        (inqs || []).forEach(function (q) {
+          if (q.status === 'answered') {
+            var ts = new Date(q.answered_at || q.created_at || Date.now()).getTime();
+            out.push({ cat: '기타', ts: ts, title: '문의하신 "' + (q.title || '1:1 문의') + '"에 답변이 등록됐어요', desc: q.answer ? String(q.answer).slice(0, 60) : '1:1 문의하기에서 답변을 확인해 주세요.' });
+          }
+        });
+      } catch (e) {}
+      try {
+        var wds = await Auth.myWithdrawals();
+        (wds || []).forEach(function (w) {
+          var ts = new Date(w.updated_at || w.created_at || Date.now()).getTime();
+          var amt = Number(w.amount || 0).toLocaleString();
+          if (w.status === 'paid') out.push({ cat: '기타', ts: ts, title: '포인트 출금이 완료됐어요', desc: amt + 'P 출금 신청이 지급 처리되었습니다.' });
+          else if (w.status === 'rejected') out.push({ cat: '기타', ts: ts, title: '포인트 출금 신청이 반려됐어요', desc: (w.note ? w.note : amt + 'P 출금 신청이 반려되었습니다. 계좌 정보를 확인해 주세요.') });
+        });
+      } catch (e) {}
+      out.sort(function (a, b) { return b.ts - a.ts; });
+      return out;
+    },
+
     // ── 관리자 ──────────────────────────────────────────
     grantPoints: async function (userId, amount, title, kind) {
       var r = await sb.rpc('grant_points', { p_user: userId, p_amount: amount, p_title: title || '관리자 지급', p_kind: kind || 'admin' });
@@ -515,6 +563,30 @@
   };
   if (document.readyState !== 'loading') Auth.refreshNotifBadge();
   else document.addEventListener('DOMContentLoaded', function () { Auth.refreshNotifBadge(); });
+
+  // 사이드바 '나의 메시지' 안읽음 배지 (.mp-cnt): 마지막으로 메시지함을 본 시각 이후에 생긴 알림 개수
+  var MSG_SEEN_KEY = 'onjongil-msg-seen';
+  Auth.getMsgSeen = function () { try { return parseInt(localStorage.getItem(MSG_SEEN_KEY) || '0', 10) || 0; } catch (e) { return 0; } };
+  Auth.markMsgSeen = function () { try { localStorage.setItem(MSG_SEEN_KEY, String(Date.now())); } catch (e) {} };
+  Auth.refreshMsgCount = async function () {
+    var els = document.querySelectorAll('.mp-cnt');
+    if (!els.length) return;
+    var n = 0;
+    try {
+      var u = await Auth.getUser();
+      if (u) {
+        var msgs = await Auth.myMessages();
+        var seen = Auth.getMsgSeen();
+        n = (msgs || []).filter(function (m) { return m.ts > seen; }).length;
+      }
+    } catch (e) { n = 0; }
+    els.forEach(function (el) {
+      if (n > 0) { el.textContent = n > 99 ? '99+' : String(n); el.style.display = ''; }
+      else { el.style.display = 'none'; }
+    });
+  };
+  if (document.readyState !== 'loading') Auth.refreshMsgCount();
+  else document.addEventListener('DOMContentLoaded', function () { Auth.refreshMsgCount(); });
 
   window.OnAuth = Auth;
 })();
