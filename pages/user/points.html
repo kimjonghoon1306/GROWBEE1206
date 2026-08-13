@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <button onclick="closeWithdraw()" style="background:none;border:none;font-size:22px;color:var(--text-muted);cursor:pointer;">&times;</button>
     </div>
     <div style="padding:18px 22px 22px;">
-      <div style="background:var(--bg-card2);border-radius:12px;padding:13px 15px;margin-bottom:16px;font-size:13px;color:var(--text-muted);">현재 보유 <b style="color:var(--brand-primary);font-size:15px;" id="wrBal">0 P</b> · 최소 10,000P부터</div>
+      <div style="background:var(--bg-card2);border-radius:12px;padding:13px 15px;margin-bottom:16px;font-size:13px;color:var(--text-muted);">현재 보유 <b style="color:var(--brand-primary);font-size:15px;" id="wrBal">0 P</b> · <span id="wrMinNote">최소 10,000P부터</span></div>
       <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:5px;">출금 금액 (P)</label>
       <input id="wrAmount" type="number" inputmode="numeric" placeholder="10000" style="width:100%;box-sizing:border-box;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;color:var(--text);font-size:15px;outline:none;">
       <div style="display:flex;gap:6px;margin:8px 0 14px;"><button type="button" onclick="wrSetAll()" style="flex:1;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:9px;padding:8px;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;">전액</button></div>
@@ -206,7 +206,8 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </div>
 <script>
-var _wrBal=0;
+var _wrBal=0, _wrMin=10000;
+(async function(){ try{ var s=await OnAuth.getSettings(); var m=parseInt(s.point_min_withdraw,10); if(!isNaN(m)&&m>=0){ _wrMin=m; var n=document.getElementById('wrMinNote'); if(n) n.textContent='최소 '+m.toLocaleString()+'P부터'; var a=document.getElementById('wrAmount'); if(a) a.placeholder=String(m); } }catch(e){} })();
 function wrStBadge(s){var m={requested:['대기중','#B77B10','rgba(240,176,66,.15)'],paid:['지급완료','#1E8F58','rgba(52,180,120,.15)'],rejected:['거절','#877E72','rgba(150,150,150,.15)']}[s]||['-','#888','#eee'];return '<span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;color:'+m[1]+';background:'+m[2]+';">'+m[0]+'</span>';}
 async function loadWithdrawals(){
   var rows=[]; try{ rows=await OnAuth.myWithdrawals(); }catch(e){}
@@ -237,7 +238,7 @@ async function submitWithdraw(){
   var bank=document.getElementById('wrBank').value.trim();
   var acc=document.getElementById('wrAccount').value.trim();
   var holder=document.getElementById('wrHolder').value.trim();
-  if(!amt||amt<10000){ return wrMsg('최소 10,000P부터 출금할 수 있어요.'); }
+  if(!amt||amt<_wrMin){ return wrMsg('최소 '+_wrMin.toLocaleString()+'P부터 출금할 수 있어요.'); }
   if(amt>_wrBal){ return wrMsg('보유 포인트를 초과했어요.'); }
   if(!bank||!acc){ return wrMsg('은행과 계좌번호를 입력해주세요.'); }
   if(!holder){ return wrMsg('예금주(실명)를 입력해주세요.'); }
