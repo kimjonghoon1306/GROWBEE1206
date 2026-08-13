@@ -90,19 +90,19 @@
 <div class="page-hero"><div class="page-hero-inner">
   <div class="page-badge"> 1:1 문의</div>
   <h1 class="page-title">무엇이 <span>궁금</span>하신가요?</h1>
-  <p class="page-desc">평일 09:00 ~ 18:00 운영 (점심시간 12:00 ~ 13:00 제외)<br>빠른 답변을 원하시면 카카오 채널을 이용해주세요.</p>
+  <p class="page-desc"><span id="csHours">평일 09:00 ~ 18:00 운영 (점심시간 12:00 ~ 13:00 제외)</span><br>빠른 답변을 원하시면 카카오 채널을 이용해주세요.</p>
 </div></div>
 <div class="sec" style="max-width:760px;">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">
     <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);">
       <div style="font-size:28px;margin-bottom:8px;"></div>
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">카카오 채널</div>
-      <div style="font-size:12px;color:var(--text-muted);">@onjongil 검색 · 평균 1시간 내 응답</div>
+      <div style="font-size:12px;color:var(--text-muted);"><span id="csKakao">@onjongil</span> 검색 · 평균 1시간 내 응답</div>
     </div>
     <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;box-shadow:var(--shadow);">
       <div style="font-size:28px;margin-bottom:8px;"></div>
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">이메일 문의</div>
-      <div style="font-size:12px;color:var(--text-muted);">help@onjongil.kr · 1~2영업일 내 답변</div>
+      <div style="font-size:12px;color:var(--text-muted);"><span id="csEmail">help@onjongil.kr</span> · 1~2영업일 내 답변</div>
     </div>
   </div>
 
@@ -146,6 +146,13 @@
   var TYPES=['캠페인 신청 문의','리뷰 제출 문의','정산·원고료 문의','계정 문의','광고주 문의','기타'];
 
   async function boot(){
+    // 고객센터 안내를 시스템 설정에서 로드(관리자가 바꾸면 반영)
+    try{
+      var s = await OnAuth.getSettings();
+      if(s.cs_kakao) document.getElementById('csKakao').textContent = s.cs_kakao;
+      if(s.cs_email) document.getElementById('csEmail').textContent = s.cs_email;
+      if(s.cs_hours) document.getElementById('csHours').textContent = s.cs_hours;
+    }catch(e){}
     // 로그인 시 이름/이메일 자동 채움 + 내 문의 내역 노출
     try{
       var u = await OnAuth.getUser();

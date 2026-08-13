@@ -183,6 +183,21 @@
       return r.data;
     },
 
+    // ── 시스템 설정 ──────────────────────────────────────
+    // 공개 설정 전체(key→value map)
+    getSettings: async function () {
+      var r = await sb.from('app_settings').select('key,value');
+      var m = {};
+      if (r && !r.error) (r.data || []).forEach(function (x) { m[x.key] = x.value; });
+      return m;
+    },
+    // 관리자: 설정 저장(객체 전달, 여러 key 한 번에)
+    adminSaveSettings: async function (obj) {
+      var r = await sb.rpc('admin_save_settings', { p: obj });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+
     // ── 1:1 문의 ────────────────────────────────────────
     // 문의 제출(비로그인 포함)
     submitInquiry: async function (type, title, content, name, email) {

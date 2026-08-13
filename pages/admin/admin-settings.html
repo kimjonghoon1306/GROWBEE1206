@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시스템 설정 — 온종일 체험단 Admin</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--border:rgba(255,255,255,0.12);--text:#F4F5F8;--text-muted:#AEB4C2;--shadow:0 4px 24px rgba(0,0,0,.35);--shadow-card:0 8px 32px rgba(0,0,0,.4);--header-bg:rgba(27,30,39,0.95);--nav-active-bg:rgba(255,255,255,0.08);}body.light{--bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08);}
+.admin-wrap{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+.admin-sidebar{background:var(--bg-surface);border-right:1px solid var(--border);padding:0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar-logo{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sidebar-logo-mark{width:30px;height:30px;border-radius:9px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;}
+.sidebar-logo-mark svg{width:16px;height:16px;}
+.sidebar-logo-text{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--text);}
+.sidebar-logo-sub{font-size:10px;color:var(--text-muted);font-weight:600;}
+.sidebar-section{padding:14px 10px 6px;}
+.sidebar-section-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);transition:var(--transition);cursor:pointer;text-decoration:none;margin-bottom:2px;}
+.sidebar-link:hover{background:rgba(255,255,255,.05);color:var(--text);}
+.sidebar-link.active{background:rgba(255,71,87,.12);color:var(--brand-primary);font-weight:700;}
+.sidebar-link span.ico{font-size:15px;flex-shrink:0;}
+.sidebar-badge{margin-left:auto;background:var(--brand-primary);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;}
+.admin-main{background:var(--bg);overflow-y:auto;}
+.admin-topbar{position:sticky;top:0;z-index:10;background:var(--header-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.admin-page-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);}
+.topbar-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:var(--transition);text-decoration:none;}
+.topbar-btn:hover{color:var(--text);background:rgba(255,255,255,.1);}
+.topbar-exit{color:var(--brand-primary);border-color:rgba(255,71,87,.3);background:rgba(255,71,87,.08);}
+.admin-content{padding:28px;max-width:760px;}
+.admin-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:20px;}
+.admin-card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.admin-card-sub{font-size:12px;color:var(--text-muted);margin-bottom:18px;}
+.set-field{margin-bottom:16px;}
+.set-field label{font-size:12px;font-weight:700;color:var(--text);display:block;margin-bottom:6px;}
+.set-field .hint{font-size:11px;color:var(--text-muted);font-weight:400;margin-left:4px;}
+.set-input{width:100%;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:var(--radius-md);padding:12px 15px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:var(--transition);}
+.set-input:focus{border-color:rgba(255,71,87,.5);}
+.set-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.save-bar{position:sticky;bottom:0;background:var(--header-bg);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:14px 0;margin-top:8px;display:flex;gap:10px;align-items:center;}
+.save-btn{background:var(--brand-gradient);color:#fff;border:none;border-radius:50px;padding:13px 30px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px rgba(255,71,87,.3);}
+.save-btn:disabled{opacity:.6;cursor:default;}
+@media(max-width:768px){.admin-wrap{grid-template-columns:1fr;}.admin-content{padding:16px;}.admin-topbar{padding:10px 14px !important;}.adm-ham{display:inline-flex !important;}.admin-sidebar{display:block !important;position:fixed;top:0;left:0;bottom:0;width:240px;z-index:200;transform:translateX(-100%);transition:transform .28s ease;box-shadow:0 0 40px rgba(0,0,0,.5);}.admin-sidebar.open{transform:translateX(0);}.adm-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;}.adm-backdrop.open{display:block;}.set-grid{grid-template-columns:1fr;}}
+</style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
+</head>
+<body>
+<div class="admin-wrap">
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark"><svg viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 5.5 6 11C6 13.8 7.8 16.2 11 17C14.2 16.2 16 13.8 16 11C16 5.5 11 3 11 3Z" fill="white" opacity=".9"/><circle cx="11" cy="11" r="3" fill="white"/></svg></div>
+      <div><div class="sidebar-logo-text">온종일 체험단</div><div class="sidebar-logo-sub">ADMIN</div></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">메인</div>
+      <a href="admin-dashboard.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 13h8V3H3zM13 21h8V3h-8zM3 21h8v-6H3z"/></svg></span> 대시보드</a>
+      <a href="admin-campaigns.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h6"/></svg></span> 캠페인 관리</a>
+      <a href="admin-review.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M4 20h16M6 16l9-9a2 2 0 0 1 3 3l-9 9-4 1z"/></svg></span> 리뷰 검수</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">회원</div>
+      <a href="admin-members.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M16 21v-2a4 4 0 0 0-8 0v2M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg></span> 회원 관리</a>
+      <a href="admin-advertisers.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 9h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 9l2-4h14l2 4M9 20v-6h6v6"/></svg></span> 광고주 관리</a>
+      <a href="admin-settlements.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M7 12h.01M17 12h.01"/></svg></span> 정산 관리</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">콘텐츠</div>
+      <a href="admin-ads.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 11l14-6v14L3 13z"/><path d="M17 8a4 4 0 0 1 0 8"/></svg></span> 광고 팝업 관리</a>
+      <a href="admin-popups.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span> 공지사항</a>
+      <a href="admin-inquiries.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> 문의 관리</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">시스템</div>
+      <a href="admin-settings.html" class="sidebar-link active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.3l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2.2-1.3L14 1h-4l-.3 2.1a7 7 0 0 0-2.2 1.3l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.3l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2.2 1.3L10 23h4l.3-2.1a7 7 0 0 0 2.2-1.3l2.4 1 2-3.4-2-1.6A7 7 0 0 0 19 12z"/></svg></span> 시스템 설정</a>
+      <a href="../../index.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></span> 사이트 보기</a>
+      <a href="#" class="sidebar-link" onclick="if(confirm('로그아웃 하시겠어요?')){OnAuth.signOut().then(function(){location.replace('admin-login.html');});}return false;" style="color:var(--brand-primary);"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></span> 로그아웃</a>
+    </div>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <button class="topbar-btn adm-ham" onclick="admSide()" aria-label="메뉴" style="display:none;width:38px;padding:0;align-items:center;justify-content:center;margin-right:4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <span class="admin-page-title">시스템 설정</span>
+      <div style="display:flex;gap:8px;">
+        <button class="topbar-btn" id="admThemeBtn" onclick="admToggle()" title="낮/밤" style="width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;"><svg id="admThemeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+        <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
+      </div>
+    </div>
+    <div class="admin-content" id="setContent" style="opacity:.5;">
+      <div class="admin-card">
+        <div class="admin-card-title">사이트 정보</div>
+        <div class="admin-card-sub">사이트 이름 등 기본 브랜드 정보입니다.</div>
+        <div class="set-field">
+          <label>사이트 이름</label>
+          <input class="set-input" id="s_site_name" placeholder="온종일 체험단">
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">고객센터 안내</div>
+        <div class="admin-card-sub">여기서 바꾸면 <b>1:1 문의 페이지</b>의 안내가 즉시 바뀝니다.</div>
+        <div class="set-grid">
+          <div class="set-field">
+            <label>카카오 채널 ID</label>
+            <input class="set-input" id="s_cs_kakao" placeholder="@onjongil">
+          </div>
+          <div class="set-field">
+            <label>고객센터 이메일</label>
+            <input class="set-input" id="s_cs_email" placeholder="help@onjongil.kr">
+          </div>
+        </div>
+        <div class="set-field">
+          <label>운영시간 안내 문구</label>
+          <input class="set-input" id="s_cs_hours" placeholder="평일 09:00 ~ 18:00 운영 (점심시간 12:00 ~ 13:00 제외)">
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">포인트 정책</div>
+        <div class="admin-card-sub">플랫폼 포인트 기준값을 한 곳에서 관리합니다. <span style="color:#E8940F;">※ 자동 지급 연동은 순차 적용 중 — 현재는 기준값 관리·안내용입니다.</span></div>
+        <div class="set-grid">
+          <div class="set-field">
+            <label>가입 축하 포인트 <span class="hint">신규 가입 시</span></label>
+            <input class="set-input" id="s_point_signup" type="number" min="0" placeholder="0">
+          </div>
+          <div class="set-field">
+            <label>리뷰 완료 기본 적립 <span class="hint">캠페인 미지정 시</span></label>
+            <input class="set-input" id="s_point_review" type="number" min="0" placeholder="0">
+          </div>
+          <div class="set-field">
+            <label>최소 출금 포인트 <span class="hint">출금 신청 하한</span></label>
+            <input class="set-input" id="s_point_min_withdraw" type="number" min="0" placeholder="10000">
+          </div>
+          <div class="set-field">
+            <label>친구 초대 보상 <span class="hint">초대 성공 시</span></label>
+            <input class="set-input" id="s_point_invite" type="number" min="0" placeholder="0">
+          </div>
+        </div>
+      </div>
+      <div class="save-bar">
+        <button class="save-btn" id="saveBtn" onclick="saveAll()">설정 저장</button>
+        <span id="saveMsg" style="font-size:12px;color:var(--text-muted);"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function admToggle(){var lt=document.body.classList.toggle("light");document.getElementById("admThemeIcon").innerHTML=lt?_sun:_moon;localStorage.setItem("onjongil-admin-theme",lt?"light":"dark");}
+(function(){if(localStorage.getItem("onjongil-admin-theme")==="light"){document.body.classList.add("light");var i=document.getElementById("admThemeIcon");if(i)i.innerHTML=_sun;}})();
+function admSide(){var s=document.querySelector('.admin-sidebar');var b=document.querySelector('.adm-backdrop');s.classList.toggle('open');if(b)b.classList.toggle('open');}
+(function(){if(!document.querySelector('.adm-backdrop')){var d=document.createElement('div');d.className='adm-backdrop';d.onclick=admSide;document.body.appendChild(d);}})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+var KEYS=['site_name','cs_kakao','cs_email','cs_hours','point_signup','point_review','point_min_withdraw','point_invite'];
+(async function(){
+  var admin=await OnAuth.requireAdmin(); if(!admin) return;
+  var s=await OnAuth.getSettings();
+  KEYS.forEach(function(k){ var el=document.getElementById('s_'+k); if(el && s[k]!=null) el.value=s[k]; });
+  document.getElementById('setContent').style.opacity='1';
+})();
+async function saveAll(){
+  var btn=document.getElementById('saveBtn'), msg=document.getElementById('saveMsg');
+  var obj={};
+  KEYS.forEach(function(k){ var el=document.getElementById('s_'+k); if(el) obj[k]=(el.value||'').trim(); });
+  btn.disabled=true; msg.style.color='var(--text-muted)'; msg.textContent='저장 중…';
+  var r=await OnAuth.adminSaveSettings(obj);
+  btn.disabled=false;
+  if(!r||!r.ok){ msg.style.color='var(--brand-primary)'; msg.textContent='저장 실패: '+((r&&r.msg)||'다시 시도'); return; }
+  msg.style.color='#2ED573'; msg.textContent='✓ 저장되었습니다. 고객센터 안내에 바로 반영돼요.';
+  setTimeout(function(){ msg.textContent=''; }, 4000);
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest?e.target.closest('a.sidebar-link'):null;
+  if(a && a.getAttribute('href')==='#'){ e.preventDefault(); alert('준비 중인 기능이에요. 곧 추가됩니다!'); }
+});
+</script>
+<script src="../../assets/js/pwa.js" defer></script>
+</body></html>
