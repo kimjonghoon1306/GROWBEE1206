@@ -314,6 +314,16 @@
       if (p.role === 'admin') { p.is_preview = true; p.approved = true; } // 관리자 미리보기 모드
       return p; // { ...profile, approved, biz_name, is_preview, ... }
     },
+    // 관리자: 광고주 목록 (+캠페인/신청 집계)
+    adminListAdvertisers: async function () {
+      var r = await sb.rpc('admin_list_advertisers');
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 관리자: 특정 광고주가 소유한 캠페인 (admin RLS 통과)
+    adminAdvertiserCampaigns: async function (advId) {
+      var r = await sb.from('campaigns').select('*').eq('owner_id', advId).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
     // 관리자: 광고주 승인/취소
     setAdvertiserApproved: async function (userId, ok) {
       var r = await sb.rpc('set_advertiser_approved', { p_user: userId, p_ok: !!ok });
