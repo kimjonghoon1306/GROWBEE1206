@@ -83,10 +83,11 @@
   <a href="campaigns.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);margin-bottom:28px;text-decoration:none;transition:.2s;" onmouseover="this.style.color='var(--brand-primary)'" onmouseout="this.style.color='var(--text-muted)'">← 목록으로 돌아가기</a>
   <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start;">
     <div>
-      <div id="dImg" style="height:360px;border:3px solid var(--ink);border-radius:10px;box-shadow:var(--hard);position:relative;overflow:hidden;margin-bottom:24px;background:url(../../assets/img/sushi.jpg) center/cover;">
-        <div style="position:absolute;top:16px;left:16px;display:flex;gap:8px;"><span style="background:rgba(255,71,87,.15);color:var(--brand-primary);font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">HOT</span><span style="background:rgba(46,213,115,.15);color:#2ED573;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">블로그</span></div>
-        <div style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,.75);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;color:#fff;">D-5 마감</div>
+      <div id="dImg" style="height:360px;border:3px solid var(--ink);border-radius:10px;box-shadow:var(--hard);position:relative;overflow:hidden;margin-bottom:12px;background:url(../../assets/img/sushi.jpg) center/cover;">
+        <div id="dHeroTags" style="position:absolute;top:16px;left:16px;display:flex;gap:8px;"></div>
+        <div id="dHeroDday" style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,.75);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;color:#fff;">D-5 마감</div>
       </div>
+      <div id="dGallery" style="display:none;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;margin-bottom:24px;"></div>
       <div style="display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;" id="dRegion">서울 강남구 · 역삼동 · 오마카세</div>
       <h1 id="dTitle" style="font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:14px;line-height:1.2;color:var(--text);">스시 오모 — 프리미엄 오마카세 코스 체험단 모집</h1>
       <p id="dDesc" style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;"></p>
@@ -96,14 +97,9 @@
         <span style="font-size:12px;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);padding:5px 12px;border-radius:50px;">2인 기준</span>
       </div>
 
-      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:var(--shadow);">
+      <div id="dBenefitBox" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:var(--shadow);">
         <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--brand-primary);">제공 혜택</h3>
-        <ul style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;">
-          <li>• 2인 오마카세 코스 풀코스 (15만원 상당)</li>
-          <li>• 사케 1잔 추가 제공</li>
-          <li>• 주차 2시간 무료</li>
-          <li>• 방문 확인 인증서 제공</li>
-        </ul>
+        <ul id="dBenefits" style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;"></ul>
       </div>
 
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;box-shadow:var(--shadow);">
@@ -129,11 +125,10 @@
 
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow);">
         <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);">매장 정보</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;">
-          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">주소</div><div style="color:var(--text);">서울특별시 강남구 역삼동 123-45</div></div>
-          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">교통</div><div style="color:var(--text);">2호선 역삼역 3번 출구 도보 5분</div></div>
-          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">영업시간</div><div style="color:var(--text);">11:30 ~ 22:00 (월요일 휴무)</div></div>
-          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">예약</div><div style="color:var(--text);">선정 후 담당자 직접 안내</div></div>
+        <div style="display:grid;grid-template-columns:1fr;gap:12px;font-size:13px;">
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">매장명</div><div id="dStoreName" style="color:var(--text);">-</div></div>
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">주소</div><div id="dAddress" style="color:var(--text);">선정 후 담당자가 안내드립니다</div></div>
+          <div><div style="color:var(--text-muted);margin-bottom:3px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">예약</div><div style="color:var(--text);">선정 후 담당자가 직접 안내드립니다</div></div>
         </div>
       </div>
     </div>
@@ -192,6 +187,53 @@
   set('dDday', dday(c.deadline)||'-');
   var pct=c.capacity>0?Math.min(100,Math.round(c.applied_count/c.capacity*100)):0;
   var bar=document.getElementById('dBar'); if(bar) bar.style.width=pct+'%';
+
+  // ── 히어로 태그(HOT/채널) + D-day ──
+  (function(){
+    var tags=document.getElementById('dHeroTags');
+    var CH={blog:'블로그',instagram:'인스타',insta:'인스타',clip:'클립',youtube:'유튜브',reels:'릴스'};
+    var h='';
+    if(c.is_hot) h+='<span style="background:rgba(255,71,87,.15);color:var(--brand-primary);font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">HOT</span>';
+    (c.channel||'').split(',').map(function(s){return s.trim();}).filter(Boolean).slice(0,3).forEach(function(ch){
+      h+='<span style="background:rgba(46,213,115,.15);color:#2ED573;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;">'+(CH[ch]||ch)+'</span>';
+    });
+    if(tags) tags.innerHTML=h;
+    var hdd=document.getElementById('dHeroDday'); var dd=dday(c.deadline);
+    if(hdd) hdd.textContent = dd ? (dd==='마감'?'마감':dd+' 마감') : '상시모집';
+  })();
+
+  // ── 이미지 갤러리(image_urls, 없으면 image_key 폴백은 위에서 처리) ──
+  (function(){
+    var imgs = Array.isArray(c.image_urls) ? c.image_urls.filter(Boolean) : [];
+    var hero=document.getElementById('dImg'); if(!hero || !imgs.length) return;
+    hero.style.background="url('"+imgs[0]+"') center/cover";
+    if(imgs.length<2) return;
+    var g=document.getElementById('dGallery'); g.style.display='grid';
+    g.innerHTML=imgs.map(function(u,i){
+      return '<div data-u="'+encodeURIComponent(u)+'" style="height:70px;border-radius:8px;background:url(\''+u+'\') center/cover;cursor:pointer;border:2px solid '+(i===0?'var(--brand-primary)':'transparent')+';"></div>';
+    }).join('');
+    Array.prototype.forEach.call(g.querySelectorAll('div[data-u]'), function(el){
+      el.onclick=function(){
+        hero.style.background="url('"+decodeURIComponent(el.getAttribute('data-u'))+"') center/cover";
+        Array.prototype.forEach.call(g.querySelectorAll('div[data-u]'), function(x){ x.style.borderColor='transparent'; });
+        el.style.borderColor='var(--brand-primary)';
+      };
+    });
+  })();
+
+  // ── 제공 혜택(reward_text + benefits) ──
+  (function(){
+    var box=document.getElementById('dBenefitBox'), ul=document.getElementById('dBenefits');
+    var parts=[];
+    if(c.reward_text) parts.push(String(c.reward_text));
+    if(c.benefits) String(c.benefits).split(/[\n,·]/).map(function(s){return s.trim();}).filter(Boolean).forEach(function(b){ parts.push(b); });
+    if(!parts.length){ if(box) box.style.display='none'; return; }
+    if(ul) ul.innerHTML=parts.map(function(b){ return '<li>• '+b.replace(/[<>]/g,'')+'</li>'; }).join('');
+  })();
+
+  // ── 매장 정보 ──
+  if(c.store_name) set('dStoreName', c.store_name);
+  if(c.address) set('dAddress', c.address);
 
   // ── 미션 렌더 ──
   var ml=document.getElementById('dMission');
