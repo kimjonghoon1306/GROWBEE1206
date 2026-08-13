@@ -300,18 +300,19 @@
       if (r.error) return { ok: false, msg: r.error.message };
       return r.data; // { ok, approved }
     },
-    // 광고주 전용 페이지 보호: 광고주 아니면 로그인으로. 반환값에 approved 포함
+    // 광고주 전용 페이지 보호: 광고주 아니면 로그인으로. 관리자는 미리보기 허용(is_preview=true). 반환값에 approved 포함
     requireAdvertiser: async function () {
       var u = await Auth.getUser();
       if (!u) { location.href = 'login.html?next=advertiser-dashboard.html'; return null; }
       var p = await Auth.getProfile();
-      if (!p || p.role !== 'advertiser') {
+      if (!p || (p.role !== 'advertiser' && p.role !== 'admin')) {
         alert('광고주 계정으로 로그인해주세요.');
         location.href = 'login.html';
         return null;
       }
       if (p.suspended) { await sb.auth.signOut(); alert('이용이 정지된 계정입니다.'); location.href = 'login.html'; return null; }
-      return p; // { ...profile, approved, biz_name, ... }
+      if (p.role === 'admin') { p.is_preview = true; p.approved = true; } // 관리자 미리보기 모드
+      return p; // { ...profile, approved, biz_name, is_preview, ... }
     },
     // 관리자: 광고주 승인/취소
     setAdvertiserApproved: async function (userId, ok) {

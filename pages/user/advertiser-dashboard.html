@@ -107,6 +107,11 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <span class="badge wait" id="adv-badge"><span class="dot"></span><span id="adv-badge-t">승인 대기중</span></span>
   </div>
 
+  <div id="adv-preview" style="display:none;margin-top:14px;background:rgba(84,160,255,.1);border:1px solid rgba(84,160,255,.35);border-radius:12px;padding:13px 16px;font-size:13.5px;color:var(--text);align-items:center;gap:10px;flex-wrap:wrap;">
+    <b style="color:#3B7DD8;">👁 관리자 미리보기</b><span>실제 광고주가 보는 화면이에요. 여기서 등록·선정은 관리자 권한으로 동작합니다.</span>
+    <a href="../admin/admin-dashboard.html" style="margin-left:auto;color:#3B7DD8;font-weight:700;text-decoration:none;">← 관리자로 돌아가기</a>
+  </div>
+
   <div class="notice wait" id="adv-notice" style="display:none;">
     가입해주셔서 감사합니다! 🎉 <b>관리자 승인</b>이 완료되면 캠페인 등록과 신청자 선정 기능이 열립니다. 보통 1영업일 이내에 처리돼요.
   </div>
@@ -226,9 +231,14 @@ async function doLogout(){ if(confirm('로그아웃 하시겠어요?')){ await O
   document.getElementById('adv-hi').textContent = nm + '님, 환영합니다';
   var parts=[p.biz_category,p.biz_region].filter(Boolean).join(' · ');
   document.getElementById('adv-sub').textContent = parts?(parts+' · 온종일 체험단 광고주'):'온종일 체험단 광고주 센터';
+  if(p.is_preview){
+    document.getElementById('adv-preview').style.display='flex';
+    document.getElementById('adv-hi').textContent='광고주 화면 미리보기';
+    document.getElementById('adv-sub').textContent='관리자 미리보기 모드 · 온종일 체험단 광고주 센터';
+  }
   if(p.approved){
     document.getElementById('adv-badge').className='badge ok';
-    document.getElementById('adv-badge-t').textContent='승인 완료';
+    document.getElementById('adv-badge-t').textContent=p.is_preview?'미리보기':'승인 완료';
     document.getElementById('adv-app').style.display='block';
     loadCamps();
   } else {
