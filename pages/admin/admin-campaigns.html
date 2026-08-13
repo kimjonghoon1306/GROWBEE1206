@@ -110,8 +110,8 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
     <div class="admin-content">
 <div class="search-bar">
   <input class="search-input" placeholder="캠페인명, 광고주, 지역 검색...">
-  <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
-    <option>전체 상태</option><option>진행중</option><option>검토중</option><option>마감</option>
+  <select id="fStatus" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
+    <option value="">전체 상태</option><option value="pending">검수중</option><option value="active">진행중</option><option value="closed">마감</option><option value="rejected">반려</option>
   </select>
   <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
     <option>전체 지역</option><option>서울</option><option>부산</option><option>대구</option><option>제주</option>
@@ -301,17 +301,40 @@ async function deleteCampFromForm(){
   if(r&&r.error){ cfMsg('삭제 실패: '+r.error.message); return; }
   closeCampForm(); loadCamps();
 }
-function _statusBadge(st){ return st==='active'?'<span class="s-badge s-active">진행중</span>':'<span class="s-badge s-done">마감</span>'; }
+function _statusBadge(st){
+  if(st==='active') return '<span class="s-badge s-active">진행중</span>';
+  if(st==='pending') return '<span class="s-badge s-pending">검수중</span>';
+  if(st==='rejected') return '<span class="s-badge" style="background:rgba(214,31,86,.14);color:#d61f56;">반려</span>';
+  return '<span class="s-badge s-done">마감</span>';
+}
+function _applyCampFilters(){
+  var body=document.getElementById('campBody');
+  var q=(document.querySelector('.search-input')||{}).value||''; q=q.toLowerCase();
+  var st=(document.getElementById('fStatus')||{}).value||'';
+  body.querySelectorAll('tr[data-st]').forEach(function(tr){
+    var okQ=tr.textContent.toLowerCase().indexOf(q)>=0;
+    var okS=!st||tr.getAttribute('data-st')===st;
+    tr.style.display=(okQ&&okS)?'':'none';
+  });
+}
 async function loadCamps(){
   var body=document.getElementById('campBody');
   var r=await OnAuth.adminListCampaigns();
   if(r.error){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+_cesc(r.error.message)+'</td></tr>'; return; }
   var rows=r.data||[]; window.__camps={};
-  document.getElementById('campCount').textContent='('+rows.length+'개)';
+  var nPending=rows.filter(function(c){return c.status==='pending';}).length;
+  document.getElementById('campCount').innerHTML='('+rows.length+'개)'+(nPending?' <span style="color:#54A0FF;font-weight:800;">· 검수대기 '+nPending+'</span>':'');
   if(!rows.length){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 캠페인이 없어요. 우측 상단 <b>+ 새 캠페인 등록</b>으로 추가하세요.</td></tr>'; return; }
   body.innerHTML=rows.map(function(c){ window.__camps[c.id]=c;
     var hot=c.is_hot?' <span class="s-badge" style="background:rgba(255,71,87,.15);color:#FF5A5F;">HOT</span>':'';
-    return '<tr>'
+    var manage='<a href="#" class="camp-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a>';
+    if(c.status==='pending'||c.status==='rejected'){
+      manage+=' <a href="#" class="camp-approve" data-id="'+c.id+'" style="color:#1E8F58;font-size:12px;font-weight:800;margin-left:8px;">승인</a>';
+      if(c.status==='pending') manage+=' <a href="#" class="camp-reject" data-id="'+c.id+'" style="color:#d61f56;font-size:12px;font-weight:700;margin-left:8px;">반려</a>';
+    } else {
+      manage+=' <a href="#" class="camp-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.status==='active'?'마감':'재개')+'</a>';
+    }
+    return '<tr data-st="'+(c.status||'')+'">'
       +'<td>'+_cesc(c.title)+hot+'</td>'
       +'<td data-label="광고주" style="color:var(--text-muted);">'+_cesc(c.store_name||'-')+'</td>'
       +'<td data-label="지역" style="color:var(--text-muted);">'+_cesc(c.region||'-')+'</td>'
@@ -320,14 +343,17 @@ async function loadCamps(){
       +'<td data-label="신청" style="color:var(--text-muted);">'+(c.applied_count||0)+'명</td>'
       +'<td data-label="마감일" style="color:var(--text-muted);">'+_cmd(c.deadline)+'</td>'
       +'<td data-label="상태">'+_statusBadge(c.status)+'</td>'
-      +'<td data-label="관리" style="white-space:nowrap;"><a href="#" class="camp-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a> <a href="#" class="camp-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.status==='active'?'마감':'재개')+'</a></td>'
+      +'<td data-label="관리" style="white-space:nowrap;">'+manage+'</td>'
       +'</tr>';
   }).join('');
   body.querySelectorAll('.camp-edit').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); openCampForm(this.getAttribute('data-id')); }); });
   body.querySelectorAll('.camp-toggle').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); var c=window.__camps[id]; var ns=c.status==='active'?'closed':'active'; if(!confirm(ns==='closed'?'이 캠페인을 마감할까요?':'이 캠페인을 다시 진행중으로 바꿀까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:ns}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
-  // 검색
-  var si=document.querySelector('.search-input');
-  if(si){ si.oninput=function(){ var q=this.value.toLowerCase(); body.querySelectorAll('tr').forEach(function(tr){ tr.style.display=tr.textContent.toLowerCase().indexOf(q)>=0?'':'none'; }); }; }
+  body.querySelectorAll('.camp-approve').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); if(!confirm('이 캠페인을 승인해 손님에게 노출할까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:'active'}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
+  body.querySelectorAll('.camp-reject').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); if(!confirm('이 캠페인을 반려할까요? 광고주가 수정 후 다시 검수요청할 수 있어요.')) return; var rr=await OnAuth.updateCampaign(id,{status:'rejected'}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
+  // 검색 + 상태 필터
+  var si=document.querySelector('.search-input'); if(si) si.oninput=_applyCampFilters;
+  var fs=document.getElementById('fStatus'); if(fs) fs.onchange=_applyCampFilters;
+  _applyCampFilters();
 }
 document.addEventListener('click',function(e){ if(e.target&&e.target.id==='cfOverlay') closeCampForm(); });
 window.__adminReady = loadCamps;
