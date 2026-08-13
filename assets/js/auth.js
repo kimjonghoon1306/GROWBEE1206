@@ -183,6 +183,12 @@
       return r.data;
     },
 
+    // ── 통계 리포트 ──────────────────────────────────────
+    adminReport: async function () {
+      var r = await sb.rpc('admin_report');
+      return (r && !r.error) ? r.data : null;
+    },
+
     // ── 시스템 설정 ──────────────────────────────────────
     // 공개 설정 전체(key→value map)
     getSettings: async function () {
