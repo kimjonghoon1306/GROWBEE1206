@@ -457,7 +457,7 @@
       if (!u) { el.style.display = 'none'; return; }
       var apps = await Auth.myApplications();
       var n = (apps || []).filter(function (a) { return a.status === 'selected'; }).length;
-      if (n > 0) { el.textContent = n > 99 ? '99+' : String(n); el.style.display = ''; }
+      if (n > 0) { el.textContent = n > 99 ? '99+' : String(n); el.style.display = el.getAttribute('data-disp') || ''; }
       else { el.style.display = 'none'; }
     } catch (e) { el.style.display = 'none'; }
   };
