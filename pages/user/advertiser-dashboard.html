@@ -76,6 +76,15 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .mission-box{display:none;}
 .mfmsg{display:none;font-size:13px;font-weight:600;padding:10px 13px;border-radius:9px;margin-top:12px;}
 .modal-foot{display:flex;gap:10px;margin-top:20px;}
+.chgrid{display:flex;flex-wrap:wrap;gap:8px;}
+.chchip{padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg-card2);color:var(--text-muted);font-size:13px;font-weight:700;cursor:pointer;}
+.chchip.on{border-color:var(--brand-primary);color:var(--brand-primary);background:rgba(236,58,102,.08);}
+.imgrid{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 8px;}
+.imgthumb{position:relative;width:78px;height:78px;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--bg-card2);}
+.imgthumb img{width:100%;height:100%;object-fit:cover;}
+.imgthumb button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;cursor:pointer;font-size:12px;line-height:1;padding:0;}
+.kwrow{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
+.kwrow span{width:16px;color:var(--text-muted);font-size:12px;font-weight:700;}
 @media(max-width:760px){ .badge{margin-left:0;} .frow{grid-template-columns:1fr;} .atable thead{display:none;}
   .atable tr{display:block;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;padding:6px;}
   .atable td{display:flex;justify-content:space-between;border:none;padding:8px 10px;}
@@ -118,14 +127,20 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 
   <!-- 승인된 광고주 전용 -->
   <div id="adv-app" style="display:none;">
-    <div class="tabs">
-      <div class="tab active" data-tab="camps" onclick="showTab('camps',this)">내 캠페인</div>
-      <div class="tab" data-tab="applicants" onclick="showTab('applicants',this)">신청자 선정</div>
-      <div class="tab" data-tab="reviews" onclick="showTab('reviews',this)">리뷰 현황</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div class="tabs" style="flex:1;">
+        <div class="tab active" data-tab="camps" onclick="showTab('camps',this)">내 캠페인</div>
+        <div class="tab" data-tab="applicants" onclick="showTab('applicants',this)">신청자 선정</div>
+        <div class="tab" data-tab="reviews" onclick="showTab('reviews',this)">리뷰 현황</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openGuide()" style="white-space:nowrap;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:15px;height:15px;"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3" stroke-linecap="round"/><path d="M12 17h.01" stroke-linecap="round"/></svg> 사용법 안내</button>
     </div>
 
     <!-- 내 캠페인 -->
     <div class="panel active" id="panel-camps">
+      <div id="demoBanner" style="display:none;align-items:center;gap:10px;background:rgba(240,176,66,.12);border:1px solid rgba(240,176,66,.35);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text);margin-bottom:14px;flex-wrap:wrap;">
+        <b style="color:#B77B10;">🎬 예시 미리보기</b><span>아래는 기능을 보여주는 <b>예시 데이터</b>예요. <b>＋새 캠페인 등록</b>으로 첫 캠페인을 만들면 실제 데이터로 바뀝니다.</span>
+      </div>
       <div class="rowbar">
         <button class="btn btn-primary" onclick="openCampForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>새 캠페인 등록</button>
       </div>
@@ -165,23 +180,29 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div><label class="fl">매장/업체명</label><input id="cf-store" class="fin" placeholder="스시 오모"></div>
       <div><label class="fl">지역</label><input id="cf-region" class="fin" placeholder="서울 강남"></div>
     </div>
+    <label class="fl">상세 주소</label>
+    <input id="cf-address" class="fin" placeholder="예: 서울 강남구 테헤란로 123, 2층">
     <div class="frow">
       <div><label class="fl">카테고리</label>
         <select id="cf-cat" class="fin"><option value="">선택</option><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option><option>숙박</option><option>기타</option></select></div>
-      <div><label class="fl">모집 채널</label>
-        <select id="cf-channel" class="fin"><option>블로그</option><option>인스타</option><option>클립</option></select></div>
+      <div><label class="fl">모집 채널 (중복 선택)</label>
+        <div id="cf-channels" class="chgrid"></div></div>
     </div>
-    <label class="fl">대표 이미지</label>
-    <select id="cf-img" class="fin"><option value="sushi">스시/오마카세</option><option value="hanwoo">한우/고기</option><option value="cafe">카페/디저트</option><option value="ramen">면/분식</option><option value="taco">양식/이국음식</option><option value="winebar">주점/와인바</option><option value="vegan">브런치/비건</option><option value="skincare">뷰티/스킨케어</option></select>
+    <label class="fl">캠페인 이미지 (여러 장 첨부 가능)</label>
+    <div id="cf-imgs" class="imgrid"></div>
+    <input type="file" id="cf-imgfile" accept="image/*" multiple style="display:none;" onchange="cfUpload(this)">
+    <button type="button" class="btn btn-ghost btn-sm" id="cf-imgadd" onclick="document.getElementById('cf-imgfile').click()">＋ 이미지 추가</button>
     <label class="fl">제공 혜택 * (예: 5만원 상당 오마카세 무료)</label>
     <input id="cf-reward" class="fin" placeholder="5만원 상당 코스 무료 제공">
+    <label class="fl">추가 혜택 (선택)</label>
+    <input id="cf-benefits" class="fin" placeholder="예: 음료 1잔 무료 · 주차 지원">
     <div class="frow">
       <div><label class="fl">적립 포인트</label><input id="cf-points" class="fin" type="number" placeholder="0"></div>
       <div><label class="fl">모집 인원</label><input id="cf-cap" class="fin" type="number" placeholder="5"></div>
     </div>
     <div class="frow">
       <div><label class="fl">신청 마감일</label><input id="cf-deadline" class="fin" type="date"></div>
-      <div><label class="fl">완료 기한 (당첨 후 며칠·방문+리뷰)</label><input id="cf-complete" class="fin" type="number" placeholder="14"></div>
+      <div><label class="fl">완료 기한 (당첨 후 며칠·방문+리뷰)</label><input id="cf-complete" class="fin" type="number" min="1" max="90" step="1" placeholder="14"></div>
     </div>
     <label class="fl">상세 설명</label>
     <textarea id="cf-desc" class="fin" rows="2" placeholder="체험 안내, 예약 방법 등"></textarea>
@@ -196,8 +217,14 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <div><label class="fl">최소 영상수</label><input id="cf-minvid" class="fin" type="number" placeholder="0"></div>
         <div><label class="fl">키워드 반복(회)</label><input id="cf-kwmin" class="fin" type="number" placeholder="5"></div>
       </div>
-      <label class="fl">키워드 세트 (콤마로 구분)</label>
-      <input id="cf-keywords" class="fin" placeholder="역삼동맛집, 강남오마카세">
+      <label class="fl">키워드 (최대 5개 · 리뷰어가 이 중 골라 반복)</label>
+      <div id="cf-kws">
+        <div class="kwrow"><span>1</span><input class="fin cf-kw" placeholder="역삼동맛집"></div>
+        <div class="kwrow"><span>2</span><input class="fin cf-kw" placeholder="강남오마카세"></div>
+        <div class="kwrow"><span>3</span><input class="fin cf-kw" placeholder="(선택)"></div>
+        <div class="kwrow"><span>4</span><input class="fin cf-kw" placeholder="(선택)"></div>
+        <div class="kwrow"><span>5</span><input class="fin cf-kw" placeholder="(선택)"></div>
+      </div>
       <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:var(--text);cursor:pointer;"><input type="checkbox" id="cf-banner" checked style="accent-color:var(--brand-primary);width:16px;height:16px;"> 블로그 상단에 체험단 배너 삽입 필수</label>
     </div>
 
@@ -220,7 +247,20 @@ function toggleMission(el){var b=document.getElementById('missionBox');var on=b.
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../../assets/js/auth.js"></script>
 <script>
-var _camps=[], _editId=null, _cesc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+var _camps=[], _editId=null, _demo=false, _cesc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+// 데모 예시 데이터 (실제 캠페인이 없을 때만 표시 — 기능 미리보기용)
+var DEMO_CAMPS=[
+  {id:'demo1',title:'[예시] 스시 오모 오마카세 체험단',store_name:'스시 오모',region:'서울 강남',reward_text:'5만원 상당 런치 코스 무료',status:'active',applied_count:3,capacity:5,complete_days:14,channel:'블로그,인스타'},
+  {id:'demo2',title:'[예시] 감성카페 데일리 디저트 세트',store_name:'카페 데일리',region:'서울 성수',reward_text:'시그니처 음료 2잔 + 디저트',status:'active',applied_count:5,capacity:5,complete_days:10,channel:'인스타,클립'}
+];
+var DEMO_APPLICANTS={demo1:[
+  {app_id:'da1',status:'applied',applicant_name:'리뷰어 김민지',channel_type:'네이버블로그',channel_url:'https://blog.naver.com',created_at:'2026-08-11',review_url:null,auto_passed:null},
+  {app_id:'da2',status:'selected',applicant_name:'맛집탐험가 이준호',channel_type:'인스타그램',channel_url:'https://instagram.com',created_at:'2026-08-10',review_url:null,auto_passed:null},
+  {app_id:'da3',status:'applied',applicant_name:'푸드로그 박서연',channel_type:'네이버블로그',channel_url:'https://blog.naver.com',created_at:'2026-08-12',review_url:null,auto_passed:null}
+],demo2:[
+  {app_id:'da4',status:'selected',applicant_name:'데일리감성',channel_type:'인스타그램',channel_url:'https://instagram.com',created_at:'2026-08-09',review_url:'https://blog.naver.com/review1',auto_passed:true},
+  {app_id:'da5',status:'reviewing',applicant_name:'카페투어',channel_type:'네이버클립',channel_url:'https://naver.com',created_at:'2026-08-09',review_url:'https://blog.naver.com/review2',auto_passed:false}
+]};
 function _v(id){var e=document.getElementById(id);return e?(e.value||'').trim():'';}
 async function doLogout(){ if(confirm('로그아웃 하시겠어요?')){ await OnAuth.signOut(); } }
 
@@ -248,7 +288,10 @@ async function doLogout(){ if(confirm('로그아웃 하시겠어요?')){ await O
 
 async function loadCamps(){
   _camps = await OnAuth.advMyCampaigns();
+  _demo = (_camps.length===0);
+  if(_demo){ _camps = DEMO_CAMPS.slice(); }
   var list=document.getElementById('campList'), empty=document.getElementById('campEmpty');
+  var banner=document.getElementById('demoBanner'); if(banner) banner.style.display=_demo?'flex':'none';
   if(!_camps.length){ list.innerHTML=''; empty.style.display='block'; }
   else{
     empty.style.display='none';
@@ -274,24 +317,48 @@ function fillCampSelects(){
 function goApplicants(id){ document.querySelector('.tab[data-tab="applicants"]').click(); document.getElementById('applSel').value=id; loadApplicants(); }
 
 // ── 캠페인 폼 ──
+var CHANNELS=['블로그','인스타','클립','유튜브'], _cfChannels=[], _cfImages=[];
+var CAT_IMG={'맛집':'hanwoo','카페':'cafe','디저트':'cafe','뷰티':'skincare','피트니스':'skincare','숙박':'winebar','기타':'sushi'};
+function cfRenderChannels(){ document.getElementById('cf-channels').innerHTML=CHANNELS.map(function(c){return '<div class="chchip'+(_cfChannels.indexOf(c)>=0?' on':'')+'" onclick="cfToggleCh(\''+c+'\')">'+c+'</div>';}).join(''); }
+function cfToggleCh(c){ var i=_cfChannels.indexOf(c); if(i>=0)_cfChannels.splice(i,1); else _cfChannels.push(c); cfRenderChannels(); }
+function cfRenderImgs(){ document.getElementById('cf-imgs').innerHTML=_cfImages.map(function(u,i){return '<div class="imgthumb"><img src="'+u+'"><button type="button" onclick="cfRemoveImg('+i+')">×</button></div>';}).join(''); }
+function cfRemoveImg(i){ _cfImages.splice(i,1); cfRenderImgs(); }
+async function cfUpload(input){
+  var files=input.files; if(!files||!files.length) return;
+  var btn=document.getElementById('cf-imgadd'); var o=btn.textContent; btn.disabled=true; btn.textContent='업로드 중…';
+  for(var i=0;i<files.length;i++){
+    if(_cfImages.length>=8){ alert('이미지는 최대 8장까지예요.'); break; }
+    var r=await OnAuth.uploadCampaignImage(files[i]);
+    if(r&&r.url) _cfImages.push(r.url); else alert('이미지 업로드 실패: '+((r&&r.error&&r.error.message)||''));
+  }
+  input.value=''; btn.disabled=false; btn.textContent=o; cfRenderImgs();
+}
+function cfSetKws(arr){ arr=arr||[]; document.querySelectorAll('#cf-kws .cf-kw').forEach(function(el,i){ el.value=arr[i]||''; }); }
+function cfGetKws(){ var out=[]; document.querySelectorAll('#cf-kws .cf-kw').forEach(function(el){ var v=(el.value||'').trim(); if(v)out.push(v); }); return out.slice(0,5); }
 function openCampForm(){ _editId=null; document.getElementById('cfTitle').textContent='새 캠페인 등록'; document.getElementById('cfSaveBtn').textContent='등록하기';
-  ['cf-title','cf-store','cf-region','cf-reward','cf-points','cf-cap','cf-deadline','cf-desc','cf-keywords'].forEach(function(i){document.getElementById(i).value='';});
-  document.getElementById('cf-cat').value=''; document.getElementById('cf-channel').value='블로그'; document.getElementById('cf-img').value='sushi';
+  ['cf-title','cf-store','cf-region','cf-address','cf-reward','cf-benefits','cf-points','cf-cap','cf-deadline','cf-desc'].forEach(function(i){var e=document.getElementById(i);if(e)e.value='';});
+  document.getElementById('cf-cat').value='';
+  _cfChannels=['블로그']; cfRenderChannels();
+  _cfImages=[]; cfRenderImgs(); cfSetKws([]);
   document.getElementById('cf-complete').value='14'; document.getElementById('cf-minchars').value='1000'; document.getElementById('cf-minimg').value='15'; document.getElementById('cf-minvid').value='0'; document.getElementById('cf-kwmin').value='5'; document.getElementById('cf-banner').checked=true;
   document.getElementById('cfMsg').style.display='none';
   document.getElementById('cfOverlay').classList.add('show');
 }
-function editCamp(id){ var c=_camps.filter(function(x){return x.id===id;})[0]; if(!c)return; _editId=id;
+function editCamp(id){ if(_demo){ alert('예시 캠페인이에요. ＋새 캠페인 등록으로 실제 캠페인을 만들어보세요.'); return; } var c=_camps.filter(function(x){return x.id===id;})[0]; if(!c)return; _editId=id;
   document.getElementById('cfTitle').textContent='캠페인 수정'; document.getElementById('cfSaveBtn').textContent='저장하기';
   document.getElementById('cf-title').value=c.title||''; document.getElementById('cf-store').value=c.store_name||'';
-  document.getElementById('cf-region').value=c.region||''; document.getElementById('cf-cat').value=c.category||'';
-  document.getElementById('cf-channel').value=c.channel||'블로그'; document.getElementById('cf-img').value=c.image_key||'sushi';
-  document.getElementById('cf-reward').value=c.reward_text||''; document.getElementById('cf-points').value=(c.reward_points!=null?c.reward_points:'');
+  document.getElementById('cf-region').value=c.region||''; document.getElementById('cf-address').value=c.address||'';
+  document.getElementById('cf-cat').value=c.category||'';
+  _cfChannels=(c.channel||'블로그').split(',').map(function(s){return s.trim();}).filter(Boolean); cfRenderChannels();
+  _cfImages=Array.isArray(c.image_urls)?c.image_urls.slice():[]; cfRenderImgs();
+  document.getElementById('cf-reward').value=c.reward_text||''; document.getElementById('cf-benefits').value=c.benefits||'';
+  document.getElementById('cf-points').value=(c.reward_points!=null?c.reward_points:'');
   document.getElementById('cf-cap').value=(c.capacity!=null?c.capacity:''); document.getElementById('cf-deadline').value=c.deadline?String(c.deadline).slice(0,10):'';
   document.getElementById('cf-complete').value=(c.complete_days!=null?c.complete_days:14); document.getElementById('cf-desc').value=c.description||'';
   document.getElementById('cf-minchars').value=(c.min_chars!=null?c.min_chars:1000); document.getElementById('cf-minimg').value=(c.min_images!=null?c.min_images:15);
   document.getElementById('cf-minvid').value=(c.min_videos!=null?c.min_videos:0); document.getElementById('cf-kwmin').value=(c.keyword_min!=null?c.keyword_min:5);
-  document.getElementById('cf-keywords').value=c.keywords||''; document.getElementById('cf-banner').checked=(c.require_banner!==false);
+  cfSetKws((c.keywords||'').split(',').map(function(s){return s.trim();}).filter(Boolean));
+  document.getElementById('cf-banner').checked=(c.require_banner!==false);
   document.getElementById('cfMsg').style.display='none';
   document.getElementById('cfOverlay').classList.add('show');
 }
@@ -300,20 +367,25 @@ function cfMsg(t,ok){var m=document.getElementById('cfMsg');m.style.display='blo
 async function saveCampForm(){
   var title=_v('cf-title'); if(!title)return cfMsg('캠페인명을 입력해주세요.');
   var reward=_v('cf-reward'); if(!reward)return cfMsg('제공 혜택을 입력해주세요.');
+  if(!_cfChannels.length){ return cfMsg('모집 채널을 최소 1개 선택해주세요.'); }
+  var cat=_v('cf-cat');
+  var kws=cfGetKws();
   var fields={ title:title, store_name:_v('cf-store')||null, region:_v('cf-region')||null,
-    category:_v('cf-cat')||null, channel:_v('cf-channel'), image_key:_v('cf-img')||'sushi',
-    reward_text:reward, reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
+    address:_v('cf-address')||null, category:cat||null, channel:_cfChannels.join(','),
+    image_key:(CAT_IMG[cat]||'sushi'), image_urls:_cfImages,
+    reward_text:reward, benefits:_v('cf-benefits')||null,
+    reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
     deadline:_v('cf-deadline')||null, complete_days:parseInt(_v('cf-complete'),10)||14, description:_v('cf-desc')||null,
     min_chars:parseInt(_v('cf-minchars'),10)||1000, min_images:parseInt(_v('cf-minimg'),10)||0,
     min_videos:parseInt(_v('cf-minvid'),10)||0, keyword_min:parseInt(_v('cf-kwmin'),10)||5,
-    keywords:_v('cf-keywords')||null, require_banner:document.getElementById('cf-banner').checked, status:'active' };
+    keywords:kws.length?kws.join(', '):null, require_banner:document.getElementById('cf-banner').checked, status:'active' };
   var btn=document.getElementById('cfSaveBtn'); btn.disabled=true; var o=btn.textContent; btn.textContent='저장 중…';
   var r=_editId? await OnAuth.advUpdateCampaign(_editId,fields) : await OnAuth.advCreateCampaign(fields);
   btn.disabled=false; btn.textContent=o;
   if(r&&r.error){ return cfMsg('저장 실패: '+r.error.message); }
   closeCampForm(); loadCamps();
 }
-async function delCamp(id){ if(!confirm('이 캠페인을 삭제할까요? 신청 내역도 함께 사라집니다.'))return;
+async function delCamp(id){ if(_demo){ alert('예시 캠페인이에요.'); return; } if(!confirm('이 캠페인을 삭제할까요? 신청 내역도 함께 사라집니다.'))return;
   var r=await OnAuth.advDeleteCampaign(id); if(r&&r.error){ alert('삭제 실패: '+r.error.message); return; } loadCamps(); }
 
 // ── 신청자 선정 ──
@@ -321,7 +393,7 @@ async function loadApplicants(){
   var id=document.getElementById('applSel').value; var body=document.getElementById('applBody');
   if(!id){ body.innerHTML='<div class="empty">위에서 캠페인을 선택하면 신청자가 표시됩니다.</div>'; return; }
   body.innerHTML='<div class="empty">불러오는 중…</div>';
-  var rows=await OnAuth.advApplicants(id);
+  var rows = _demo ? (DEMO_APPLICANTS[id]||[]) : await OnAuth.advApplicants(id);
   if(!rows.length){ body.innerHTML='<div class="empty"><img src="../../assets/img/mascot.png" alt="온미"><div>아직 신청자가 없어요.</div></div>'; return; }
   body.innerHTML='<table class="atable"><thead><tr><th>신청자</th><th>채널</th><th>신청일</th><th>상태</th><th>선정</th></tr></thead><tbody>'
     +rows.map(function(a){
@@ -337,6 +409,7 @@ async function loadApplicants(){
 }
 function stKo(s){return {applied:'신청',selected:'선정',rejected:'탈락',reviewing:'검수중',completed:'완료'}[s]||s;}
 async function setSel(appId,status){
+  if(_demo){ alert('예시 데이터예요. 실제 캠페인을 등록하면 신청자를 선정할 수 있어요.'); return; }
   var r=await OnAuth.advSelect(appId,status);
   if(!r||!r.ok){ alert('처리 실패: '+((r&&r.msg)||'다시 시도')); return; }
   loadApplicants();
@@ -347,17 +420,65 @@ async function loadReviews(){
   var id=document.getElementById('revSel').value; var body=document.getElementById('revBody');
   if(!id){ body.innerHTML='<div class="empty">위에서 캠페인을 선택하면 리뷰 현황이 표시됩니다.</div>'; return; }
   body.innerHTML='<div class="empty">불러오는 중…</div>';
-  var rows=(await OnAuth.advApplicants(id)).filter(function(a){return ['selected','reviewing','completed'].indexOf(a.status)>=0;});
+  var all = _demo ? (DEMO_APPLICANTS[id]||[]) : await OnAuth.advApplicants(id);
+  var rows=all.filter(function(a){return ['selected','reviewing','completed'].indexOf(a.status)>=0;});
   if(!rows.length){ body.innerHTML='<div class="empty"><img src="../../assets/img/mascot.png" alt="온미"><div>선정된 리뷰어가 없어요.<br>신청자 선정 탭에서 먼저 선정해주세요.</div></div>'; return; }
-  body.innerHTML='<table class="atable"><thead><tr><th>리뷰어</th><th>리뷰 링크</th><th>자동판정</th><th>상태</th></tr></thead><tbody>'
+  body.innerHTML='<table class="atable"><thead><tr><th>리뷰어</th><th>리뷰 링크</th><th>자동판정</th><th>상태</th><th>검수</th></tr></thead><tbody>'
     +rows.map(function(a){
       var link=a.review_url?('<a class="chan-link" href="'+_cesc(a.review_url)+'" target="_blank" rel="noopener">리뷰 열기 ↗</a>'):'<span style="color:var(--text-muted);font-size:12px;">미제출</span>';
       var auto=a.review_url?(a.auto_passed?'<span class="st completed">통과</span>':'<span class="st rejected">미달</span>'):'<span style="color:var(--text-muted);font-size:12px;">-</span>';
+      var acts = a.review_url
+        ? '<button class="btn btn-sm '+(a.status==='completed'?'btn-primary':'btn-ghost')+'" onclick="setRev(\''+a.app_id+'\',\'completed\')">승인</button> '
+          +'<button class="btn btn-sm btn-ghost" onclick="setRev(\''+a.app_id+'\',\'reviewing\')">보완</button> '
+          +'<button class="btn btn-sm btn-ghost" style="color:#d61f56;" onclick="setRev(\''+a.app_id+'\',\'rejected\')">거절</button>'
+        : '<span style="color:var(--text-muted);font-size:12px;">리뷰 대기</span>';
       return '<tr><td data-l="리뷰어"><b>'+_cesc(a.applicant_name||'회원')+'</b></td>'
         +'<td data-l="리뷰 링크">'+link+'</td><td data-l="자동판정">'+auto+'</td>'
-        +'<td data-l="상태"><span class="st '+a.status+'">'+stKo(a.status)+'</span></td></tr>';
+        +'<td data-l="상태"><span class="st '+a.status+'">'+stKo(a.status)+'</span></td>'
+        +'<td data-l="검수">'+acts+'</td></tr>';
     }).join('')+'</tbody></table>';
 }
+async function setRev(appId,status){
+  if(_demo){ alert('예시 데이터예요. 실제 캠페인을 등록하면 리뷰를 승인/보완/거절할 수 있어요.'); return; }
+  var msg={completed:'이 리뷰를 승인할까요? 리뷰어에게 완료 처리됩니다.',reviewing:'보완을 요청할까요? 리뷰어가 수정하도록 안내됩니다.',rejected:'이 리뷰를 거절할까요?'}[status];
+  if(!confirm(msg)) return;
+  var r=await OnAuth.advSelect(appId,status);
+  if(!r||!r.ok){ alert('처리 실패: '+((r&&r.msg)||'다시 시도')); return; }
+  loadReviews();
+}
+</script>
+<!-- 기능 사용법 안내 팝업 -->
+<div class="overlay" id="guideOverlay">
+  <div class="modal" style="max-width:600px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <div class="modal-t" style="margin:0;">👋 광고주 센터 사용법</div>
+      <button class="mv-x" onclick="closeGuide()" style="background:none;border:none;font-size:24px;color:var(--text-muted);cursor:pointer;">&times;</button>
+    </div>
+    <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">캠페인 등록부터 리뷰 검수까지, 3단계로 진행돼요.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:13px;align-items:flex-start;">
+        <div style="width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">1</div>
+        <div><div style="font-weight:800;color:var(--text);font-size:14.5px;">내 캠페인 등록</div><div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:2px;"><b>＋새 캠페인 등록</b>에서 혜택·인원·완료기한·이미지(여러 장)·모집채널(중복)·키워드(최대 5개)를 설정해요. 등록하면 리뷰어에게 노출돼 신청을 받아요.</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start;">
+        <div style="width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">2</div>
+        <div><div style="font-weight:800;color:var(--text);font-size:14.5px;">신청자 선정</div><div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:2px;">신청한 리뷰어의 <b>채널(블로그·인스타 등)을 직접 열어 확인</b>하고 <b>선정</b> 또는 <b>탈락</b>을 눌러요. 선정된 리뷰어만 체험 후 리뷰를 작성할 수 있어요.</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start;">
+        <div style="width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">3</div>
+        <div><div style="font-weight:800;color:var(--text);font-size:14.5px;">리뷰 현황 · 검수</div><div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:2px;">리뷰어가 올린 리뷰 링크와 <b>자동판정(글자·사진·키워드 충족 여부)</b>을 확인하고 <b>승인 / 보완요청 / 거절</b>을 선택해요. 승인하면 리뷰어에게 포인트가 지급돼요.</div></div>
+      </div>
+    </div>
+    <div style="background:var(--bg-card2);border-radius:12px;padding:13px 15px;margin-top:16px;font-size:12.5px;color:var(--text-muted);line-height:1.6;">💡 <b>완료 기한</b>은 “당첨(선정)일로부터 방문+리뷰까지 며칠 안에” 끝내야 하는지예요. 화살표(▲▼)로 조절하거나 숫자를 직접 입력할 수 있어요.</div>
+    <div class="modal-foot"><button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="closeGuide()">시작하기</button></div>
+  </div>
+</div>
+<script>
+function openGuide(){ document.getElementById('guideOverlay').classList.add('show'); }
+function closeGuide(){ document.getElementById('guideOverlay').classList.remove('show'); try{localStorage.setItem('adv_guide_seen','1');}catch(e){} }
+document.addEventListener('click',function(e){ if(e.target&&e.target.id==='guideOverlay') closeGuide(); });
+// 승인된 광고주 첫 방문 시 자동 안내
+setTimeout(function(){ try{ if(document.getElementById('adv-app').style.display==='block' && !localStorage.getItem('adv_guide_seen')){ openGuide(); } }catch(e){} }, 800);
 </script>
 <script src="../../assets/js/pwa.js" defer></script>
 </body>

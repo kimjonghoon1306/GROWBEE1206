@@ -381,11 +381,20 @@
       var r = await sb.rpc('advertiser_campaign_applicants', { p_campaign: campaignId });
       return (r && !r.error) ? (r.data || []) : [];
     },
-    // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied)
+    // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied) · 리뷰 승인/보완 (completed/reviewing)
     advSelect: async function (appId, status) {
       var r = await sb.rpc('advertiser_select', { p_app: appId, p_status: status });
       if (r.error) return { ok: false, msg: r.error.message };
       return r.data;
+    },
+    // 캠페인 이미지 업로드 → 공개 URL
+    uploadCampaignImage: async function (file) {
+      var ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      var path = 'camp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+      var up = await sb.storage.from('campaigns').upload(path, file, { cacheControl: '3600', upsert: false });
+      if (up.error) return { error: up.error };
+      var pub = sb.storage.from('campaigns').getPublicUrl(path);
+      return { url: pub.data.publicUrl };
     },
 
     signOut: async function () {
