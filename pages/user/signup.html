@@ -143,12 +143,12 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
     <div id="advertiser-section" style="display:none;">
       <div class="form-group">
         <label class="form-label">매장/업체명</label>
-        <input class="form-input" type="text" placeholder="스시 오모">
+        <input id="su-biz" class="form-input" type="text" placeholder="스시 오모">
       </div>
       <div class="form-group">
         <label class="form-label">업종</label>
-        <select class="form-input">
-          <option>업종 선택</option>
+        <select id="su-cat" class="form-input">
+          <option value="">업종 선택</option>
           <option>식당·맛집</option>
           <option>카페</option>
           <option>디저트</option>
@@ -160,8 +160,8 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
       </div>
       <div class="form-group">
         <label class="form-label">지역</label>
-        <select class="form-input">
-          <option>지역 선택</option>
+        <select id="su-region" class="form-input">
+          <option value="">지역 선택</option>
           <option>서울</option>
           <option>경기·인천</option>
           <option>부산</option>
@@ -170,6 +170,7 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
           <option>전국 (배송형)</option>
         </select>
       </div>
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:-4px;">가입 후 <b style="color:var(--brand-primary);">관리자 승인</b>을 거쳐 캠페인 등록이 열립니다.</p>
     </div>
 
     <div class="agree-section">
@@ -194,11 +195,15 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
 </div>
 
 <script>
+window._suType = 'reviewer';
 function setType(type, el) {
+  window._suType = type;
   document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('reviewer-section').style.display = type === 'reviewer' ? '' : 'none';
   document.getElementById('advertiser-section').style.display = type === 'advertiser' ? '' : 'none';
+  var btn = document.getElementById('su-btn');
+  if (btn) btn.textContent = type === 'advertiser' ? '광고주로 가입하기' : '가입하기';
 }
 function toggleAll(el) {
   document.querySelectorAll('.agree-sub').forEach(c => c.checked = el.checked);
@@ -226,10 +231,25 @@ async function doSignup(){
   if(phoneN.length<10){return suMsg('휴대폰 번호를 정확히 입력해주세요.');}
   if(pw.length<6){return suMsg('비밀번호는 6자 이상이어야 해요.');}
   if(pw!==pw2){return suMsg('비밀번호가 일치하지 않아요.');}
+  var isAdv = window._suType === 'advertiser';
+  var biz='', cat='', region='';
+  if(isAdv){
+    biz=(document.getElementById('su-biz').value||'').trim();
+    cat=document.getElementById('su-cat').value||'';
+    region=document.getElementById('su-region').value||'';
+    if(!biz){return suMsg('매장/업체명을 입력해주세요.');}
+  }
   var btn=document.getElementById('su-btn'); btn.disabled=true; var orig=btn.textContent; btn.textContent='가입 중...';
   try{
     var r=await OnAuth.signUp(email,pw,{name:name,nickname:name,phone:phoneN});
     if(r.error){ suMsg(r.error.message.indexOf('registered')>=0?'이미 가입된 이메일이에요.':r.error.message); btn.disabled=false; btn.textContent=orig; return; }
+    if(isAdv){
+      var ar=await OnAuth.registerAdvertiser(biz,cat,region,phoneN);
+      if(!ar || !ar.ok){ suMsg('광고주 등록 중 문제가 생겼어요: '+((ar&&ar.msg)||'다시 시도')); btn.disabled=false; btn.textContent=orig; return; }
+      suMsg('광고주 가입 완료! 승인 안내 페이지로 이동합니다 :)',true);
+      setTimeout(function(){ location.replace('advertiser-dashboard.html'); },700);
+      return;
+    }
     suMsg('가입 완료! 마이페이지로 이동합니다 :)',true);
     setTimeout(function(){ location.replace('mypage.html'); },700);
   }catch(e){ suMsg('오류가 발생했어요. 잠시 후 다시 시도해주세요.'); btn.disabled=false; btn.textContent=orig; }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>광고주 센터 — 온종일 체험단</title>
+<link rel="stylesheet" href="../../assets/css/design-system.css">
+<style>
+.site-header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;height:64px;gap:14px;max-width:1100px;margin:0 auto;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.logo-mark img{width:26px;height:26px;object-fit:contain;}
+.logo-main{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.5px;}
+.logo-sub{font-size:9px;font-weight:700;color:var(--brand-primary);letter-spacing:1.5px;display:block;margin-top:1px;}
+.h-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.logout-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg-card2);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;}
+.logout-btn svg{width:16px;height:16px;}
+.wrap{max-width:1100px;margin:0 auto;padding:26px 20px 60px;}
+.hero{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:26px 26px;box-shadow:var(--shadow-card);display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.hero-ico{width:64px;height:64px;border-radius:18px;background:var(--brand-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 22px rgba(236,58,102,.32);}
+.hero-ico img{width:46px;height:46px;object-fit:contain;}
+.hero-hi{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);}
+.hero-sub{font-size:13px;color:var(--text-muted);margin-top:3px;}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:999px;font-size:13px;font-weight:800;margin-left:auto;}
+.badge .dot{width:9px;height:9px;border-radius:50%;}
+.badge.wait{background:rgba(240,176,66,.15);color:#B77B10;}
+.badge.wait .dot{background:#F0B042;}
+.badge.ok{background:rgba(52,180,120,.15);color:#1E8F58;}
+.badge.ok .dot{background:#34B478;}
+.notice{margin-top:16px;border-radius:var(--radius-lg);padding:16px 18px;font-size:13.5px;line-height:1.7;border:1px solid var(--border);}
+.notice.wait{background:rgba(240,176,66,.08);border-color:rgba(240,176,66,.25);color:var(--text);}
+.notice.ok{background:rgba(52,180,120,.07);border-color:rgba(52,180,120,.22);color:var(--text);}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px;}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 18px;box-shadow:var(--shadow-card);position:relative;overflow:hidden;}
+.card.locked{opacity:.62;}
+.card-ico{width:44px;height:44px;border-radius:12px;background:var(--nav-active-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.card-ico svg{width:24px;height:24px;stroke:var(--brand-primary);}
+.card-t{font-size:15px;font-weight:800;color:var(--text);margin-bottom:5px;}
+.card-d{font-size:12.5px;color:var(--text-muted);line-height:1.6;}
+.soon{position:absolute;top:12px;right:12px;font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--text-muted);background:var(--bg-card2);border:1px solid var(--border);padding:3px 8px;border-radius:999px;}
+.sec-t{font-size:13px;font-weight:800;color:var(--text-muted);letter-spacing:.4px;margin:26px 2px 2px;text-transform:uppercase;}
+@media(max-width:760px){ .grid{grid-template-columns:1fr;} .badge{margin-left:0;} }
+</style>
+<link rel="stylesheet" href="../../assets/css/brutal.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <div class="logo-mark"><img src="../../assets/img/mascot.png" alt="온미"></div>
+      <div><div class="logo-main">온종일 체험단</div><span class="logo-sub">광고주 센터</span></div>
+    </a>
+    <div class="h-right">
+      <button class="mode-btn" id="modeBtn" onclick="toggleMode()" style="width:36px;height:36px;border-radius:10px;background:var(--nav-active-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg id="modeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--text);"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <button class="logout-btn" onclick="doLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>로그아웃</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-ico"><img src="../../assets/img/mascot.png" alt="온미"></div>
+    <div>
+      <div class="hero-hi" id="adv-hi">광고주님, 환영합니다</div>
+      <div class="hero-sub" id="adv-sub">온종일 체험단 광고주 센터</div>
+    </div>
+    <span class="badge wait" id="adv-badge"><span class="dot"></span><span id="adv-badge-t">승인 대기중</span></span>
+  </div>
+
+  <div class="notice wait" id="adv-notice">
+    가입해주셔서 감사합니다! 🎉 <b>관리자 승인</b>이 완료되면 캠페인 등록과 신청자 선정 기능이 열립니다. 보통 1영업일 이내에 처리돼요.
+  </div>
+
+  <div class="sec-t">광고주 기능</div>
+  <div class="grid">
+    <div class="card locked">
+      <span class="soon">준비 중</span>
+      <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+      <div class="card-t">내 캠페인 등록</div>
+      <div class="card-d">체험단 캠페인을 직접 등록하고 모집 현황을 관리해요.</div>
+    </div>
+    <div class="card locked">
+      <span class="soon">준비 중</span>
+      <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="card-t">신청자 선정</div>
+      <div class="card-d">신청한 블로거의 채널을 확인하고 직접 선정해요.</div>
+    </div>
+    <div class="card locked">
+      <span class="soon">준비 중</span>
+      <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+      <div class="card-t">리뷰 현황</div>
+      <div class="card-d">선정된 리뷰어의 리뷰 작성·검수 상태를 한눈에 봐요.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
+function toggleMode(){var n=document.body.classList.toggle('night');var i=document.getElementById('modeIcon');if(i)i.innerHTML=n?_sun:_moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
+(function(){if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');var i=document.getElementById('modeIcon');if(i)i.innerHTML=_sun;}})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+async function doLogout(){ if(confirm('로그아웃 하시겠어요?')){ await OnAuth.signOut(); } }
+(async function(){
+  var p = await OnAuth.requireAdvertiser();
+  if(!p) return;
+  var nm = p.biz_name || p.name || '광고주';
+  document.getElementById('adv-hi').textContent = nm + '님, 환영합니다';
+  var parts = [p.biz_category, p.biz_region].filter(Boolean).join(' · ');
+  document.getElementById('adv-sub').textContent = parts ? (parts + ' · 온종일 체험단 광고주') : '온종일 체험단 광고주 센터';
+  var badge=document.getElementById('adv-badge'), badgeT=document.getElementById('adv-badge-t'), notice=document.getElementById('adv-notice');
+  if(p.approved){
+    badge.className='badge ok'; badgeT.textContent='승인 완료';
+    notice.className='notice ok';
+    notice.innerHTML='승인이 완료되었어요! ✅ 캠페인 등록·신청자 선정 기능을 곧 이용할 수 있어요. (기능 오픈 준비 중)';
+    document.querySelectorAll('.card.locked').forEach(function(c){ c.classList.remove('locked'); });
+  }
+})();
+</script>
+<script src="../../assets/js/pwa.js" defer></script>
+</body>
+</html>

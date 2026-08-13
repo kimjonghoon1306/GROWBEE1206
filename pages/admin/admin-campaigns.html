@@ -203,12 +203,10 @@ textarea.cf-in{resize:vertical;}
       <button type="button" class="cf-seg-btn" data-p="fixed" onclick="cfSetPeriod('fixed')">고정 마감날짜</button>
     </div>
     <div id="cf-rel-box" class="cf-row" style="margin-top:8px;">
-      <div><label class="cf-l">방문 기한(당첨 후 며칠)</label><input id="cf-visit" class="cf-in" type="number" placeholder="14"></div>
-      <div><label class="cf-l">리뷰 기한(방문 후 며칠)</label><input id="cf-reviewdays" class="cf-in" type="number" placeholder="14"></div>
+      <div style="grid-column:1/-1;"><label class="cf-l">완료 기한 — 당첨(선정) 후 며칠 안에 <b>방문+리뷰까지 완료</b></label><input id="cf-complete" class="cf-in" type="number" placeholder="14"></div>
     </div>
     <div id="cf-fixed-box" class="cf-row" style="margin-top:8px;display:none;">
-      <div><label class="cf-l">방문 마감일</label><input id="cf-visitdl" class="cf-in" type="date"></div>
-      <div><label class="cf-l">리뷰 제출 마감일</label><input id="cf-reviewdl" class="cf-in" type="date"></div>
+      <div style="grid-column:1/-1;"><label class="cf-l">완료 마감일 — 이 날짜까지 <b>방문+리뷰까지 완료</b></label><input id="cf-reviewdl" class="cf-in" type="date"></div>
     </div>
     <label class="cf-l">키워드 세트 (콤마로 구분, 손님이 이 중 1개 골라 반복)</label>
     <input id="cf-keywords" class="cf-in" placeholder="예: 역삼동맛집, 강남오마카세, 역삼오마카세, 강남맛집추천">
@@ -264,11 +262,9 @@ function openCampForm(id){
   document.getElementById('cf-deadline').value=c.deadline?String(c.deadline).slice(0,10):'';
   document.getElementById('cf-desc').value=c.description||'';
   document.getElementById('cf-hot').checked=!!c.is_hot;
-  document.getElementById('cf-visit').value=(c.visit_days!=null?c.visit_days:14);
-  document.getElementById('cf-reviewdays').value=(c.review_days!=null?c.review_days:14);
-  document.getElementById('cf-visitdl').value=c.visit_deadline?String(c.visit_deadline).slice(0,10):'';
+  document.getElementById('cf-complete').value=(c.complete_days!=null?c.complete_days:(c.review_days!=null?c.review_days:14));
   document.getElementById('cf-reviewdl').value=c.review_deadline?String(c.review_deadline).slice(0,10):'';
-  cfSetPeriod((c.visit_deadline||c.review_deadline)?'fixed':'rel');
+  cfSetPeriod(c.review_deadline?'fixed':'rel');
   document.getElementById('cf-keywords').value=c.keywords||'';
   document.getElementById('cf-kwmin').value=(c.keyword_min!=null?c.keyword_min:5);
   document.getElementById('cf-minchars').value=(c.min_chars!=null?c.min_chars:1000);
@@ -286,8 +282,8 @@ async function saveCampForm(){
     reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
     deadline:_v('cf-deadline')||null, description:_v('cf-desc')||null,
     is_hot:document.getElementById('cf-hot').checked,
-    visit_days:parseInt(_v('cf-visit'),10)||14, review_days:parseInt(_v('cf-reviewdays'),10)||14,
-    visit_deadline:(_cfPeriod==='fixed'?(_v('cf-visitdl')||null):null), review_deadline:(_cfPeriod==='fixed'?(_v('cf-reviewdl')||null):null),
+    complete_days:parseInt(_v('cf-complete'),10)||14,
+    visit_deadline:null, review_deadline:(_cfPeriod==='fixed'?(_v('cf-reviewdl')||null):null),
     keywords:_v('cf-keywords')||null, keyword_min:parseInt(_v('cf-kwmin'),10)||5,
     min_chars:parseInt(_v('cf-minchars'),10)||1000, min_images:parseInt(_v('cf-minimg'),10)||15,
     min_videos:parseInt(_v('cf-minvid'),10)||2, require_banner:document.getElementById('cf-banner').checked };

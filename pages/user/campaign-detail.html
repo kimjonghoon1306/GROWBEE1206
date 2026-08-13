@@ -197,8 +197,8 @@
   var ml=document.getElementById('dMission');
   function li(t){ return '<li>• '+t+'</li>'; }
   var items=[];
-  if(c.visit_days) items.push('당첨 후 <strong style="color:var(--text);">'+c.visit_days+'일 이내</strong> 방문');
-  if(c.review_days) items.push('방문 후 <strong style="color:var(--text);">'+c.review_days+'일 이내</strong> 리뷰 작성');
+  var _cd = (c.complete_days!=null ? c.complete_days : (c.visit_days!=null ? c.visit_days : 14));
+  items.push('당첨(선정)일로부터 <strong style="color:var(--text);">'+_cd+'일 이내</strong>에 <strong style="color:var(--text);">방문 + 리뷰 작성까지 완료</strong>');
   items.push('최소 <strong style="color:var(--text);">'+(c.min_chars||1000)+'자 이상</strong> 작성');
   items.push('사진 <strong style="color:var(--text);">'+(c.min_images||15)+'장 이상</strong>');
   items.push('영상 <strong style="color:var(--text);">'+(c.min_videos||2)+'개 이상</strong>');
