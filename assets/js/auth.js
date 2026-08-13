@@ -371,5 +371,21 @@
     return fromUserPage ? '../../' + path : path;
   }
 
+  // 헤더 알림벨 배지: 선정되어 리뷰 작성이 필요한 신청 개수 (없으면 숨김)
+  Auth.refreshNotifBadge = async function () {
+    var el = document.getElementById('hNotifBadge');
+    if (!el) return;
+    try {
+      var u = await Auth.getUser();
+      if (!u) { el.style.display = 'none'; return; }
+      var apps = await Auth.myApplications();
+      var n = (apps || []).filter(function (a) { return a.status === 'selected'; }).length;
+      if (n > 0) { el.textContent = n > 99 ? '99+' : String(n); el.style.display = ''; }
+      else { el.style.display = 'none'; }
+    } catch (e) { el.style.display = 'none'; }
+  };
+  if (document.readyState !== 'loading') Auth.refreshNotifBadge();
+  else document.addEventListener('DOMContentLoaded', function () { Auth.refreshNotifBadge(); });
+
   window.OnAuth = Auth;
 })();
