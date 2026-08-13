@@ -158,6 +158,31 @@
       return r.data;
     },
 
+    // ── 포인트 출금(정산) ────────────────────────────────
+    // 손님: 출금 신청
+    requestWithdraw: async function (amount, bank, account, holder) {
+      var r = await sb.rpc('request_withdraw', { p_amount: amount, p_bank: bank || '', p_account: account || '', p_holder: holder || '' });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 손님: 내 출금 신청 내역
+    myWithdrawals: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('withdrawal_requests').select('*').eq('user_id', u.id).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 관리자: 출금 신청 전체(+신청자 정보)
+    adminListWithdrawals: async function () {
+      var r = await sb.rpc('admin_list_withdrawals');
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 관리자: 출금 지급/거절
+    processWithdraw: async function (id, action, note) {
+      var r = await sb.rpc('process_withdraw', { p_id: id, p_action: action, p_note: note || '' });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+
     // ── 포인트 ──────────────────────────────────────────
     myPointTx: async function () {
       var u = await Auth.getUser(); if (!u) return [];

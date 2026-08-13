@@ -97,8 +97,13 @@
       <div id="ptEmpty" style="display:none;text-align:center;padding:40px 0;color:var(--text-muted);">아직 내역이 없어요.</div>
 
       <div style="margin-top:22px;">
-        <a href="#" class="btn-primary" style="width:100%;font-size:15px;padding:16px;">출금 요청하기</a>
+        <a href="#" class="btn-primary" style="width:100%;font-size:15px;padding:16px;" onclick="openWithdraw();return false;">출금 요청하기</a>
       </div>
+    </div>
+
+    <div class="mp-card" id="wrCard" style="display:none;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;">내 출금 신청</div>
+      <div id="wrList"></div>
     </div>
 
     <div class="callout">
@@ -175,6 +180,77 @@ document.addEventListener('DOMContentLoaded',function(){
   applyFilter('earn');
   function fmtNum(id,v){var el=document.getElementById(id);if(el)el.innerHTML=v+'<small>P</small>';}
 })();
+</script>
+<!-- 출금 신청 모달 -->
+<div id="wrOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:18px;">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 22px 14px;border-bottom:1px solid var(--border);">
+      <div style="font-size:18px;font-weight:800;color:var(--text);">포인트 출금 신청</div>
+      <button onclick="closeWithdraw()" style="background:none;border:none;font-size:22px;color:var(--text-muted);cursor:pointer;">&times;</button>
+    </div>
+    <div style="padding:18px 22px 22px;">
+      <div style="background:var(--bg-card2);border-radius:12px;padding:13px 15px;margin-bottom:16px;font-size:13px;color:var(--text-muted);">현재 보유 <b style="color:var(--brand-primary);font-size:15px;" id="wrBal">0 P</b> · 최소 10,000P부터</div>
+      <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:5px;">출금 금액 (P)</label>
+      <input id="wrAmount" type="number" inputmode="numeric" placeholder="10000" style="width:100%;box-sizing:border-box;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;color:var(--text);font-size:15px;outline:none;">
+      <div style="display:flex;gap:6px;margin:8px 0 14px;"><button type="button" onclick="wrSetAll()" style="flex:1;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:9px;padding:8px;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;">전액</button></div>
+      <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:5px;">은행</label>
+      <input id="wrBank" placeholder="예: 국민은행" style="width:100%;box-sizing:border-box;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;color:var(--text);font-size:14px;outline:none;margin-bottom:12px;">
+      <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:5px;">계좌번호</label>
+      <input id="wrAccount" inputmode="numeric" placeholder="- 없이 입력" style="width:100%;box-sizing:border-box;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;color:var(--text);font-size:14px;outline:none;margin-bottom:12px;">
+      <label style="font-size:11px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:5px;">예금주 (실명)</label>
+      <input id="wrHolder" placeholder="홍길동" style="width:100%;box-sizing:border-box;background:var(--bg-card2);border:1.5px solid var(--border);border-radius:10px;padding:12px 13px;color:var(--text);font-size:14px;outline:none;">
+      <div id="wrMsg" style="display:none;font-size:13px;font-weight:600;padding:10px 13px;border-radius:9px;margin-top:12px;"></div>
+      <button class="btn-primary" id="wrSubmit" style="width:100%;padding:15px;font-size:15px;margin-top:16px;" onclick="submitWithdraw()">출금 신청하기</button>
+      <p style="font-size:11.5px;color:var(--text-muted);line-height:1.6;margin-top:12px;">신청 후 관리자 확인을 거쳐 등록하신 계좌로 지급됩니다. 예금주는 실명과 동일해야 해요.</p>
+    </div>
+  </div>
+</div>
+<script>
+var _wrBal=0;
+function wrStBadge(s){var m={requested:['대기중','#B77B10','rgba(240,176,66,.15)'],paid:['지급완료','#1E8F58','rgba(52,180,120,.15)'],rejected:['거절','#877E72','rgba(150,150,150,.15)']}[s]||['-','#888','#eee'];return '<span style="font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;color:'+m[1]+';background:'+m[2]+';">'+m[0]+'</span>';}
+async function loadWithdrawals(){
+  var rows=[]; try{ rows=await OnAuth.myWithdrawals(); }catch(e){}
+  var card=document.getElementById('wrCard'), list=document.getElementById('wrList');
+  if(!rows.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  function esc(x){return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  list.innerHTML=rows.map(function(w){
+    var acc=(w.bank?esc(w.bank)+' ':'')+(w.account_no?esc(w.account_no):'');
+    return '<div class="rev-row"><div class="rev-info"><div class="rev-name">'+w.amount.toLocaleString()+' P 출금</div><div class="rev-meta">'+String(w.created_at).slice(0,10).replace(/-/g,'.')+(acc?(' · '+acc):'')+(w.note?(' · '+esc(w.note)):'')+'</div></div><div class="rev-state">'+wrStBadge(w.status)+'</div></div>';
+  }).join('');
+}
+async function openWithdraw(){
+  var p=null; try{ p=await OnAuth.getProfile(); }catch(e){}
+  _wrBal=(p&&p.points)||0;
+  document.getElementById('wrBal').textContent=_wrBal.toLocaleString()+' P';
+  document.getElementById('wrAmount').value='';
+  document.getElementById('wrBank').value=''; document.getElementById('wrAccount').value='';
+  document.getElementById('wrHolder').value=(p&&(p.name||p.nickname))||'';
+  document.getElementById('wrMsg').style.display='none';
+  document.getElementById('wrOverlay').style.display='flex';
+}
+function closeWithdraw(){ document.getElementById('wrOverlay').style.display='none'; }
+function wrSetAll(){ document.getElementById('wrAmount').value=_wrBal; }
+function wrMsg(t){var m=document.getElementById('wrMsg');m.style.display='block';m.textContent=t;m.style.background='rgba(236,58,102,.1)';m.style.color='#d61f56';}
+async function submitWithdraw(){
+  var amt=parseInt(document.getElementById('wrAmount').value,10);
+  var bank=document.getElementById('wrBank').value.trim();
+  var acc=document.getElementById('wrAccount').value.trim();
+  var holder=document.getElementById('wrHolder').value.trim();
+  if(!amt||amt<10000){ return wrMsg('최소 10,000P부터 출금할 수 있어요.'); }
+  if(amt>_wrBal){ return wrMsg('보유 포인트를 초과했어요.'); }
+  if(!bank||!acc){ return wrMsg('은행과 계좌번호를 입력해주세요.'); }
+  if(!holder){ return wrMsg('예금주(실명)를 입력해주세요.'); }
+  var btn=document.getElementById('wrSubmit'); btn.disabled=true; var o=btn.textContent; btn.textContent='신청 중…';
+  var r=await OnAuth.requestWithdraw(amt,bank,acc,holder);
+  btn.disabled=false; btn.textContent=o;
+  if(!r||!r.ok){ return wrMsg((r&&r.msg)||'신청에 실패했어요.'); }
+  closeWithdraw();
+  alert('출금 신청이 접수됐어요! 관리자 확인 후 지급됩니다.');
+  loadWithdrawals();
+}
+document.addEventListener('click',function(e){ if(e.target&&e.target.id==='wrOverlay') closeWithdraw(); });
+loadWithdrawals();
 </script>
 <script src="../../assets/js/mp-side.js" defer></script>
 <script src="../../assets/js/pwa.js" defer></script>

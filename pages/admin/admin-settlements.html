@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>광고주 관리 — 온종일 체험단 Admin</title>
+<title>정산 관리 — 온종일 체험단 Admin</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
 <style>
 body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--border:rgba(255,255,255,0.12);--text:#F4F5F8;--text-muted:#AEB4C2;--shadow:0 4px 24px rgba(0,0,0,.35);--shadow-card:0 8px 32px rgba(0,0,0,.4);--header-bg:rgba(27,30,39,0.95);--nav-active-bg:rgba(255,255,255,0.08);}body.light{--bg:#FBF8F2;--bg-surface:#FFFFFF;--bg-card:#FFFFFF;--bg-card2:#F5F1E8;--border:rgba(0,0,0,.09);--text:#2A241F;--text-muted:#877E72;--shadow:0 6px 22px rgba(60,42,20,.07);--shadow-card:0 16px 44px rgba(60,42,20,.11);--header-bg:rgba(251,248,242,.95);--nav-active-bg:rgba(236,58,102,.08);}
@@ -40,19 +40,19 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
 .admin-table tr:last-child td{border:none;}
 .admin-table td:first-child{color:var(--text);font-weight:600;}
 .s-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;white-space:nowrap;}
-.s-active{background:rgba(46,213,115,.15);color:#2ED573;}
-.s-pending{background:rgba(84,160,255,.15);color:#54A0FF;}
-.s-susp{background:rgba(255,71,87,.15);color:var(--brand-primary);}
-.abtn{border:none;border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;}
+.s-req{background:rgba(240,176,66,.15);color:#FFA502;}
+.s-paid{background:rgba(46,213,115,.15);color:#2ED573;}
+.s-rej{background:rgba(255,255,255,.08);color:var(--text-muted);}
+.abtn{border:none;border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;margin-right:6px;}
 .abtn.ok{background:var(--brand-gradient);color:#fff;} .abtn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-muted);}
+.acct{font-family:var(--font-display);cursor:pointer;} .acct:hover{color:var(--brand-primary);}
 .search-bar{display:flex;gap:10px;margin-bottom:20px;}
 .search-input{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 16px;color:var(--text);font-size:13px;font-family:var(--font-display);outline:none;}
-.search-input:focus{border-color:rgba(255,71,87,.4);}
 .search-input::placeholder{color:var(--text-muted);}
 .adm-pager{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;}
 .adm-pager button{background:var(--bg-card2);border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;}
 .adm-pager button.active{background:var(--brand-primary);color:#fff;border-color:var(--brand-primary);}
-@media(max-width:768px){.admin-wrap{grid-template-columns:1fr;}.admin-content{padding:16px;}.kpis{grid-template-columns:1fr 1fr;}.admin-topbar{padding:10px 14px !important;}.adm-ham{display:inline-flex !important;}.admin-sidebar{display:block !important;position:fixed;top:0;left:0;bottom:0;width:240px;z-index:200;transform:translateX(-100%);transition:transform .28s ease;box-shadow:0 0 40px rgba(0,0,0,.5);}.admin-sidebar.open{transform:translateX(0);}.adm-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;}.adm-backdrop.open{display:block;}
+@media(max-width:768px){.admin-wrap{grid-template-columns:1fr;}.admin-content{padding:16px;}.kpis{grid-template-columns:1fr;}.admin-topbar{padding:10px 14px !important;}.adm-ham{display:inline-flex !important;}.admin-sidebar{display:block !important;position:fixed;top:0;left:0;bottom:0;width:240px;z-index:200;transform:translateX(-100%);transition:transform .28s ease;box-shadow:0 0 40px rgba(0,0,0,.5);}.admin-sidebar.open{transform:translateX(0);}.adm-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;}.adm-backdrop.open{display:block;}
   .admin-card{padding:14px;}.admin-table thead{display:none;}.admin-table,.admin-table tbody,.admin-table tr,.admin-table td{display:block;width:100%;}
   .admin-table tr{border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:var(--bg-card2);}
   .admin-table td{border:none;padding:7px 0;display:flex;justify-content:space-between;align-items:baseline;gap:14px;text-align:right;flex-wrap:wrap;word-break:keep-all;}
@@ -60,26 +60,6 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
   .admin-table td:not([data-label]):not(:first-child)::before{content:none;}
   .admin-table td:first-child{flex-direction:column;align-items:flex-start;text-align:left;font-size:15px;padding:2px 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;}
   .admin-table td:first-child::before{content:none;}}
-/* modal */
-.mv-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:20px;}
-.mv-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:560px;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);}
-.mv-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 22px 14px;border-bottom:1px solid var(--border);}
-.mv-h-name{font-size:18px;font-weight:800;color:var(--text);}
-.mv-h-sub{font-size:13px;color:var(--text-muted);margin-top:3px;}
-.mv-x{background:none;border:none;color:var(--text-muted);font-size:22px;line-height:1;cursor:pointer;padding:2px 6px;}
-.mv-body{padding:18px 22px 24px;}
-.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:18px;}
-.mv-f{font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:.3px;text-transform:uppercase;}
-.mv-v{font-size:14px;color:var(--text);margin-top:2px;font-weight:600;}
-.mv-sec-t{font-size:13px;font-weight:700;color:var(--text);margin:14px 0 8px;}
-.mv-list{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.mv-li{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;font-size:13px;border-top:1px solid var(--border);color:var(--text);}
-.mv-li:first-child{border-top:none;}
-.mv-empty{padding:16px 12px;color:var(--text-muted);font-size:13px;text-align:center;}
-.mv-actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;}
-.mv-btn{border:none;border-radius:50px;padding:11px 18px;font-size:13px;font-weight:700;cursor:pointer;}
-.mv-btn.pri{background:var(--brand-gradient);color:#fff;} .mv-btn.warn{background:transparent;border:1.5px solid var(--border);color:var(--text);} .mv-btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-muted);}
-@media(max-width:520px){.mv-grid{grid-template-columns:1fr;}}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
 </head>
@@ -99,8 +79,8 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
     <div class="sidebar-section">
       <div class="sidebar-section-label">회원</div>
       <a href="admin-members.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M16 21v-2a4 4 0 0 0-8 0v2M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg></span> 회원 관리</a>
-      <a href="admin-advertisers.html" class="sidebar-link active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 9h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 9l2-4h14l2 4M9 20v-6h6v6"/></svg></span> 광고주 관리 <span class="sidebar-badge" id="sbPending" style="display:none;">0</span></a>
-      <a href="admin-settlements.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M7 12h.01M17 12h.01"/></svg></span> 정산 관리</a>
+      <a href="admin-advertisers.html" class="sidebar-link"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><path d="M3 9h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 9l2-4h14l2 4M9 20v-6h6v6"/></svg></span> 광고주 관리</a>
+      <a href="admin-settlements.html" class="sidebar-link active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;vertical-align:-3px;"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M7 12h.01M17 12h.01"/></svg></span> 정산 관리 <span class="sidebar-badge" id="sbPending" style="display:none;">0</span></a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">콘텐츠</div>
@@ -118,63 +98,35 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
   <div class="admin-main">
     <div class="admin-topbar">
       <button class="topbar-btn adm-ham" onclick="admSide()" aria-label="메뉴" style="display:none;width:38px;padding:0;align-items:center;justify-content:center;margin-right:4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-      <span class="admin-page-title">광고주 관리</span>
+      <span class="admin-page-title">정산 관리 · 포인트 출금</span>
       <div style="display:flex;gap:8px;">
-        <a href="../user/advertiser-dashboard.html" target="_blank" rel="noopener" class="topbar-btn" title="광고주 화면 미리보기" style="border-color:rgba(84,160,255,.5);color:#3B7DD8;">👁 광고주 화면</a>
         <button class="topbar-btn" id="admThemeBtn" onclick="admToggle()" title="낮/밤" style="width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;"><svg id="admThemeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
         <a href="../../index.html" class="topbar-btn topbar-exit">← 사이트로</a>
       </div>
     </div>
     <div class="admin-content">
       <div class="kpis">
-        <div class="kpi"><b id="kTotal">-</b><span>전체 광고주</span></div>
-        <div class="kpi warn"><b id="kPending">-</b><span>승인 대기</span></div>
-        <div class="kpi"><b id="kCamps">-</b><span>등록 캠페인</span></div>
+        <div class="kpi warn"><b id="kPending">-</b><span>지급 대기</span></div>
+        <div class="kpi"><b id="kPendingAmt">-</b><span>대기 금액</span></div>
+        <div class="kpi"><b id="kPaid">-</b><span>총 지급액</span></div>
       </div>
       <div class="search-bar">
-        <input class="search-input" id="advSearch" placeholder="업체명, 대표자, 이메일, 전화 검색...">
-        <select id="advFilter" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
-          <option value="all">전체</option><option value="pending">승인 대기</option><option value="approved">승인 완료</option>
+        <input class="search-input" id="wSearch" placeholder="신청자, 예금주, 은행 검색...">
+        <select id="wFilter" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
+          <option value="all">전체</option><option value="requested">지급 대기</option><option value="paid">지급 완료</option><option value="rejected">거절</option>
         </select>
       </div>
       <div class="admin-card">
-        <div class="admin-card-title">광고주 목록 <span id="advCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
+        <div class="admin-card-title">출금 신청 <span id="wCount" style="color:var(--text-muted);font-weight:600;">(불러오는 중…)</span></div>
         <table class="admin-table">
-          <thead><tr><th>업체명 / 대표자</th><th>연락처</th><th>업종·지역</th><th>캠페인</th><th>신청</th><th>상태</th><th>가입일</th><th>관리</th></tr></thead>
-          <tbody id="advBody"><tr><td colspan="8" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
+          <thead><tr><th>신청자</th><th>금액</th><th>입금 계좌</th><th>상태</th><th>신청일</th><th>처리</th></tr></thead>
+          <tbody id="wBody"><tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오는 중…</td></tr></tbody>
         </table>
-        <div class="adm-pager" id="advPager"></div>
+        <div class="adm-pager" id="wPager"></div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- 상세 모달 -->
-<div class="mv-overlay" id="mvOverlay">
-  <div class="mv-card">
-    <div class="mv-head">
-      <div><div class="mv-h-name" id="mvName">-</div><div class="mv-h-sub" id="mvSub">-</div></div>
-      <button class="mv-x" onclick="closeAdv()">&times;</button>
-    </div>
-    <div class="mv-body">
-      <div class="mv-grid">
-        <div><div class="mv-f">대표자</div><div class="mv-v" id="mvRep">-</div></div>
-        <div><div class="mv-f">휴대폰</div><div class="mv-v" id="mvPhone">-</div></div>
-        <div><div class="mv-f">업종</div><div class="mv-v" id="mvCat">-</div></div>
-        <div><div class="mv-f">지역</div><div class="mv-v" id="mvRegion">-</div></div>
-        <div><div class="mv-f">가입일</div><div class="mv-v" id="mvJoined">-</div></div>
-        <div><div class="mv-f">승인 상태</div><div class="mv-v" id="mvApproved">-</div></div>
-      </div>
-      <div class="mv-sec-t">등록한 캠페인 <span id="mvCampCnt" style="color:var(--text-muted);font-weight:600;font-size:12px;"></span></div>
-      <div id="mvCamps" class="mv-list"><div class="mv-empty">불러오는 중…</div></div>
-      <div class="mv-actions">
-        <button class="mv-btn pri" id="mvApproveBtn" onclick="doApprove(this)">승인하기</button>
-        <button class="mv-btn ghost" onclick="closeAdv()">닫기</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 var _sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
 var _moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
@@ -188,100 +140,75 @@ function admSide(){var s=document.querySelector('.admin-sidebar');var b=document
 <script>
 function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
 function fmtDate(iso){ if(!iso) return '-'; var d=new Date(iso); return (''+d.getFullYear()).slice(2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); }
-function fmtPhone(p){ if(!p) return '-'; p=(''+p).replace(/[^0-9]/g,''); if(p.length===11) return p.slice(0,3)+'-'+p.slice(3,7)+'-'+p.slice(7); return p||'-'; }
-var ADV=[], PAGE=1, PER=20, MAP={};
+var W=[], PAGE=1, PER=20;
 (async function(){
   var admin=await OnAuth.requireAdmin(); if(!admin) return;
   await load();
-  document.getElementById('advSearch').oninput=function(){ PAGE=1; render(); };
-  document.getElementById('advFilter').onchange=function(){ PAGE=1; render(); };
+  document.getElementById('wSearch').oninput=function(){ PAGE=1; render(); };
+  document.getElementById('wFilter').onchange=function(){ PAGE=1; render(); };
 })();
 async function load(){
-  ADV=await OnAuth.adminListAdvertisers(); MAP={}; ADV.forEach(function(a){MAP[a.id]=a;});
-  var pending=ADV.filter(function(a){return !a.approved;}).length;
-  var camps=ADV.reduce(function(s,a){return s+(parseInt(a.campaign_count,10)||0);},0);
-  document.getElementById('kTotal').textContent=ADV.length;
-  document.getElementById('kPending').textContent=pending;
-  document.getElementById('kCamps').textContent=camps;
-  var sb=document.getElementById('sbPending'); if(pending>0){ sb.textContent=pending; sb.style.display=''; } else sb.style.display='none';
+  W=await OnAuth.adminListWithdrawals();
+  var pend=W.filter(function(w){return w.status==='requested';});
+  var pendAmt=pend.reduce(function(s,w){return s+(w.amount||0);},0);
+  var paid=W.filter(function(w){return w.status==='paid';}).reduce(function(s,w){return s+(w.amount||0);},0);
+  document.getElementById('kPending').textContent=pend.length+'건';
+  document.getElementById('kPendingAmt').textContent=pendAmt.toLocaleString()+' P';
+  document.getElementById('kPaid').textContent=paid.toLocaleString()+' P';
+  var sb=document.getElementById('sbPending'); if(pend.length>0){ sb.textContent=pend.length; sb.style.display=''; } else sb.style.display='none';
   render();
 }
 function filtered(){
-  var q=(document.getElementById('advSearch').value||'').toLowerCase().trim();
-  var f=document.getElementById('advFilter').value;
-  return ADV.filter(function(a){
-    if(f==='pending'&&a.approved) return false;
-    if(f==='approved'&&!a.approved) return false;
+  var q=(document.getElementById('wSearch').value||'').toLowerCase().trim();
+  var f=document.getElementById('wFilter').value;
+  return W.filter(function(w){
+    if(f!=='all'&&w.status!==f) return false;
     if(!q) return true;
-    return ((a.biz_name||'')+(a.name||'')+(a.email||'')+(a.phone||'')).toLowerCase().indexOf(q)>=0;
+    return ((w.applicant_name||'')+(w.holder||'')+(w.bank||'')+(w.account_no||'')).toLowerCase().indexOf(q)>=0;
   });
 }
-function statusBadge(a){
-  if(a.suspended) return '<span class="s-badge s-susp">정지</span>';
-  return a.approved?'<span class="s-badge s-active">승인</span>':'<span class="s-badge s-pending">대기</span>';
-}
+function stBadge(s){return {requested:'<span class="s-badge s-req">지급 대기</span>',paid:'<span class="s-badge s-paid">지급 완료</span>',rejected:'<span class="s-badge s-rej">거절</span>'}[s]||s;}
+function copyAcct(t){ try{ navigator.clipboard.writeText(t); }catch(e){} }
 function render(){
-  var body=document.getElementById('advBody'), pager=document.getElementById('advPager');
+  var body=document.getElementById('wBody'), pager=document.getElementById('wPager');
   var rows=filtered();
-  document.getElementById('advCount').textContent='('+rows.length+'개'+(rows.length!==ADV.length?(' / 전체 '+ADV.length):'')+')';
+  document.getElementById('wCount').textContent='('+rows.length+'건)';
   var pages=Math.max(1,Math.ceil(rows.length/PER)); if(PAGE>pages)PAGE=pages;
-  if(!rows.length){ body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px 0;color:var(--text-muted);">해당하는 광고주가 없어요.</td></tr>'; pager.innerHTML=''; return; }
+  if(!rows.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px 0;color:var(--text-muted);">해당하는 출금 신청이 없어요.</td></tr>'; pager.innerHTML=''; return; }
   var slice=rows.slice((PAGE-1)*PER, PAGE*PER);
-  body.innerHTML=slice.map(function(a){
-    var biz=esc(a.biz_name||'(업체명 미입력)');
-    var act=a.approved
-      ? '<button class="abtn ghost" onclick="toggleApprove(\''+a.id+'\',false)">승인취소</button>'
-      : '<button class="abtn ok" onclick="toggleApprove(\''+a.id+'\',true)">승인</button>';
-    return '<tr data-uid="'+a.id+'">'
-      +'<td><a href="#" onclick="openAdv(\''+a.id+'\');return false;" style="color:var(--text);text-decoration:none;"><b>'+biz+'</b></a><div style="color:var(--text-muted);font-size:11px;font-weight:400;margin-top:2px;">'+esc(a.name||'')+'</div></td>'
-      +'<td data-label="연락처" style="color:var(--text-muted);"><div>'+esc(a.email||'-')+'</div><div style="font-size:11px;">'+fmtPhone(a.phone)+'</div></td>'
-      +'<td data-label="업종·지역" style="color:var(--text-muted);">'+esc(a.biz_category||'-')+(a.biz_region?(' · '+esc(a.biz_region)):'')+'</td>'
-      +'<td data-label="캠페인" style="color:var(--text-muted);">'+(a.campaign_count||0)+'개</td>'
-      +'<td data-label="신청" style="color:var(--text-muted);">'+(a.applicant_count||0)+'건</td>'
-      +'<td data-label="상태">'+statusBadge(a)+'</td>'
-      +'<td data-label="가입일" style="color:var(--text-muted);">'+fmtDate(a.created_at)+'</td>'
-      +'<td data-label="관리"><a href="#" onclick="openAdv(\''+a.id+'\');return false;" style="color:var(--brand-primary);font-size:12px;font-weight:600;margin-right:8px;">상세</a>'+act+'</td>'
+  body.innerHTML=slice.map(function(w){
+    var acct=(w.bank?esc(w.bank)+' ':'')+(w.account_no?esc(w.account_no):'')+(w.holder?(' ('+esc(w.holder)+')'):'');
+    var act = w.status==='requested'
+      ? '<button class="abtn ok" onclick="doPay(\''+w.id+'\')">지급</button><button class="abtn ghost" onclick="doReject(\''+w.id+'\')">거절</button>'
+      : '<span style="color:var(--text-muted);font-size:11px;">'+(w.processed_at?fmtDate(w.processed_at):'')+(w.note?(' · '+esc(w.note)):'')+'</span>';
+    return '<tr>'
+      +'<td><b>'+esc(w.applicant_name||'회원')+'</b><div style="color:var(--text-muted);font-size:11px;font-weight:400;margin-top:2px;">보유 '+(w.applicant_points||0).toLocaleString()+'P</div></td>'
+      +'<td data-label="금액" style="color:var(--text);font-weight:700;">'+(w.amount||0).toLocaleString()+' P</td>'
+      +'<td data-label="계좌"><span class="acct" title="클릭하면 복사" onclick="copyAcct(\''+esc((w.bank||'')+' '+(w.account_no||'')+' '+(w.holder||''))+'\')">'+(acct||'-')+'</span></td>'
+      +'<td data-label="상태">'+stBadge(w.status)+'</td>'
+      +'<td data-label="신청일" style="color:var(--text-muted);">'+fmtDate(w.created_at)+'</td>'
+      +'<td data-label="처리">'+act+'</td>'
       +'</tr>';
   }).join('');
   if(pages<=1) pager.innerHTML='';
   else { var h=''; for(var i=1;i<=pages;i++){h+='<button class="'+(i===PAGE?'active':'')+'" onclick="PAGE='+i+';render();">'+i+'</button>';} pager.innerHTML=h; }
 }
-async function toggleApprove(id, ok){
-  var a=MAP[id]; if(!a) return;
-  if(!confirm((ok?'이 광고주를 승인할까요?':'승인을 취소할까요?')+'\n업체: '+(a.biz_name||a.name||''))) return;
-  var r=await OnAuth.setAdvertiserApproved(id, ok);
+function _w(id){ return W.filter(function(x){return x.id===id;})[0]; }
+async function doPay(id){
+  var w=_w(id); if(!w) return;
+  if(!confirm('지급 처리할까요?\n\n'+(w.applicant_name||'회원')+' · '+(w.amount||0).toLocaleString()+'P\n'+(w.bank||'')+' '+(w.account_no||'')+' ('+(w.holder||'')+')\n\n※ 실제 계좌 이체 후 눌러주세요. 회원 포인트가 차감됩니다.')) return;
+  var r=await OnAuth.processWithdraw(id,'paid','');
   if(!r||!r.ok){ alert('처리 실패: '+((r&&r.msg)||'다시 시도')); return; }
-  a.approved=ok; await load();
+  await load();
 }
-// 상세
-async function openAdv(id){
-  var a=MAP[id]; if(!a) return;
-  document.getElementById('mvName').textContent=a.biz_name||'(업체명 미입력)';
-  document.getElementById('mvSub').textContent=a.email||'';
-  document.getElementById('mvRep').textContent=a.name||'-';
-  document.getElementById('mvPhone').textContent=fmtPhone(a.phone);
-  document.getElementById('mvCat').textContent=a.biz_category||'-';
-  document.getElementById('mvRegion').textContent=a.biz_region||'-';
-  document.getElementById('mvJoined').textContent=fmtDate(a.created_at);
-  document.getElementById('mvApproved').innerHTML=statusBadge(a);
-  var btn=document.getElementById('mvApproveBtn');
-  btn.textContent=a.approved?'승인 취소':'승인하기'; btn.dataset.uid=id; btn.dataset.ok=a.approved?'0':'1';
-  document.getElementById('mvOverlay').style.display='flex';
-  var el=document.getElementById('mvCamps'); el.innerHTML='<div class="mv-empty">불러오는 중…</div>';
-  var camps=await OnAuth.adminAdvertiserCampaigns(id);
-  document.getElementById('mvCampCnt').textContent=camps.length?('('+camps.length+'개)'):'';
-  el.innerHTML=camps.length? camps.map(function(c){
-    var st=c.status==='active'?'모집중':(c.status==='draft'?'임시':'마감');
-    return '<div class="mv-li"><div><div>'+esc(c.title)+'</div><div style="color:var(--text-muted);font-size:11px;margin-top:2px;">'+esc(c.reward_text||'')+'</div></div><div style="color:var(--text-muted);white-space:nowrap;">'+(c.applied_count||0)+'/'+(c.capacity||0)+' · '+st+'</div></div>';
-  }).join('') : '<div class="mv-empty">등록한 캠페인이 없습니다.</div>';
+async function doReject(id){
+  var w=_w(id); if(!w) return;
+  var note=prompt('거절 사유를 입력해주세요 (선택):','');
+  if(note===null) return;
+  var r=await OnAuth.processWithdraw(id,'rejected',note||'');
+  if(!r||!r.ok){ alert('처리 실패: '+((r&&r.msg)||'다시 시도')); return; }
+  await load();
 }
-function closeAdv(){ document.getElementById('mvOverlay').style.display='none'; }
-async function doApprove(btn){
-  var id=btn.dataset.uid, ok=btn.dataset.ok==='1';
-  await toggleApprove(id, ok);
-  if(MAP[id]) openAdv(id);
-}
-document.addEventListener('click',function(e){ if(e.target&&e.target.id==='mvOverlay') closeAdv(); });
 document.addEventListener('click',function(e){
   var a=e.target.closest?e.target.closest('a.sidebar-link'):null;
   if(a && a.getAttribute('href')==='#'){ e.preventDefault(); alert('준비 중인 기능이에요. 곧 추가됩니다!'); }
