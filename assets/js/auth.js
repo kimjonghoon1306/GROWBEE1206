@@ -183,6 +183,37 @@
       return r.data;
     },
 
+    // ── 1:1 문의 ────────────────────────────────────────
+    // 문의 제출(비로그인 포함)
+    submitInquiry: async function (type, title, content, name, email) {
+      var r = await sb.rpc('submit_inquiry', { p_type: type || '기타', p_title: title || '', p_content: content || '', p_name: name || '', p_email: email || '' });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 손님: 내 문의 내역(답변 포함)
+    myInquiries: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('inquiries').select('*').eq('user_id', u.id).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 관리자: 문의 전체
+    adminListInquiries: async function () {
+      var r = await sb.rpc('admin_list_inquiries');
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    // 관리자: 답변 등록
+    answerInquiry: async function (id, answer) {
+      var r = await sb.rpc('answer_inquiry', { p_id: id, p_answer: answer || '' });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+    // 관리자: 문의 삭제
+    deleteInquiry: async function (id) {
+      var r = await sb.rpc('delete_inquiry', { p_id: id });
+      if (r.error) return { ok: false, msg: r.error.message };
+      return r.data;
+    },
+
     // ── 포인트 ──────────────────────────────────────────
     myPointTx: async function () {
       var u = await Auth.getUser(); if (!u) return [];

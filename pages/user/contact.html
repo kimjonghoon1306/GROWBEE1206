@@ -109,15 +109,22 @@
   <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:36px;box-shadow:var(--shadow-card);">
     <h2 style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--text);margin-bottom:22px;">문의 양식</h2>
     <div class="form-group"><label class="form-label">문의 유형</label>
-      <select class="form-input"><option>캠페인 신청 문의</option><option>리뷰 제출 문의</option><option>정산·원고료 문의</option><option>계정 문의</option><option>광고주 문의</option><option>기타</option></select>
+      <select class="form-input" id="iqType"><option>캠페인 신청 문의</option><option>리뷰 제출 문의</option><option>정산·원고료 문의</option><option>계정 문의</option><option>광고주 문의</option><option>기타</option></select>
     </div>
-    <div class="form-group"><label class="form-label">제목</label><input class="form-input" type="text" placeholder="문의 제목을 입력해주세요"></div>
-    <div class="form-group"><label class="form-label">내용</label><textarea class="form-input" rows="6" placeholder="문의 내용을 자세히 작성해주세요..." style="resize:vertical;"></textarea></div>
+    <div class="form-group"><label class="form-label">제목</label><input class="form-input allow-select" id="iqTitle" type="text" placeholder="문의 제목을 입력해주세요"></div>
+    <div class="form-group"><label class="form-label">내용</label><textarea class="form-input allow-select" id="iqContent" rows="6" placeholder="문의 내용을 자세히 작성해주세요..." style="resize:vertical;"></textarea></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div class="form-group"><label class="form-label">이름</label><input class="form-input" type="text" placeholder="홍길동"></div>
-      <div class="form-group"><label class="form-label">이메일 (답변 받을 주소)</label><input class="form-input" type="email" placeholder="hello@example.com"></div>
+      <div class="form-group"><label class="form-label">이름</label><input class="form-input allow-select" id="iqName" type="text" placeholder="홍길동"></div>
+      <div class="form-group"><label class="form-label">이메일 (답변 받을 주소)</label><input class="form-input allow-select" id="iqEmail" type="email" placeholder="hello@example.com"></div>
     </div>
-    <button style="width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(255,71,87,.35);margin-top:4px;">문의 제출하기</button>
+    <button id="iqSubmit" style="width:100%;background:var(--brand-gradient);color:#fff;padding:15px;border-radius:50px;font-size:15px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(255,71,87,.35);margin-top:4px;">문의 제출하기</button>
+    <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:12px;line-height:1.6;">로그인하면 <b style="color:var(--text);">내 문의 내역</b>에서 답변을 확인할 수 있어요.<br>비로그인 문의는 입력하신 이메일로 답변드립니다.</p>
+  </div>
+
+  <!-- 내 문의 내역(로그인 시) -->
+  <div id="myInqSec" style="display:none;margin-top:32px;">
+    <h2 style="font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);margin-bottom:14px;">내 문의 내역</h2>
+    <div id="myInqList"></div>
   </div>
 </div>
 <footer class="site-footer"><div class="footer-inner">
@@ -130,5 +137,76 @@
 <script>function toggleMode(){var n=document.body.classList.toggle('night');localStorage.setItem('onjongil-mode',n?'night':'day');}(function(){if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');var b=document.getElementById('modeBtn');}}());</script>
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-login.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+(function(){
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function fmt(iso){ if(!iso) return ''; var d=new Date(iso); return d.getFullYear()+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+('0'+d.getDate()).slice(-2); }
+  var TYPES=['캠페인 신청 문의','리뷰 제출 문의','정산·원고료 문의','계정 문의','광고주 문의','기타'];
+
+  async function boot(){
+    // 로그인 시 이름/이메일 자동 채움 + 내 문의 내역 노출
+    try{
+      var u = await OnAuth.getUser();
+      if(u){
+        var p = await OnAuth.getProfile();
+        if(p && p.name && !document.getElementById('iqName').value) document.getElementById('iqName').value = p.name;
+        if(u.email && !document.getElementById('iqEmail').value) document.getElementById('iqEmail').value = u.email;
+        document.getElementById('myInqSec').style.display='';
+        await loadMine();
+      }
+    }catch(e){}
+  }
+
+  async function loadMine(){
+    var box=document.getElementById('myInqList');
+    var list = await OnAuth.myInquiries();
+    if(!list.length){ box.innerHTML='<div style="background:var(--bg-card);border:1px dashed var(--border);border-radius:var(--radius-lg);padding:28px;text-align:center;color:var(--text-muted);font-size:13px;">아직 남긴 문의가 없어요.</div>'; return; }
+    box.innerHTML = list.map(function(q){
+      var answered = q.status==='answered';
+      var badge = answered
+        ? '<span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(46,213,115,.15);color:#2ED573;">답변완료</span>'
+        : '<span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(240,176,66,.18);color:#E8940F;">답변대기</span>';
+      var ans = answered
+        ? '<div style="margin-top:12px;background:var(--bg-card2);border-radius:var(--radius-md);padding:14px 16px;border-left:3px solid var(--brand-primary);"><div style="font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:6px;">온종일 체험단 답변 · '+fmt(q.answered_at)+'</div><div style="font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;">'+esc(q.answer)+'</div></div>'
+        : '';
+      return '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:12px;">'
+        + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">'
+        +   badge
+        +   '<span style="font-size:11px;color:var(--brand-primary);font-weight:700;">'+esc(q.type)+'</span>'
+        +   '<span style="font-size:11px;color:var(--text-muted);margin-left:auto;">'+fmt(q.created_at)+'</span>'
+        + '</div>'
+        + '<div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">'+esc(q.title)+'</div>'
+        + '<div style="font-size:13px;color:var(--text-muted);line-height:1.7;white-space:pre-wrap;">'+esc(q.content)+'</div>'
+        + ans
+        + '</div>';
+    }).join('');
+  }
+
+  document.getElementById('iqSubmit').addEventListener('click', async function(){
+    var btn=this;
+    var type=document.getElementById('iqType').value;
+    var title=document.getElementById('iqTitle').value.trim();
+    var content=document.getElementById('iqContent').value.trim();
+    var name=document.getElementById('iqName').value.trim();
+    var email=document.getElementById('iqEmail').value.trim();
+    if(!title){ alert('제목을 입력해주세요.'); document.getElementById('iqTitle').focus(); return; }
+    if(!content){ alert('문의 내용을 입력해주세요.'); document.getElementById('iqContent').focus(); return; }
+    if(!email){ alert('답변 받을 이메일을 입력해주세요.'); document.getElementById('iqEmail').focus(); return; }
+    btn.disabled=true; var old=btn.textContent; btn.textContent='제출 중…';
+    var r = await OnAuth.submitInquiry(type,title,content,name,email);
+    btn.disabled=false; btn.textContent=old;
+    if(!r || !r.ok){ alert('제출 실패: '+((r&&r.msg)||'잠시 후 다시 시도해주세요.')); return; }
+    alert('문의가 정상 접수되었어요.\n빠르게 확인 후 답변드리겠습니다!');
+    document.getElementById('iqTitle').value=''; document.getElementById('iqContent').value='';
+    var u = await OnAuth.getUser();
+    if(u){ document.getElementById('myInqSec').style.display=''; await loadMine(); document.getElementById('myInqSec').scrollIntoView({behavior:'smooth'}); }
+  });
+
+  if(document.readyState!=='loading') boot();
+  else document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
 <script src="../../assets/js/pwa.js" defer></script>
 </body></html>
