@@ -70,6 +70,7 @@
     bar.innerHTML = '<strong>🎯 운영 작업함</strong><span>마감·승인·검수·정산을 한 흐름으로 관리하세요.</span><a href="admin-review.html">검수 대기</a><a href="admin-advertisers.html">광고주 승인</a><a href="admin-settlements.html">정산 대기</a><a href="admin-inquiries.html">문의 처리</a>';
     main.insertBefore(bar, main.firstChild);
     if(window.OnAuth) OnAuth.adminWorkQueue().then(function(q){if(!q)return;var links=bar.querySelectorAll('a');var vals=[q.review_check,q.advertisers,q.withdrawals,q.inquiries];links.forEach(function(a,i){if(Number(vals[i])>0)a.innerHTML+=' <b>'+vals[i]+'</b>';});}).catch(function(){});
+    if(window.OnAuth) OnAuth.adminRiskReport().then(function(r){if(!r)return;var total=Number(r.open_flags||0)+Number(r.duplicate_phones||0)+Number(r.duplicate_accounts||0)+Number(r.failed_reviews||0)+Number(r.deleted_reviews||0);if(total){var warn=document.createElement('a');warn.href='admin-members.html';warn.className='oc-risk-link';warn.textContent='⚠ 위험 징후 '+total;warn.title='중복 전화 '+r.duplicate_phones+' · 중복 계좌 '+r.duplicate_accounts+' · 리뷰 미달 '+r.failed_reviews;bar.appendChild(warn);}}).catch(function(){});
   }
   async function reviewerTaskBoard() {
     if (!/mypage\.html$/.test(location.pathname) || !window.OnAuth) return;

@@ -555,6 +555,18 @@
       var r=await sb.rpc('advertiser_confirm_schedule',{p_schedule:scheduleId,p_confirm:!!ok,p_starts_at:startsAt||null});
       if(r.error)return {ok:false,msg:r.error.message};return r.data;
     },
+    saveCampaignBrief: async function (campaignId, brief) {
+      var r=await sb.rpc('upsert_campaign_brief',{p_campaign:campaignId,p_brief:brief||{}});if(r.error)return {ok:false,msg:r.error.message};return r.data;
+    },
+    getCampaignBrief: async function (campaignId) {
+      var r=await sb.rpc('get_campaign_brief',{p_campaign:campaignId});return (r&&!r.error)?(r.data||{}):{};
+    },
+    advApplicantScores: async function (campaignId) {
+      var r=await sb.rpc('advertiser_applicant_scores',{p_campaign:campaignId});return (r&&!r.error)?(r.data||[]):[];
+    },
+    adminRiskReport: async function () {
+      var r=await sb.rpc('admin_risk_report');return (r&&!r.error)?r.data:null;
+    },
     // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied) · 리뷰 승인/보완 (completed/reviewing)
     advSelect: async function (appId, status) {
       var r = await sb.rpc('advertiser_select', { p_app: appId, p_status: status });

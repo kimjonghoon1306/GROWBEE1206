@@ -179,6 +179,13 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <div class="overlay" id="cfOverlay">
   <div class="modal">
     <div class="modal-t" id="cfTitle">새 캠페인 등록</div>
+    <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:9px;">🎯 1단계 · 캠페인 전략</div>
+      <div class="frow"><div><label class="fl">캠페인 목표</label><select id="cf-objective" class="fin"><option value="awareness">브랜드 인지도</option><option value="visit">매장 방문</option><option value="search">검색 노출</option><option value="shortform">숏폼 확산</option><option value="purchase">구매 전환</option><option value="content">콘텐츠 확보</option></select></div><div><label class="fl">진행 유형</label><select id="cf-type" class="fin"><option value="visit">방문형</option><option value="shipping">배송형</option><option value="payback">페이백</option><option value="reporter">기자단·원고형</option><option value="shortform">숏폼</option><option value="purchase">구매평</option></select></div></div>
+      <div class="frow"><div><label class="fl">총 예산</label><input id="cf-budget" class="fin" type="number" min="0" placeholder="예: 300000"></div><div><label class="fl">타깃 주제</label><input id="cf-topics" class="fin" placeholder="맛집, 데이트, 강남"></div></div>
+      <label class="fl"><input id="cf-usage" type="checkbox"> 우수 콘텐츠를 광고 소재로 2차 활용</label><div id="cf-usage-days-wrap" style="display:none;"><label class="fl">사용권 기간(일)</label><input id="cf-usage-days" class="fin" type="number" min="1" max="3650" value="90"></div>
+    </div>
+    <div style="font-size:13px;font-weight:800;margin:4px 0 9px;">📝 2단계 · 모집 내용과 미션</div>
     <label class="fl">캠페인명 *</label>
     <input id="cf-title" class="fin" placeholder="예: 스시 오모 오마카세 체험단">
     <div class="frow">
@@ -346,6 +353,7 @@ function openCampForm(){ _editId=null; document.getElementById('cfTitle').textCo
   _cfChannels=['블로그']; cfRenderChannels();
   _cfImages=[]; cfRenderImgs(); cfSetKws([]);
   document.getElementById('cf-complete').value='14'; document.getElementById('cf-minchars').value='1000'; document.getElementById('cf-minimg').value='15'; document.getElementById('cf-minvid').value='0'; document.getElementById('cf-kwmin').value='5'; document.getElementById('cf-banner').checked=true;
+  document.getElementById('cf-objective').value='awareness';document.getElementById('cf-type').value='visit';document.getElementById('cf-budget').value='';document.getElementById('cf-topics').value='';document.getElementById('cf-usage').checked=false;document.getElementById('cf-usage-days-wrap').style.display='none';
   document.getElementById('cfMsg').style.display='none';
   document.getElementById('cfOverlay').classList.add('show');
 }
@@ -366,6 +374,7 @@ function editCamp(id){ if(_demo){ alert('예시 캠페인이에요. ＋새 캠�
   document.getElementById('cf-banner').checked=(c.require_banner!==false);
   document.getElementById('cfMsg').style.display='none';
   document.getElementById('cfOverlay').classList.add('show');
+  OnAuth.getCampaignBrief(id).then(function(b){if(!b)return;document.getElementById('cf-objective').value=b.objective||'awareness';document.getElementById('cf-type').value=b.campaign_type||'visit';document.getElementById('cf-budget').value=b.budget||'';document.getElementById('cf-topics').value=(b.target_topics||[]).join(', ');document.getElementById('cf-usage').checked=!!b.usage_rights;document.getElementById('cf-usage-days').value=b.usage_days||90;document.getElementById('cf-usage-days-wrap').style.display=b.usage_rights?'block':'none';});
 }
 function closeCampForm(){ document.getElementById('cfOverlay').classList.remove('show'); }
 function cfMsg(t,ok){var m=document.getElementById('cfMsg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(52,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#1E8F58':'#d61f56';}
@@ -388,8 +397,10 @@ async function saveCampForm(){
   var r=_editId? await OnAuth.advUpdateCampaign(_editId,fields) : await OnAuth.advCreateCampaign(fields);
   btn.disabled=false; btn.textContent=o;
   if(r&&r.error){ return cfMsg('저장 실패: '+r.error.message); }
+  var savedId=_editId||(r&&r.data&&r.data.id); if(savedId){var br=await OnAuth.saveCampaignBrief(savedId,{objective:_v('cf-objective'),campaign_type:_v('cf-type'),budget:parseInt(_v('cf-budget'),10)||0,target_topics:_v('cf-topics').split(',').map(function(x){return x.trim();}).filter(Boolean),target_region:_v('cf-region'),usage_rights:document.getElementById('cf-usage').checked,usage_days:parseInt(_v('cf-usage-days'),10)||0});if(br&&!br.ok)return cfMsg('캠페인은 저장됐지만 전략 저장 실패: '+br.msg);}
   closeCampForm(); alert('캠페인이 등록되었어요! 관리자 검수를 거쳐 손님에게 노출됩니다.'); loadCamps();
 }
+document.getElementById('cf-usage').addEventListener('change',function(){document.getElementById('cf-usage-days-wrap').style.display=this.checked?'block':'none';});
 async function delCamp(id){ if(_demo){ alert('예시 캠페인이에요.'); return; } if(!confirm('이 캠페인을 삭제할까요? 신청 내역도 함께 사라집니다.'))return;
   var r=await OnAuth.advDeleteCampaign(id); if(r&&r.error){ alert('삭제 실패: '+r.error.message); return; } loadCamps(); }
 
@@ -398,9 +409,10 @@ async function loadApplicants(){
   var id=document.getElementById('applSel').value; var body=document.getElementById('applBody');
   if(!id){ body.innerHTML='<div class="empty">위에서 캠페인을 선택하면 신청자가 표시됩니다.</div>'; return; }
   body.innerHTML='<div class="empty">불러오는 중…</div>';
-  var rows, details=[], schedules=[];
-  if(_demo){ rows=DEMO_APPLICANTS[id]||[]; } else { var pair=await Promise.all([OnAuth.advApplicants(id),OnAuth.advApplicationDetails(id),OnAuth.advSchedules(id)]);rows=pair[0]||[];details=pair[1]||[];schedules=pair[2]||[]; }
-  var dmap={},smap={};details.forEach(function(d){dmap[d.application_id]=d;});schedules.forEach(function(s){smap[s.application_id]=s;});rows.forEach(function(a){a.detail=dmap[a.app_id]||{};a.schedule=smap[a.app_id]||null;});
+  var rows, details=[], schedules=[], scores=[];
+  if(_demo){ rows=DEMO_APPLICANTS[id]||[]; } else { var pair=await Promise.all([OnAuth.advApplicants(id),OnAuth.advApplicationDetails(id),OnAuth.advSchedules(id),OnAuth.advApplicantScores(id)]);rows=pair[0]||[];details=pair[1]||[];schedules=pair[2]||[];scores=pair[3]||[]; }
+  var dmap={},smap={},scoremap={};details.forEach(function(d){dmap[d.application_id]=d;});schedules.forEach(function(s){smap[s.application_id]=s;});scores.forEach(function(s){scoremap[s.application_id]=s;});rows.forEach(function(a){a.detail=dmap[a.app_id]||{};a.schedule=smap[a.app_id]||null;a.fit=scoremap[a.app_id]||{score:40};});
+  rows.sort(function(a,b){return (b.fit.score||0)-(a.fit.score||0);});
   if(!rows.length){ body.innerHTML='<div class="empty"><img src="../../assets/img/mascot.png" alt="온미"><div>아직 신청자가 없어요.</div></div>'; return; }
   body.innerHTML='<table class="atable"><thead><tr><th>신청자</th><th>채널</th><th>신청 내용</th><th>신청일</th><th>상태</th><th>선정</th></tr></thead><tbody>'
     +rows.map(function(a){
@@ -411,7 +423,7 @@ async function loadApplicants(){
       if(d.fulfillment_type==='shipping')detail+='<div style="font-size:11px;color:var(--text-muted);margin-top:3px;">배송형 · 선정 후 주소 확인</div>';
       if(d.address)detail+='<div style="font-size:11px;color:var(--text);margin-top:4px;">📦 '+_cesc([d.recipient,d.phone,d.address,d.address_detail].filter(Boolean).join(' · '))+'</div>';
       var sch=a.schedule;if(sch){detail+='<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">방문 요청 '+new Date(sch.starts_at).toLocaleString('ko-KR')+' · '+(sch.status==='confirmed'?'확정':(sch.status==='rejected'?'거절':'대기'))+'</div>';if(sch.status==='requested')detail+='<button class="btn btn-sm btn-ghost" style="margin-top:4px;" onclick="confirmSchedule(\''+sch.id+'\',true)">일정 확정</button> <button class="btn btn-sm btn-ghost" style="margin-top:4px;" onclick="confirmSchedule(\''+sch.id+'\',false)">거절</button>';}
-      return '<tr><td data-l="신청자"><b>'+_cesc(a.applicant_name||'회원')+'</b></td>'
+      return '<tr><td data-l="신청자"><b>'+_cesc(a.applicant_name||'회원')+'</b><div style="font-size:11px;color:#EE3E6D;font-weight:800;margin-top:3px;">맞춤 '+(a.fit.score||0)+'점'+(a.fit.verified_channel?' · 인증채널':'')+'</div></td>'
         +'<td data-l="채널">'+chan+'</td>'
         +'<td data-l="신청 내용">'+detail+'</td>'
         +'<td data-l="신청일" style="color:var(--text-muted);font-size:12.5px;">'+String(a.created_at).slice(0,10)+'</td>'
