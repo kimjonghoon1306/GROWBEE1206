@@ -321,7 +321,10 @@ async function loadCamps(){
       var stCls=c.status==='active'?'active':((c.status==='pending'||c.status==='draft')?'draft':'closed');
       var stTxt=c.status==='active'?'모집중':(c.status==='pending'?'검수중':(c.status==='rejected'?'반려됨':(c.status==='draft'?'임시저장':'마감')));
       var dd=c.deadline?('마감 '+String(c.deadline).slice(0,10)):'상시';
+      var fairReady=!!(c.fair_retail_value&&c.fair_work_minutes&&c.fair_cancel_policy),fairTxt=c.fair_verified?'✓ 공정조건 확인':(fairReady?'공정조건 검증 대기':'공정조건 보완 필요');
+      var fairColor=c.fair_verified?'#1E8F58':(fairReady?'#B77B10':'#d97706');
       return '<div class="ccard"><div class="ccard-top"><div class="ccard-t">'+_cesc(c.title)+'</div><span class="pill '+stCls+'">'+stTxt+'</span></div>'
+        +'<div style="font-size:11px;font-weight:800;color:'+fairColor+';margin:5px 0;">⚖️ '+fairTxt+'</div>'
         +'<div class="ccard-meta">'+_cesc(c.store_name||'')+(c.region?(' · '+_cesc(c.region)):'')+'<br>'+_cesc(c.reward_text||'')+' · '+dd+'</div>'
         +'<div class="ccard-stat"><div><b>'+(c.applied_count||0)+'</b>신청</div><div><b>'+(c.capacity||0)+'</b>모집</div><div><b>'+(c.complete_days||14)+'일</b>완료기한</div></div>'
         +'<div class="ccard-act"><button class="btn btn-ghost btn-sm" onclick="editCamp(\''+c.id+'\')">수정</button>'

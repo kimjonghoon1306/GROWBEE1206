@@ -114,6 +114,9 @@ body{--bg:#1B1E27;--bg-surface:#222633;--bg-card:#2A2F3E;--bg-card2:#323848;--bo
   <select id="fStatus" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
     <option value="">전체 상태</option><option value="pending">검수중</option><option value="active">진행중</option><option value="closed">마감</option><option value="rejected">반려</option>
   </select>
+  <select id="fFair" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
+    <option value="">전체 공정정보</option><option value="missing">입력 보완 필요</option><option value="unverified">검증 대기</option><option value="verified">검증 완료</option>
+  </select>
   <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-muted);font-size:13px;font-family:inherit;">
     <option>전체 지역</option><option>서울</option><option>부산</option><option>대구</option><option>제주</option>
   </select>
@@ -326,10 +329,12 @@ function _applyCampFilters(){
   var body=document.getElementById('campBody');
   var q=(document.querySelector('.search-input')||{}).value||''; q=q.toLowerCase();
   var st=(document.getElementById('fStatus')||{}).value||'';
+  var fair=(document.getElementById('fFair')||{}).value||'';
   body.querySelectorAll('tr[data-st]').forEach(function(tr){
     var okQ=tr.textContent.toLowerCase().indexOf(q)>=0;
     var okS=!st||tr.getAttribute('data-st')===st;
-    tr.style.display=(okQ&&okS)?'':'none';
+    var fv=tr.getAttribute('data-fair'),okF=!fair||fv===fair;
+    tr.style.display=(okQ&&okS&&okF)?'':'none';
   });
 }
 async function loadCamps(){
@@ -338,7 +343,9 @@ async function loadCamps(){
   if(r.error){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px 0;color:var(--text-muted);">불러오기 실패: '+_cesc(r.error.message)+'</td></tr>'; return; }
   var rows=r.data||[]; window.__camps={};
   var nPending=rows.filter(function(c){return c.status==='pending';}).length;
-  document.getElementById('campCount').innerHTML='('+rows.length+'개)'+(nPending?' <span style="color:#54A0FF;font-weight:800;">· 검수대기 '+nPending+'</span>':'');
+  var nMissing=rows.filter(function(c){return !c.fair_retail_value||!c.fair_work_minutes||!c.fair_cancel_policy;}).length;
+  var nFairWait=rows.filter(function(c){return c.fair_retail_value&&c.fair_work_minutes&&c.fair_cancel_policy&&!c.fair_verified;}).length;
+  document.getElementById('campCount').innerHTML='('+rows.length+'개)'+(nPending?' <span style="color:#54A0FF;font-weight:800;">· 캠페인 검수 '+nPending+'</span>':'')+(nMissing?' <span style="color:#d97706;font-weight:800;">· 조건 보완 '+nMissing+'</span>':'')+(nFairWait?' <span style="color:#B77B10;font-weight:800;">· 조건 검증 '+nFairWait+'</span>':'');
   if(!rows.length){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 캠페인이 없어요. 우측 상단 <b>+ 새 캠페인 등록</b>으로 추가하세요.</td></tr>'; return; }
   body.innerHTML=rows.map(function(c){ window.__camps[c.id]=c;
     var hot=c.is_hot?' <span class="s-badge" style="background:rgba(255,71,87,.15);color:#FF5A5F;">HOT</span>':'';
@@ -350,7 +357,8 @@ async function loadCamps(){
     } else {
       manage+=' <a href="#" class="camp-toggle" data-id="'+c.id+'" style="color:var(--text-muted);font-size:12px;font-weight:700;margin-left:8px;">'+(c.status==='active'?'마감':'재개')+'</a>';
     }
-    return '<tr data-st="'+(c.status||'')+'">'
+    var fairState=(!c.fair_retail_value||!c.fair_work_minutes||!c.fair_cancel_policy)?'missing':(c.fair_verified?'verified':'unverified');
+    return '<tr data-st="'+(c.status||'')+'" data-fair="'+fairState+'">'
       +'<td>'+_cesc(c.title)+hot+'</td>'
       +'<td data-label="광고주" style="color:var(--text-muted);">'+_cesc(c.store_name||'-')+'</td>'
       +'<td data-label="지역" style="color:var(--text-muted);">'+_cesc(c.region||'-')+'</td>'
@@ -370,6 +378,7 @@ async function loadCamps(){
   // 검색 + 상태 필터
   var si=document.querySelector('.search-input'); if(si) si.oninput=_applyCampFilters;
   var fs=document.getElementById('fStatus'); if(fs) fs.onchange=_applyCampFilters;
+  var ff=document.getElementById('fFair'); if(ff) ff.onchange=_applyCampFilters;
   _applyCampFilters();
 }
 document.addEventListener('click',function(e){ if(e.target&&e.target.id==='cfOverlay') closeCampForm(); });
