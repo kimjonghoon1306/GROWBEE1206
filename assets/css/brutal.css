@@ -60,15 +60,6 @@ body{
 
 /* --- CAMPAIGN CARDS: real photos --- */
 .camp-img{ font-size:0!important; background-size:cover!important; background-position:center!important; background-repeat:no-repeat!important; border-bottom:1px solid var(--border)!important; }
-:is(.card,.camp-card):nth-child(8n+1) .camp-img{ background-image:url(../../assets/img/sushi.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n+2) .camp-img{ background-image:url(../../assets/img/cafe.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n+3) .camp-img{ background-image:url(../../assets/img/hanwoo.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n+4) .camp-img{ background-image:url(../../assets/img/skincare.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n+5) .camp-img{ background-image:url(../../assets/img/taco.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n+6) .camp-img{ background-image:url(../../assets/img/ramen.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n+7) .camp-img{ background-image:url(../../assets/img/winebar.jpg)!important; }
-:is(.card,.camp-card):nth-child(8n) .camp-img{ background-image:url(../../assets/img/vegan.jpg)!important; }
-.camp-img{ background-image:url(../../assets/img/cafe.jpg)!important; }
 .camp-d{ background:rgba(20,14,10,.62)!important; color:#fff!important; border:none!important; border-radius:999px!important; backdrop-filter:blur(4px)!important; font-weight:700!important; }
 .camp-name{ font-weight:700!important; }
 .camp-reward{ background:var(--accent-tint)!important; color:var(--accent-text)!important; border:none!important; border-radius:999px!important; padding:4px 10px!important; font-weight:700!important; }

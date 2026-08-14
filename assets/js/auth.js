@@ -42,6 +42,21 @@
     if (c) c.image_key = campaignImageKey(c);
     return c;
   }
+  var expansionCampaignsPromise;
+  function loadExpansionCampaigns() {
+    if (!expansionCampaignsPromise) {
+      expansionCampaignsPromise = fetch('/supabase/seed_campaigns_expansion_20260814.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (rows) {
+          return (rows || []).map(function (c, i) {
+            c.id = 'expansion-20260814-' + (i + 1);
+            c.created_at = c.created_at || '2026-08-14T04:30:00+00:00';
+            return normalizeCampaign(c);
+          });
+        }).catch(function () { return []; });
+    }
+    return expansionCampaignsPromise;
+  }
 
   var Auth = {
     client: sb,
@@ -127,10 +142,20 @@
         .eq('status', 'active')
         .order('is_hot', { ascending: false })
         .order('deadline', { ascending: true });
-      if (r && !r.error) (r.data || []).forEach(normalizeCampaign);
+      if (r && !r.error) {
+        (r.data || []).forEach(normalizeCampaign);
+        var extra = await loadExpansionCampaigns();
+        var titles = {};
+        (r.data || []).forEach(function (c) { titles[c.title] = true; });
+        r.data = (r.data || []).concat(extra.filter(function (c) { return !titles[c.title]; }));
+      }
       return r;
     },
     getCampaign: async function (id) {
+      if (String(id || '').indexOf('expansion-20260814-') === 0) {
+        var extra = await loadExpansionCampaigns();
+        return extra.filter(function (c) { return c.id === id; })[0] || null;
+      }
       var r = await sb.from('campaigns').select('*').eq('id', id).single();
       return normalizeCampaign(r.data || null);
     },
