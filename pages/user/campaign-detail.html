@@ -30,6 +30,10 @@
 .btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);font-weight:600;font-size:14px;padding:11px 22px;border-radius:50px;border:1.5px solid var(--border);transition:var(--transition);text-decoration:none;white-space:nowrap;cursor:pointer;}
 .btn-outline:hover{border-color:var(--brand-primary);color:var(--brand-primary);}
 .tag-label{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;background:rgba(255,71,87,.12);color:var(--brand-primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.fair-card{background:var(--bg-card);border:2px solid var(--ink);border-radius:14px;padding:24px;margin-bottom:16px;box-shadow:4px 4px 0 var(--ink);}
+.fair-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.fair-head h2{font-size:19px;font-weight:800;color:var(--text);margin:3px 0 5px}.fair-head p{font-size:12px;color:var(--text-muted);line-height:1.6}.fair-badge{flex:none;background:#dff8e8;color:#167847;border:1px solid #8bd3a9;border-radius:50px;padding:7px 11px;font-size:11px;font-weight:800}
+.fair-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--border);border-radius:12px;overflow:hidden}.fair-row{display:flex;justify-content:space-between;gap:14px;padding:13px 15px;border-bottom:1px solid var(--border);background:var(--bg-card2)}.fair-row:nth-child(odd){border-right:1px solid var(--border)}.fair-row span{font-size:12px;color:var(--text-muted)}.fair-row strong{font-size:13px;color:var(--text);text-align:right}
+.fair-calc{margin-top:16px;padding:17px;border-radius:12px;background:rgba(255,71,87,.055);border:1px solid rgba(255,71,87,.2)}.fair-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}.fair-inputs label{font-size:11px;color:var(--text-muted)}.fair-inputs input{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg-card);color:var(--text);font-size:13px}.fair-result{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;padding-top:13px;border-top:1px dashed rgba(255,71,87,.3)}.fair-result span{font-size:12px;color:var(--text-muted)}.fair-result strong{font-size:24px;color:#18a461}.fair-note{font-size:10px;color:var(--text-muted);line-height:1.55;margin-top:9px}.fair-warn{margin-top:10px;font-size:12px;font-weight:700;color:#d97706}
 .page-hero{padding:52px 0 36px;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,71,87,.07) 0%,transparent 70%);}
 .page-hero-inner{max-width:1280px;margin:0 auto;padding:0 20px;}
 .page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--brand-primary);margin-bottom:14px;}
@@ -45,7 +49,7 @@
 .footer-col a{display:block;font-size:12px;color:var(--text-muted);padding:3px 0;text-decoration:none;}
 .footer-col a:hover{color:var(--brand-primary);}
 .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;gap:8px;}
-@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}.fair-grid{grid-template-columns:1fr}.fair-row:nth-child(odd){border-right:0}.fair-inputs{grid-template-columns:1fr}.fair-head{display:block}.fair-badge{display:inline-block;margin-top:9px}}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
 <link rel="stylesheet" href="../../assets/css/platform.css">
@@ -108,6 +112,31 @@
         <ul id="dMission" style="list-style:none;font-size:14px;color:var(--text-muted);line-height:2.2;"></ul>
         <div id="dKeywords" style="margin-top:10px;"></div>
       </div>
+
+      <section class="fair-card" id="fairTradeCard" aria-labelledby="fairTradeTitle">
+        <div class="fair-head"><div><span class="tag-label" style="margin:0;">FAIR CAMPAIGN</span><h2 id="fairTradeTitle">체험단 공정거래표</h2><p>혜택만 보지 말고, 실제 미션과 예상 비용까지 함께 비교하세요.</p></div><span class="fair-badge">조건 투명 공개</span></div>
+        <div class="fair-grid">
+          <div class="fair-row"><span>표시 제공가치</span><strong id="fairReward">확인 필요</strong></div>
+          <div class="fair-row"><span>필수 결과물</span><strong id="fairDeliverables">확인 필요</strong></div>
+          <div class="fair-row"><span>예상 제작시간</span><strong id="fairHours">확인 필요</strong></div>
+          <div class="fair-row"><span>완료 기한</span><strong id="fairDeadline">확인 필요</strong></div>
+          <div class="fair-row"><span>필수 키워드</span><strong id="fairKeywords">없음</strong></div>
+          <div class="fair-row"><span>배너 삽입</span><strong id="fairBanner">없음</strong></div>
+          <div class="fair-row"><span>추가 결제</span><strong>등록 정보 없음</strong></div>
+          <div class="fair-row"><span>콘텐츠 재사용권</span><strong>별도 동의 전 사용 불가</strong></div>
+        </div>
+        <div class="fair-calc">
+          <strong style="font-size:14px;color:var(--text);">내 기준 체감 보상 계산기</strong>
+          <div class="fair-inputs">
+            <label>교통·배송 비용(원)<input id="fairTravel" type="number" min="0" step="1000" value="0" inputmode="numeric"></label>
+            <label>추가 결제 예상(원)<input id="fairExtra" type="number" min="0" step="1000" value="0" inputmode="numeric"></label>
+            <label>내 시간가치(시간당 원)<input id="fairHourly" type="number" min="0" step="1000" value="12000" inputmode="numeric"></label>
+          </div>
+          <div class="fair-result"><span>제공가치 − 비용 − 시간가치</span><strong id="fairNet">계산 불가</strong></div>
+          <div class="fair-warn" id="fairWarning"></div>
+          <p class="fair-note">제공가치는 캠페인 표시 금액을 기준으로 하며 실제 판매가와 다를 수 있습니다. 제작시간은 결과물 수를 바탕으로 한 참고 추정치입니다. 입력값은 이 기기에만 저장됩니다.</p>
+        </div>
+      </section>
 
       <div id="dBannerBox" style="background:rgba(236,58,102,.05);border:1px solid rgba(236,58,102,.25);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
         <h3 style="font-size:15px;font-weight:700;margin-bottom:6px;color:var(--brand-primary);">블로그 상단 배너 (필수)</h3>
@@ -258,6 +287,35 @@
     kb.innerHTML='<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">키워드 세트 (하나 선택):</div>'
       + kws.map(function(k){ return '<span style="display:inline-block;background:rgba(236,58,102,.1);color:var(--brand-primary);font-size:13px;font-weight:700;padding:6px 13px;border-radius:50px;margin:0 6px 6px 0;">#'+k+'</span>'; }).join('');
   }
+  // 공정거래표: 캠페인 등록 조건과 사용자 입력을 분리해 체감 보상을 계산한다.
+  (function(){
+    function numberFromReward(value){
+      var s=String(value||'').replace(/,/g,'');
+      var man=s.match(/([0-9]+(?:\.[0-9]+)?)\s*만\s*원/); if(man) return Math.round(parseFloat(man[1])*10000);
+      var won=s.match(/([0-9]{4,})\s*원/); if(won) return parseInt(won[1],10);
+      return 0;
+    }
+    function money(n){return Math.max(0,Math.round(n||0)).toLocaleString('ko-KR')+'원';}
+    var chars=Number(c.min_chars||1000), photos=Number(c.min_images||15), videos=Number(c.min_videos||2);
+    var hours=Math.max(1,Math.round((.75+(chars/1000)*1.1+photos*.035+videos*.45)*2)/2);
+    var reward=numberFromReward(c.reward_text);
+    set('fairReward',reward?money(reward):(c.reward_text||'금액 확인 필요'));
+    set('fairDeliverables','글 '+chars.toLocaleString()+'자 · 사진 '+photos+'장 · 영상 '+videos+'개');
+    set('fairHours','약 '+hours+'시간 (추정)'); set('fairDeadline','선정 후 '+_cd+'일 이내');
+    set('fairKeywords',c.keywords?(c.keyword_min||5)+'회 이상':'없음'); set('fairBanner',c.require_banner===false?'없음':'필수');
+    var travel=document.getElementById('fairTravel'),extra=document.getElementById('fairExtra'),hourly=document.getElementById('fairHourly');
+    var storageKey='onjongil-fair-'+id;
+    try{var saved=JSON.parse(localStorage.getItem(storageKey)||'{}');if(saved.travel!=null)travel.value=saved.travel;if(saved.extra!=null)extra.value=saved.extra;if(saved.hourly!=null)hourly.value=saved.hourly;}catch(e){}
+    function calculate(){
+      var costs=Math.max(0,Number(travel.value)||0)+Math.max(0,Number(extra.value)||0), timeCost=hours*Math.max(0,Number(hourly.value)||0), net=reward-costs-timeCost;
+      var out=document.getElementById('fairNet'),warn=document.getElementById('fairWarning');
+      if(!reward){out.textContent='제공금액 확인 필요';out.style.color='#d97706';warn.textContent='금액이 명시되지 않아 순가치를 계산할 수 없습니다.';}
+      else{out.textContent=(net<0?'-':'')+money(Math.abs(net));out.style.color=net>=0?'#18a461':'#e5484d';warn.textContent=net<0?'내 기준으로는 비용과 작업시간 가치가 제공가치보다 큽니다. 신청 조건을 다시 확인하세요.':'';}
+      try{localStorage.setItem(storageKey,JSON.stringify({travel:travel.value,extra:extra.value,hourly:hourly.value}));}catch(e){}
+    }
+    [travel,extra,hourly].forEach(function(el){el.addEventListener('input',calculate);}); calculate();
+  })();
+
   // 배너 필수 아니면 배너박스 숨김
   if(c.require_banner===false){ var bb=document.getElementById('dBannerBox'); if(bb) bb.style.display='none'; }
   // 배너 복사 — 배너를 누르면 온종일 체험단 홈으로 유입(?ref=blog 로 블로그 유입 추적)
