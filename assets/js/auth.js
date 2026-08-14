@@ -33,10 +33,15 @@
     c = c || {};
     var channel = String(c.channel || '').toLowerCase();
     var category = String(c.category || '');
+    var imageKey = String(c.image_key || '').trim();
+    var title = String(c.title || '');
+    // 관리자가 지정한 주제별 이미지를 채널 공통 커버보다 우선한다.
+    // 실제 스시 캠페인의 sushi 이미지는 유지하고, 잘못 저장된 sushi만 보정한다.
+    if (imageKey && imageKey !== 'sushi') return imageKey;
+    if (imageKey === 'sushi' && /(스시|초밥|오마카세)/.test(title)) return 'sushi';
     if (channel.indexOf('릴스') >= 0 || channel.indexOf('reels') >= 0 || category === '릴스형') return 'reels';
     if (channel.indexOf('클립') >= 0 || channel.indexOf('clip') >= 0 || category === '클립형') return 'clip';
-    if (c.image_key && c.image_key !== 'sushi') return c.image_key;
-    return CATEGORY_IMAGES[category] || c.image_key || 'visit';
+    return CATEGORY_IMAGES[category] || imageKey || 'visit';
   }
   function normalizeCampaign(c) {
     if (c) c.image_key = campaignImageKey(c);
