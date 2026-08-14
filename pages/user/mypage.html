@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var reviewBtn='';
     if(st==='selected'||st==='reviewing'){
       var lbl=(st==='reviewing'||a.review_url)?'리뷰 링크 수정':'리뷰 링크 제출';
-      reviewBtn='<button class="rev-submit" data-id="'+a.id+'" data-url="'+esc(a.review_url||'')+'" style="margin-top:7px;background:var(--brand-gradient);color:#fff;border:none;border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">'+lbl+'</button>';
+      reviewBtn='<button class="visit-schedule" data-id="'+a.id+'" style="margin-top:7px;margin-right:5px;background:var(--bg-card2);color:var(--text);border:1px solid var(--border);border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">📅 방문일 요청</button><button class="rev-submit" data-id="'+a.id+'" data-url="'+esc(a.review_url||'')+'" style="margin-top:7px;background:var(--brand-gradient);color:#fff;border:none;border-radius:50px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">'+lbl+'</button>';
     }
     var urlLine=a.review_url?('<div class="rev-meta" style="margin-top:3px;"><a href="'+esc(a.review_url)+'" target="_blank" style="color:var(--brand-primary);">제출한 리뷰 보기 →</a></div>'):'';
     return '<div class="rev-row" data-st="'+st+'">'
@@ -211,6 +211,12 @@ document.addEventListener('DOMContentLoaded',function(){
         openReviewModal(app);
       });
     });
+    listEl.querySelectorAll('.visit-schedule').forEach(function(btn){btn.addEventListener('click',async function(){
+      var raw=prompt('희망 방문 일시를 입력해 주세요.\n예: 2026-08-20 18:30'); if(!raw)return;
+      var dt=new Date(raw.replace(' ','T')); if(isNaN(dt.getTime())){alert('날짜 형식을 확인해 주세요.');return;}
+      this.disabled=true;var r=await OnAuth.requestSchedule(this.getAttribute('data-id'),dt.toISOString(),'리뷰어 방문 희망일');this.disabled=false;
+      if(r&&r.error)alert('일정 요청 실패: '+r.error.message);else alert('방문 희망일을 요청했어요. 광고주 확정 후 알림으로 안내됩니다.');
+    });});
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){
     tabs.forEach(function(x){x.classList.remove('active');}); this.classList.add('active');
@@ -297,7 +303,7 @@ async function doReviewCheck(){
   rows+=_chkRow(ch.videos.ok, '영상 '+ch.videos.got+' / '+ch.videos.need+'개');
   if(ch.keyword.word) rows+=_chkRow(ch.keyword.ok, '키워드 "'+ch.keyword.word+'" '+ch.keyword.got+' / '+ch.keyword.need+'회');
   rows+=_chkRow(ch.banner.ok, '상단 체험단 배너 '+(ch.banner.got?'확인됨':'없음'));
-  if(ch.disclosure) rows+=_chkRow(ch.disclosure.ok, '광고·협찬 경제적 이해관계 표시 '+(ch.disclosure.got?'확인됨':'본문 앞부에 필요'));
+  if(ch.disclosure) rows+=_chkRow(ch.disclosure.ok, '광고·협찬 경제적 이해관계 표시 '+(ch.disclosure.got?'확인됨':'본문 앞부분에 필요'));
   if(ch.rank && ch.rank.checked){ rows+=_chkRow(true, '네이버 검색 노출 '+(ch.rank.found?(ch.rank.rank+'위 확인됨'):'100위 밖(아직 미노출)')); }
   box.innerHTML=rows;
   if(res.passed){ box.innerHTML+='<div class="rvm-ok">✅ 미션을 모두 충족했어요! 리뷰가 접수되었습니다. 관리자 검수 후 포인트가 지급됩니다.</div>'; setTimeout(function(){ location.reload(); },1800); }

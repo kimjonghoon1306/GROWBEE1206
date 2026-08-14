@@ -170,6 +170,10 @@
       if (r.error) return { ok: false, msg: r.error.message };
       return r.data; // { ok, msg }
     },
+    applyCampaignDetailed: async function (id, detail) {
+      var r=await sb.rpc('apply_campaign_detailed',{p_campaign:id,p_detail:detail||{}});
+      if(r.error)return {ok:false,msg:r.error.message}; return r.data;
+    },
     // 내가 이 캠페인에 신청했는지
     myApplicationFor: async function (id) {
       var u = await Auth.getUser(); if (!u) return null;
@@ -539,6 +543,17 @@
     advApplicants: async function (campaignId) {
       var r = await sb.rpc('advertiser_campaign_applicants', { p_campaign: campaignId });
       return (r && !r.error) ? (r.data || []) : [];
+    },
+    advApplicationDetails: async function (campaignId) {
+      var r=await sb.rpc('advertiser_application_details',{p_campaign:campaignId});
+      return (r&&!r.error)?(r.data||[]):[];
+    },
+    advSchedules: async function (campaignId) {
+      var r=await sb.rpc('advertiser_campaign_schedules',{p_campaign:campaignId}); return (r&&!r.error)?(r.data||[]):[];
+    },
+    advConfirmSchedule: async function (scheduleId, ok, startsAt) {
+      var r=await sb.rpc('advertiser_confirm_schedule',{p_schedule:scheduleId,p_confirm:!!ok,p_starts_at:startsAt||null});
+      if(r.error)return {ok:false,msg:r.error.message};return r.data;
     },
     // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied) · 리뷰 승인/보완 (completed/reviewing)
     advSelect: async function (appId, status) {

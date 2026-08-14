@@ -75,8 +75,9 @@
     if (!/mypage\.html$/.test(location.pathname) || !window.OnAuth) return;
     var main=document.querySelector('.mp-main'), anchor=main&&main.querySelector('.mp-card'); if(!anchor)return;
     var box=document.createElement('section');box.className='mp-card oc-task-board';box.innerHTML='<h2>오늘 해야 할 일</h2><div class="oc-task-list">불러오는 중…</div>';anchor.parentNode.insertBefore(box,anchor);
-    try { var apps=await OnAuth.myApplications(), tasks=[]; (apps||[]).forEach(function(a){var c=a.campaigns||{};if(a.status==='selected')tasks.push({tone:'hot',title:c.title,body:'방문 일정을 확인하고 리뷰를 준비하세요.',link:'#selected'});if(a.status==='reviewing')tasks.push({tone:'warn',title:c.title,body:'제출한 리뷰가 검수 중입니다.',link:'#reviewed'});});
+    try { var apps=await OnAuth.myApplications(), tasks=[],rep=await OnAuth.reviewerReputation(); (apps||[]).forEach(function(a){var c=a.campaigns||{};if(a.status==='selected')tasks.push({tone:'hot',title:c.title,body:'방문 일정을 확인하고 리뷰를 준비하세요.',link:'#selected'});if(a.status==='reviewing')tasks.push({tone:'warn',title:c.title,body:'제출한 리뷰가 검수 중입니다.',link:'#reviewed'});});
       box.querySelector('.oc-task-list').innerHTML=tasks.length?tasks.slice(0,6).map(function(t){return '<a href="'+t.link+'" class="oc-task '+t.tone+'"><b>'+esc(t.title)+'</b><span>'+esc(t.body)+'</span><i>→</i></a>';}).join(''):'<div class="oc-task-empty">✅ 지금 급한 일정이 없어요. 맞춤 캠페인을 둘러보세요.</div>';
+      if(rep){var badge=rep.score>=130?'앰배서':(rep.score>=115?'프로':(rep.score>=100?'성실':'새싹'));box.querySelector('h2').innerHTML='오늘 해야 할 일 <span class="oc-reputation">'+badge+' · 신뢰도 '+rep.score+' · 완료율 '+rep.completion_rate+'%</span>';}
     } catch(_){box.querySelector('.oc-task-list').textContent='일정을 불러오지 못했어요.';}
   }
   async function advertiserReport() {

@@ -282,6 +282,18 @@
   };
 
   var btn=document.getElementById('applyBtn');
+  var applyModal=document.createElement('div'); applyModal.id='applyDetailModal'; applyModal.className='oc-apply-modal';
+  applyModal.innerHTML='<div class="oc-apply-card"><button type="button" class="oc-apply-x" aria-label="닫기">&times;</button><h2>체험단 신청서</h2><p class="oc-apply-sub">광고주가 선정할 때 참고할 내용을 정확히 입력해 주세요.</p>'
+    +'<label>신청 메시지<textarea id="adMessage" maxlength="500" placeholder="이 캠페인에 잘 맞는 이유와 제작할 콘텐츠를 알려주세요."></textarea></label>'
+    +'<div class="oc-apply-row"><label>희망 방문일<input id="adPreferred" type="datetime-local"></label><label>방문 인원<input id="adCompanion" type="number" min="1" max="20" value="1"></label></div>'
+    +'<label>진행 방식<select id="adType"><option value="visit">방문형</option><option value="shipping">배송형</option><option value="online">온라인·원고형</option></select></label>'
+    +'<div id="adShipping" style="display:none;"><div class="oc-apply-row"><label>받는 분<input id="adRecipient" maxlength="40"></label><label>연락처<input id="adPhone" inputmode="tel" maxlength="20"></label></div><label>배송 주소<input id="adAddress" maxlength="180" placeholder="우편번호와 상세 주소를 함께 입력"></label></div>'
+    +'<label class="oc-apply-agree"><input id="adAgree" type="checkbox"> 선정 및 체험 진행을 위해 입력 정보를 광고주에게 제공하는 데 동의합니다.</label>'
+    +'<div id="adMsg" class="oc-apply-msg"></div><button type="button" id="adSubmit" class="btn-primary" style="width:100%;justify-content:center;">신청 완료하기</button></div>';
+  document.body.appendChild(applyModal);
+  var typeEl=document.getElementById('adType'); if(/배송/.test((c.category||'')+' '+(c.title||'')))typeEl.value='shipping'; else if(/원고|기자단/.test((c.category||'')+' '+(c.title||'')))typeEl.value='online';
+  function applyType(){document.getElementById('adShipping').style.display=typeEl.value==='shipping'?'block':'none';document.getElementById('adPreferred').closest('label').style.display=typeEl.value==='visit'?'block':'none';} typeEl.onchange=applyType;applyType();
+  applyModal.querySelector('.oc-apply-x').onclick=function(){applyModal.classList.remove('show');}; applyModal.onclick=function(e){if(e.target===applyModal)applyModal.classList.remove('show');};
   function setBtn(t,d){ btn.textContent=t; btn.disabled=!!d; btn.style.opacity=d?'.55':'1'; btn.style.cursor=d?'default':'pointer'; }
   var closed=(c.status!=='active')||left<=0||dday(c.deadline)==='마감';
   var mine=null; try{ mine=await OnAuth.myApplicationFor(id);}catch(e){}
@@ -290,10 +302,16 @@
     var u=await OnAuth.getUser();
     if(!u){ location.href='login.html?next='+encodeURIComponent('campaign-detail.html?id='+id); return; }
     if(btn.disabled) return;
-    setBtn('신청 중...',true);
-    var res=await OnAuth.applyCampaign(id);
-    if(res&&res.ok){ setBtn('신청 완료됨',true); alert('신청이 완료되었습니다! 선정 결과는 마감 후 안내됩니다.'); }
-    else { alert((res&&res.msg)||'신청에 실패했습니다.'); setBtn('신청하기',false); }
+    applyModal.classList.add('show'); OnAuth.trackCampaignEvent(id,'apply_start',{}).catch(function(){});
+  };
+  document.getElementById('adSubmit').onclick=async function(){
+    var msg=document.getElementById('adMessage').value.trim(), typ=typeEl.value, agree=document.getElementById('adAgree').checked;
+    if(msg.length<10){document.getElementById('adMsg').textContent='신청 메시지를 10자 이상 입력해 주세요.';return;} if(!agree){document.getElementById('adMsg').textContent='개인정보 제공 동의가 필요합니다.';return;}
+    if(typ==='shipping'&&!document.getElementById('adAddress').value.trim()){document.getElementById('adMsg').textContent='배송 주소를 입력해 주세요.';return;}
+    var submit=this;submit.disabled=true;submit.textContent='신청 중…';
+    var res=await OnAuth.applyCampaignDetailed(id,{message:msg,preferred_at:document.getElementById('adPreferred').value||null,companion_count:parseInt(document.getElementById('adCompanion').value,10)||1,fulfillment_type:typ,recipient:document.getElementById('adRecipient').value.trim(),phone:document.getElementById('adPhone').value.trim(),address:document.getElementById('adAddress').value.trim()});
+    submit.disabled=false;submit.textContent='신청 완료하기';
+    if(res&&res.ok){applyModal.classList.remove('show');setBtn('신청 완료됨',true);alert('신청이 완료되었습니다! 선정 결과는 알림으로 안내됩니다.');}else document.getElementById('adMsg').textContent=(res&&res.msg)||'신청에 실패했습니다.';
   };
 })();
 </script>

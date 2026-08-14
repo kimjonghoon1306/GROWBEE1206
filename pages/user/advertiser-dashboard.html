@@ -398,20 +398,29 @@ async function loadApplicants(){
   var id=document.getElementById('applSel').value; var body=document.getElementById('applBody');
   if(!id){ body.innerHTML='<div class="empty">위에서 캠페인을 선택하면 신청자가 표시됩니다.</div>'; return; }
   body.innerHTML='<div class="empty">불러오는 중…</div>';
-  var rows = _demo ? (DEMO_APPLICANTS[id]||[]) : await OnAuth.advApplicants(id);
+  var rows, details=[], schedules=[];
+  if(_demo){ rows=DEMO_APPLICANTS[id]||[]; } else { var pair=await Promise.all([OnAuth.advApplicants(id),OnAuth.advApplicationDetails(id),OnAuth.advSchedules(id)]);rows=pair[0]||[];details=pair[1]||[];schedules=pair[2]||[]; }
+  var dmap={},smap={};details.forEach(function(d){dmap[d.application_id]=d;});schedules.forEach(function(s){smap[s.application_id]=s;});rows.forEach(function(a){a.detail=dmap[a.app_id]||{};a.schedule=smap[a.app_id]||null;});
   if(!rows.length){ body.innerHTML='<div class="empty"><img src="../../assets/img/mascot.png" alt="온미"><div>아직 신청자가 없어요.</div></div>'; return; }
-  body.innerHTML='<table class="atable"><thead><tr><th>신청자</th><th>채널</th><th>신청일</th><th>상태</th><th>선정</th></tr></thead><tbody>'
+  body.innerHTML='<table class="atable"><thead><tr><th>신청자</th><th>채널</th><th>신청 내용</th><th>신청일</th><th>상태</th><th>선정</th></tr></thead><tbody>'
     +rows.map(function(a){
       var chan=a.channel_url?('<a class="chan-link" href="'+_cesc(a.channel_url)+'" target="_blank" rel="noopener">'+(a.channel_type||'채널')+' 열기 ↗</a>'):'<span style="color:var(--text-muted);font-size:12px;">미등록</span>';
       var sel=a.status==='selected', rej=a.status==='rejected';
+      var d=a.detail||{}, detail='<div style="font-size:12px;max-width:260px;line-height:1.5;">'+_cesc(d.message||'신청 메시지 없음')+'</div>';
+      if(d.preferred_at)detail+='<div style="font-size:11px;color:var(--text-muted);margin-top:3px;">희망 '+new Date(d.preferred_at).toLocaleString('ko-KR')+' · '+(d.companion_count||1)+'명</div>';
+      if(d.fulfillment_type==='shipping')detail+='<div style="font-size:11px;color:var(--text-muted);margin-top:3px;">배송형 · 선정 후 주소 확인</div>';
+      if(d.address)detail+='<div style="font-size:11px;color:var(--text);margin-top:4px;">📦 '+_cesc([d.recipient,d.phone,d.address,d.address_detail].filter(Boolean).join(' · '))+'</div>';
+      var sch=a.schedule;if(sch){detail+='<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">방문 요청 '+new Date(sch.starts_at).toLocaleString('ko-KR')+' · '+(sch.status==='confirmed'?'확정':(sch.status==='rejected'?'거절':'대기'))+'</div>';if(sch.status==='requested')detail+='<button class="btn btn-sm btn-ghost" style="margin-top:4px;" onclick="confirmSchedule(\''+sch.id+'\',true)">일정 확정</button> <button class="btn btn-sm btn-ghost" style="margin-top:4px;" onclick="confirmSchedule(\''+sch.id+'\',false)">거절</button>';}
       return '<tr><td data-l="신청자"><b>'+_cesc(a.applicant_name||'회원')+'</b></td>'
         +'<td data-l="채널">'+chan+'</td>'
+        +'<td data-l="신청 내용">'+detail+'</td>'
         +'<td data-l="신청일" style="color:var(--text-muted);font-size:12.5px;">'+String(a.created_at).slice(0,10)+'</td>'
         +'<td data-l="상태"><span class="st '+a.status+'">'+stKo(a.status)+'</span></td>'
         +'<td data-l="선정"><button class="btn btn-sm '+(sel?'btn-primary':'btn-ghost')+'" onclick="setSel(\''+a.app_id+'\',\'selected\')">선정</button> '
         +'<button class="btn btn-sm btn-ghost" style="'+(rej?'color:#d61f56;':'')+'" onclick="setSel(\''+a.app_id+'\',\'rejected\')">탈락</button></td></tr>';
     }).join('')+'</tbody></table>';
 }
+async function confirmSchedule(id,ok){if(!confirm(ok?'이 방문 일정을 확정할까요?':'이 방문 일정을 거절할까요?'))return;var r=await OnAuth.advConfirmSchedule(id,ok,null);if(!r||!r.ok)alert((r&&r.msg)||'일정 처리 실패');else loadApplicants();}
 function stKo(s){return {applied:'신청',selected:'선정',rejected:'탈락',reviewing:'검수중',completed:'완료'}[s]||s;}
 async function setSel(appId,status){
   if(_demo){ alert('예시 데이터예요. 실제 캠페인을 등록하면 신청자를 선정할 수 있어요.'); return; }
