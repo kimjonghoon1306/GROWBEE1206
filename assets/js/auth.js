@@ -427,6 +427,10 @@
     updateCampaign: async function (id, fields) {
       return await sb.from('campaigns').update(fields).eq('id', id).select().single();
     },
+    verifyCampaignFairness: async function (id, ok, note) {
+      var r=await sb.rpc('admin_verify_campaign_fairness',{p_campaign:id,p_ok:!!ok,p_note:note||null});
+      if(r.error)return {ok:false,msg:r.error.message}; return r.data;
+    },
     deleteCampaign: async function (id) {
       return await sb.from('campaigns').delete().eq('id', id);
     },

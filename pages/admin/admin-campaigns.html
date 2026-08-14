@@ -221,6 +221,12 @@ textarea.cf-in{resize:vertical;}
       <div><label class="cf-l">최소 영상 수</label><input id="cf-minvid" class="cf-in" type="number" placeholder="2"></div>
     </div>
     <label class="cf-check"><input type="checkbox" id="cf-banner" checked> 상단 체험단 배너 필수</label>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);"><div style="font-size:13px;font-weight:800;color:#1E8F58;margin-bottom:4px;">공정거래 조건 검수</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">광고주 입력값을 증빙과 대조한 뒤 목록의 ‘조건검증’으로 확정하세요.</div></div>
+    <div class="cf-row"><div><label class="cf-l">정상 판매가(원)</label><input id="cf-fair-value" class="cf-in" type="number" min="0"></div><div><label class="cf-l">필수 추가결제(원)</label><input id="cf-fair-extra" class="cf-in" type="number" min="0"></div></div>
+    <div class="cf-row"><div><label class="cf-l">예상 총 작업시간(분)</label><input id="cf-fair-minutes" class="cf-in" type="number" min="0"></div><div><label class="cf-l">콘텐츠 유지기간(일)</label><input id="cf-fair-maintain" class="cf-in" type="number" min="0"></div></div>
+    <div class="cf-row"><div><label class="cf-l">수정 요청 최대 횟수</label><input id="cf-fair-revisions" class="cf-in" type="number" min="0"></div><div><label class="cf-l">수정 가능 범위</label><input id="cf-fair-scope" class="cf-in"></div></div>
+    <div class="cf-row"><div><label class="cf-l">재사용 범위</label><select id="cf-fair-usage" class="cf-in"><option>사용 안 함</option><option>SNS 광고</option><option>브랜드 채널</option><option>SNS 광고·브랜드 채널</option></select></div><div><label class="cf-l">재사용 기간(일)</label><input id="cf-fair-usage-days" class="cf-in" type="number" min="0"></div></div>
+    <label class="cf-l">취소·노쇼 조건</label><textarea id="cf-fair-cancel" class="cf-in" rows="2"></textarea>
     <div id="cfMsg" class="cf-msg"></div>
     <div class="cf-actions">
       <button class="cf-del" id="cfDelBtn" onclick="deleteCampFromForm()" style="display:none;">삭제</button>
@@ -273,6 +279,10 @@ function openCampForm(id){
   document.getElementById('cf-minimg').value=(c.min_images!=null?c.min_images:15);
   document.getElementById('cf-minvid').value=(c.min_videos!=null?c.min_videos:2);
   document.getElementById('cf-banner').checked=(c.require_banner!==false);
+  document.getElementById('cf-fair-value').value=(c.fair_retail_value!=null?c.fair_retail_value:'');document.getElementById('cf-fair-extra').value=c.fair_extra_cost||0;
+  document.getElementById('cf-fair-minutes').value=(c.fair_work_minutes!=null?c.fair_work_minutes:'');document.getElementById('cf-fair-maintain').value=(c.fair_maintenance_days!=null?c.fair_maintenance_days:'');
+  document.getElementById('cf-fair-revisions').value=c.fair_revision_limit||0;document.getElementById('cf-fair-scope').value=c.fair_revision_scope||'사실 오류에 한해 수정 요청 가능';
+  document.getElementById('cf-fair-usage').value=c.fair_usage_scope||'사용 안 함';document.getElementById('cf-fair-usage-days').value=c.fair_usage_days||0;document.getElementById('cf-fair-cancel').value=c.fair_cancel_policy||'';
   document.getElementById('cfOverlay').style.display='flex';
 }
 function closeCampForm(){ document.getElementById('cfOverlay').style.display='none'; }
@@ -288,7 +298,11 @@ async function saveCampForm(){
     visit_deadline:null, review_deadline:(_cfPeriod==='fixed'?(_v('cf-reviewdl')||null):null),
     keywords:_v('cf-keywords')||null, keyword_min:parseInt(_v('cf-kwmin'),10)||5,
     min_chars:parseInt(_v('cf-minchars'),10)||1000, min_images:parseInt(_v('cf-minimg'),10)||15,
-    min_videos:parseInt(_v('cf-minvid'),10)||2, require_banner:document.getElementById('cf-banner').checked };
+    min_videos:parseInt(_v('cf-minvid'),10)||2, require_banner:document.getElementById('cf-banner').checked,
+    fair_retail_value:parseInt(_v('cf-fair-value'),10)||null,fair_extra_cost:parseInt(_v('cf-fair-extra'),10)||0,
+    fair_work_minutes:parseInt(_v('cf-fair-minutes'),10)||null,fair_maintenance_days:parseInt(_v('cf-fair-maintain'),10)||null,
+    fair_revision_limit:parseInt(_v('cf-fair-revisions'),10)||0,fair_revision_scope:_v('cf-fair-scope')||'사실 오류에 한해 수정 요청 가능',
+    fair_usage_scope:_v('cf-fair-usage')||'사용 안 함',fair_usage_days:parseInt(_v('cf-fair-usage-days'),10)||0,fair_cancel_policy:_v('cf-fair-cancel')||null };
   var btn=document.getElementById('cfSaveBtn'); btn.disabled=true; var o=btn.textContent; btn.textContent='저장 중…';
   var r=_editId? await OnAuth.updateCampaign(_editId, fields) : await OnAuth.createCampaign(fields);
   btn.disabled=false; btn.textContent=o;
@@ -328,7 +342,8 @@ async function loadCamps(){
   if(!rows.length){ body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:34px 0;color:var(--text-muted);">아직 등록된 캠페인이 없어요. 우측 상단 <b>+ 새 캠페인 등록</b>으로 추가하세요.</td></tr>'; return; }
   body.innerHTML=rows.map(function(c){ window.__camps[c.id]=c;
     var hot=c.is_hot?' <span class="s-badge" style="background:rgba(255,71,87,.15);color:#FF5A5F;">HOT</span>':'';
-    var manage='<a href="#" class="camp-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a>';
+    var manage='<a href="#" class="camp-edit" data-id="'+c.id+'" style="color:var(--brand-primary);font-size:12px;font-weight:700;">수정</a>'
+      +' <a href="#" class="camp-fair" data-id="'+c.id+'" style="color:'+(c.fair_verified?'#1E8F58':'#B77B10')+';font-size:12px;font-weight:800;margin-left:8px;">'+(c.fair_verified?'✓ 조건검증':'조건검증')+'</a>';
     if(c.status==='pending'||c.status==='rejected'){
       manage+=' <a href="#" class="camp-approve" data-id="'+c.id+'" style="color:#1E8F58;font-size:12px;font-weight:800;margin-left:8px;">승인</a>';
       if(c.status==='pending') manage+=' <a href="#" class="camp-reject" data-id="'+c.id+'" style="color:#d61f56;font-size:12px;font-weight:700;margin-left:8px;">반려</a>';
@@ -348,8 +363,9 @@ async function loadCamps(){
       +'</tr>';
   }).join('');
   body.querySelectorAll('.camp-edit').forEach(function(a){ a.addEventListener('click',function(e){ e.preventDefault(); openCampForm(this.getAttribute('data-id')); }); });
+  body.querySelectorAll('.camp-fair').forEach(function(a){ a.addEventListener('click',async function(e){e.preventDefault();var id=this.getAttribute('data-id'),c=window.__camps[id];if(!c.fair_retail_value||!c.fair_work_minutes||!c.fair_cancel_policy){alert('정상 판매가·예상 작업시간·취소 조건을 먼저 입력하세요.');openCampForm(id);return;}var note=prompt(c.fair_verified?'검증을 해제하는 사유를 입력하세요.':'검증 메모(선택):',c.fair_verification_note||'');if(note===null)return;var rr=await OnAuth.verifyCampaignFairness(id,!c.fair_verified,note);if(!rr||!rr.ok){alert('처리 실패: '+((rr&&rr.msg)||''));return;}loadCamps();}); });
   body.querySelectorAll('.camp-toggle').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); var c=window.__camps[id]; var ns=c.status==='active'?'closed':'active'; if(!confirm(ns==='closed'?'이 캠페인을 마감할까요?':'이 캠페인을 다시 진행중으로 바꿀까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:ns}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
-  body.querySelectorAll('.camp-approve').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); if(!confirm('이 캠페인을 승인해 손님에게 노출할까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:'active'}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
+  body.querySelectorAll('.camp-approve').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'),c=window.__camps[id]; if(!c.fair_verified){alert('공정거래 조건을 먼저 검증해야 캠페인을 승인할 수 있습니다.');return;} if(!confirm('이 캠페인을 승인해 손님에게 노출할까요?')) return; var rr=await OnAuth.updateCampaign(id,{status:'active'}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
   body.querySelectorAll('.camp-reject').forEach(function(a){ a.addEventListener('click',async function(e){ e.preventDefault(); var id=this.getAttribute('data-id'); if(!confirm('이 캠페인을 반려할까요? 광고주가 수정 후 다시 검수요청할 수 있어요.')) return; var rr=await OnAuth.updateCampaign(id,{status:'rejected'}); if(rr&&rr.error){ alert('실패: '+rr.error.message); return; } loadCamps(); }); });
   // 검색 + 상태 필터
   var si=document.querySelector('.search-input'); if(si) si.oninput=_applyCampFilters;
