@@ -556,6 +556,60 @@
       return { url: pub.data.publicUrl };
     },
 
+    // ── 운영 OS 확장 기능 ──────────────────────────────
+    // 확장 스키마가 아직 적용되지 않은 운영 환경에서는 error를 반환하고
+    // 화면의 localStorage 폴백이 계속 동작하도록 한다.
+    toggleFavorite: async function (campaignId, on) {
+      var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };
+      if (on) return await sb.from('campaign_favorites').upsert({ user_id: u.id, campaign_id: campaignId });
+      return await sb.from('campaign_favorites').delete().eq('user_id', u.id).eq('campaign_id', campaignId);
+    },
+    myFavorites: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('campaign_favorites').select('campaign_id').eq('user_id', u.id).order('created_at', { ascending: false });
+      return (r && !r.error) ? (r.data || []).map(function (x) { return String(x.campaign_id); }) : [];
+    },
+    saveSearch: async function (name, filters) {
+      var u = await Auth.getUser(); if (!u) return { error: { message: '로그인이 필요합니다.' } };
+      return await sb.from('saved_searches').insert({ user_id:u.id, name:name||'맞춤 체험단', filters:filters||{} }).select().single();
+    },
+    listNotifications: async function () {
+      var u = await Auth.getUser(); if (!u) return [];
+      var r = await sb.from('notifications').select('*').eq('user_id',u.id).order('created_at',{ascending:false}).limit(100);
+      return (r && !r.error) ? (r.data || []) : [];
+    },
+    markNotificationRead: async function (id) {
+      var u = await Auth.getUser(); if (!u) return;
+      return await sb.from('notifications').update({read_at:new Date().toISOString()}).eq('id',id).eq('user_id',u.id);
+    },
+    trackCampaignEvent: async function (campaignId, eventType, metadata) {
+      if (!campaignId || String(campaignId).indexOf('expansion-') === 0) return { ok:true, local:true };
+      var r = await sb.rpc('track_campaign_event',{p_campaign:campaignId,p_event:eventType,p_meta:metadata||{}});
+      return r.error ? {ok:false,msg:r.error.message} : {ok:!!r.data};
+    },
+    myChannels: async function () {
+      var u=await Auth.getUser(); if(!u)return [];
+      var r=await sb.from('reviewer_channels').select('*').eq('user_id',u.id).order('created_at',{ascending:false});
+      return (r&&!r.error)?(r.data||[]):[];
+    },
+    saveChannel: async function (fields) {
+      var u=await Auth.getUser(); if(!u)return {error:{message:'로그인이 필요합니다.'}};
+      fields=fields||{}; fields.user_id=u.id; return await sb.from('reviewer_channels').upsert(fields).select().single();
+    },
+    requestSchedule: async function (applicationId, startsAt, note) {
+      var u=await Auth.getUser(); if(!u)return {error:{message:'로그인이 필요합니다.'}};
+      return await sb.from('campaign_schedules').insert({application_id:applicationId,user_id:u.id,starts_at:startsAt,note:note||''}).select().single();
+    },
+    advertiserPerformance: async function () {
+      var r=await sb.rpc('advertiser_performance_report'); return (r&&!r.error)?r.data:null;
+    },
+    adminWorkQueue: async function () {
+      var r=await sb.rpc('admin_work_queue'); return (r&&!r.error)?r.data:null;
+    },
+    reviewerReputation: async function () {
+      var r=await sb.rpc('reviewer_reputation',{}); return (r&&!r.error)?r.data:null;
+    },
+
     signOut: async function () {
       await sb.auth.signOut();
       location.href = resolve('index.html', true);

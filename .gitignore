@@ -1,2 +1,4 @@
 .vercel
 .env*
+supabase/.temp/*
+!supabase/.temp/linked-project.json

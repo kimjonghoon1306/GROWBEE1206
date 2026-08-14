@@ -15,6 +15,7 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;bac
 .nc-spin{width:34px;height:34px;margin:22px auto 0;border:3px solid var(--border);border-top-color:var(--brand-primary);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
+<link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
 <div class="nc-box">
@@ -39,5 +40,6 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;bac
   setTimeout(function(){ if(!done){ location.replace('login.html?err=naver_session'); } }, 7000);
 })();
 </script>
+<script src="../../assets/js/platform.js" defer></script>
 </body>
 </html>

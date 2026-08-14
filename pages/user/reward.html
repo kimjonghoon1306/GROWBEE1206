@@ -25,6 +25,7 @@
 .rw-card .pt { display:inline-block;margin-top:12px;font-weight:800;color:var(--accent-text);background:var(--accent-tint);padding:5px 12px;border-radius:999px;font-size:13px; }
 @media (max-width:768px){ .rw-hero{ grid-template-columns:1fr; text-align:center; padding:32px 24px; } .rw-hero img{ width:150px; } }
 </style>
+<link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
 <header class="site-header">
@@ -89,5 +90,6 @@ if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add(
 (function(){var c=0,t;var lg=document.getElementById('brandLogo');if(!lg)return;lg.addEventListener('click',function(e){e.preventDefault();c++;clearTimeout(t);if(c>=5){c=0;location.href='../admin/admin-login.html';return;}t=setTimeout(function(){if(c===1){location.href='../../index.html';}c=0;},450);});})();
 </script>
 <script src="../../assets/js/pwa.js" defer></script>
+<script src="../../assets/js/platform.js" defer></script>
 </body>
 </html>

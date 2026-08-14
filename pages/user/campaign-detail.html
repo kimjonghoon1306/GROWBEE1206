@@ -48,6 +48,7 @@
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;}.footer-links{grid-template-columns:repeat(2,1fr);}}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
+<link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
 <header class="site-header">
@@ -187,6 +188,7 @@
   set('dSlots', (c.applied_count||0)+' / '+(c.capacity||0)+'명');
   set('dLeft', left+'명');
   set('dDday', dday(c.deadline)||'-');
+  document.getElementById('dDday').dataset.deadline=c.deadline||'';
   var pct=c.capacity>0?Math.min(100,Math.round(c.applied_count/c.capacity*100)):0;
   var bar=document.getElementById('dBar'); if(bar) bar.style.width=pct+'%';
 
@@ -296,4 +298,5 @@
 })();
 </script>
 <script src="../../assets/js/pwa.js" defer></script>
+<script src="../../assets/js/platform.js" defer></script>
 </body></html>

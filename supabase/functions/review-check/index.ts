@@ -89,6 +89,10 @@ function analyze(html: string, rule: any, keyword: string) {
     kwCount = (text.match(new RegExp(safe, 'g')) || []).length
   }
   const hasBanner = /review_banner\.png|온종일\s*체험단/i.test(html)
+  // 공정위 추천·보증 심사지침에 맞춘 경제적 이해관계 표시 확인.
+  // 문자형 콘텐츠는 본문 앞부분에서 소비자가 즉시 인식할 수 있어야 한다.
+  const disclosureText = text.slice(0, 700)
+  const hasDisclosure = /(광고|협찬|제품\s*제공|서비스\s*제공|체험권\s*제공|원고료|경제적\s*이해관계|소정의\s*(?:대가|포인트))/i.test(disclosureText)
 
   const need = {
     chars: rule.min_chars ?? 1000,
@@ -103,6 +107,7 @@ function analyze(html: string, rule: any, keyword: string) {
     videos: { need: need.videos, got: videoCount, ok: videoCount >= need.videos },
     keyword: { word: keyword, need: need.keyword, got: kwCount, ok: !keyword || kwCount >= need.keyword },
     banner: { need: need.banner, got: hasBanner, ok: !need.banner || hasBanner },
+    disclosure: { need: true, got: hasDisclosure, ok: hasDisclosure },
   }
   return { checks, charCount, readable: charCount > 50 }
 }
@@ -171,6 +176,16 @@ Deno.serve(async (req) => {
     }
     if (passed) patch.status = 'reviewing'
     await admin.from('applications').update(patch).eq('id', app_id)
+    // 확장 스키마 미적용 환경에서도 본 검수는 성공하도록 감사 저장은 best-effort 처리한다.
+    try {
+      await admin.from('review_audits').insert({
+        application_id: app_id,
+        checks: a.checks,
+        score: Math.round((Object.values(a.checks).filter((c: any) => c.ok).length / Object.keys(a.checks).length) * 100),
+        risk: passed ? 'pass' : 'review',
+        disclosure_ok: a.checks.disclosure.ok,
+      })
+    } catch { /* 확장 스키마 적용 전에는 생략 */ }
 
     return json({ ok: true, passed, readable: a.readable, checks: a.checks, rank: rankInfo })
   } catch (e) {

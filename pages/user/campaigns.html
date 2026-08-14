@@ -70,6 +70,7 @@
 @media(max-width:480px){.grid-4{grid-template-columns:1fr!important;}.grid-3{grid-template-columns:1fr!important;}}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
+<link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
 <header class="site-header">
@@ -120,7 +121,8 @@
     <select id="selRegion" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="">전체 지역</option><option>서울</option><option>경기·인천</option><option>부산</option><option>대구</option><option>제주</option></select>
     <select id="selCat" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="">전체 카테고리</option></select>
     <select id="selChannel" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="">채널 전체</option><option>블로그</option><option>인스타</option><option>클립</option></select>
-    <select id="selSort" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="new">최신순</option><option value="deadline">마감임박순</option><option value="popular">인기순</option><option value="reward">혜택 높은순</option></select>
+    <select id="selSort" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="recommend">나에게 추천순</option><option value="new">최신순</option><option value="deadline">마감임박순</option><option value="low">경쟁률 낮은순</option><option value="popular">인기순</option><option value="reward">혜택 높은순</option><option value="wish">찜한 캠페인</option></select>
+    <button id="saveSearch" type="button" style="border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-card);color:var(--text);font-weight:700;cursor:pointer;">조건 저장</button>
   </div>
   <div id="catTabs" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--border);border-radius:40px;padding:8px 14px;margin-bottom:28px;box-shadow:var(--shadow);"></div>
   <div style="display:flex;justify-content:flex-end;margin:0 0 14px;"><div class="view-switch"><button id="vLarge" onclick="setView(0)" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>크게 보기</button><button id="vSmall" onclick="setView(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>작게 보기</button></div></div>
@@ -184,19 +186,24 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
   }
   var grid=document.getElementById('campGrid'), empty=document.getElementById('campEmpty'), tabsEl=document.getElementById('catTabs');
   var selRegion=document.getElementById('selRegion'), selCat=document.getElementById('selCat'), selChannel=document.getElementById('selChannel'), selSort=document.getElementById('selSort');
-  var ALL=[], curCat='';
+  var ALL=[], curCat='', query='';
+  function score(c){ var p=OnPlatform.filters(), n=0; if(p.region&&String(c.region||'').indexOf(p.region)>=0)n+=35;if(p.category&&c.category===p.category)n+=35;if(p.channel&&c.channel===p.channel)n+=20;if((c.applied_count||0)<(c.capacity||0)*2)n+=10;return n; }
   function rewardNum(t){ var m=String(t==null?'':t).replace(/[^0-9]/g,''); return m?parseInt(m,10):0; }
   function applyFilters(){
     var region=selRegion.value, ch=selChannel.value, sort=selSort.value;
     var out=ALL.filter(function(c){
+      if(query && [c.title,c.store_name,c.region,c.category,c.description].join(' ').toLowerCase().indexOf(query)<0) return false;
       if(region && String(c.region||'').indexOf(region)<0) return false;
       if(curCat && c.category!==curCat) return false;
       if(ch && c.channel!==ch) return false;
+      if(sort==='wish' && OnPlatform.wishlist().indexOf(String(c.id))<0) return false;
       return true;
     });
     if(sort==='deadline') out.sort(function(a,b){ return String(a.deadline||'9999-12-31').localeCompare(String(b.deadline||'9999-12-31')); });
     else if(sort==='popular') out.sort(function(a,b){ return (b.applied_count||0)-(a.applied_count||0); });
+    else if(sort==='low') out.sort(function(a,b){ return ((a.applied_count||0)/Math.max(1,a.capacity||1))-((b.applied_count||0)/Math.max(1,b.capacity||1)); });
     else if(sort==='reward') out.sort(function(a,b){ return rewardNum(b.reward_text)-rewardNum(a.reward_text); });
+    else if(sort==='recommend') out.sort(function(a,b){ return score(b)-score(a); });
     else out.sort(function(a,b){ return String(b.created_at||'').localeCompare(String(a.created_at||'')); });
     return out;
   }
@@ -228,6 +235,7 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
   selRegion.addEventListener('change',render);
   selChannel.addEventListener('change',render);
   selSort.addEventListener('change',render);
+  document.getElementById('saveSearch').addEventListener('click',async function(){ var f={region:selRegion.value,category:curCat,channel:selChannel.value}; OnPlatform.saveFilters(f); try{await OnAuth.saveSearch('맞춤 체험단',f);}catch(e){} OnPlatform.toast('맞춤 추천 조건을 저장했어요.'); render(); });
   (async function(){
     try{
       var r=await OnAuth.listCampaigns();
@@ -235,7 +243,7 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
       if(!ALL.length){ grid.style.display='none'; empty.style.display='block'; return; }
       buildTabs();
       var qs=new URLSearchParams(location.search);
-      var qcat=qs.get('cat'), qch=qs.get('channel');
+      var qcat=qs.get('cat'), qch=qs.get('channel'); query=(qs.get('q')||'').trim().toLowerCase();
       if(qcat){ curCat=qcat; selCat.value=qcat; paintTabs(); }
       if(qch){ selChannel.value=qch; }
       render();
@@ -245,4 +253,5 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
 </script>
 <script src="../../assets/js/popup.js" defer></script>
 <script src="../../assets/js/pwa.js" defer></script>
+<script src="../../assets/js/platform.js" defer></script>
 </body></html>

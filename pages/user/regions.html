@@ -76,6 +76,7 @@
 @media(max-width:768px){.main-nav{display:none;}.hamburger{display:flex;}.header-right .btn-outline,.header-right .btn-primary{display:none;}.footer-top{grid-template-columns:1fr;gap:24px;}.footer-links{grid-template-columns:repeat(2,1fr);}.footer-bottom{flex-direction:column;}}
 </style>
 <link rel="stylesheet" href="../../assets/css/brutal.css">
+<link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
 <header class="site-header">
@@ -226,4 +227,5 @@ function toggleMode(){var n=document.body.classList.toggle('night');localStorage
 function setView(small){document.body.classList.toggle("view-compact",!!small);var L=document.getElementById("vLarge"),S=document.getElementById("vSmall");if(L&&S){L.classList.toggle("active",!small);S.classList.toggle("active",!!small);}localStorage.setItem("onjongil-view",small?"compact":"large");}(function(){if(localStorage.getItem("onjongil-view")==="compact"){setView(1);}})();
 </script>
 <script src="../../assets/js/pwa.js" defer></script>
+<script src="../../assets/js/platform.js" defer></script>
 </body></html>
