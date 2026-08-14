@@ -117,21 +117,12 @@
 </div></div>
 <div class="sec">
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
-    <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option>전체 지역</option><option>서울</option><option>경기·인천</option><option>부산</option><option>대구</option><option>제주</option></select>
-    <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option>전체 카테고리</option><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option></select>
-    <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option>채널 전체</option><option>블로그</option><option>인스타그램</option><option>클립</option></select>
-    <select style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option>최신순</option><option>마감임박순</option><option>인기순</option><option>혜택 높은순</option></select>
+    <select id="selRegion" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="">전체 지역</option><option>서울</option><option>경기·인천</option><option>부산</option><option>대구</option><option>제주</option></select>
+    <select id="selCat" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="">전체 카테고리</option></select>
+    <select id="selChannel" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="">채널 전체</option><option>블로그</option><option>인스타</option><option>클립</option></select>
+    <select id="selSort" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--font-body);"><option value="new">최신순</option><option value="deadline">마감임박순</option><option value="popular">인기순</option><option value="reward">혜택 높은순</option></select>
   </div>
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--border);border-radius:40px;padding:8px 14px;margin-bottom:28px;box-shadow:var(--shadow);">
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;background:var(--brand-gradient);color:#fff;border:none;cursor:pointer;">전체 (84)</button>
-    <span style="width:1px;height:18px;background:var(--border);"></span>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">맛집 (28)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;"> 카페 (18)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;"> 디저트 (12)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;"> 뷰티 (9)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">피트니스 (6)</button>
-    <button style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;color:var(--text-muted);background:transparent;border:none;cursor:pointer;">배송형 (6)</button>
-  </div>
+  <div id="catTabs" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--border);border-radius:40px;padding:8px 14px;margin-bottom:28px;box-shadow:var(--shadow);"></div>
   <div style="display:flex;justify-content:flex-end;margin:0 0 14px;"><div class="view-switch"><button id="vLarge" onclick="setView(0)" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>크게 보기</button><button id="vSmall" onclick="setView(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>작게 보기</button></div></div>
 <div id="campGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"></div>
   <div id="campEmpty" style="display:none;text-align:center;padding:60px 0;color:var(--text-muted);"><img src="../../assets/img/mascot.png" alt="온미" style="width:80px;opacity:.6;margin-bottom:12px;"><div>진행 중인 캠페인이 곧 열려요!</div></div>
@@ -188,13 +179,58 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
       + '<span class="camp-slots">'+(c.applied_count||0)+'/'+(c.capacity||0)+'명</span></div>'
       + '<div class="camp-bar"><div class="camp-bar-fill" style="width:'+pct+'%"></div></div></div></a>';
   }
+  var grid=document.getElementById('campGrid'), empty=document.getElementById('campEmpty'), tabsEl=document.getElementById('catTabs');
+  var selRegion=document.getElementById('selRegion'), selCat=document.getElementById('selCat'), selChannel=document.getElementById('selChannel'), selSort=document.getElementById('selSort');
+  var ALL=[], curCat='';
+  function rewardNum(t){ var m=String(t==null?'':t).replace(/[^0-9]/g,''); return m?parseInt(m,10):0; }
+  function applyFilters(){
+    var region=selRegion.value, ch=selChannel.value, sort=selSort.value;
+    var out=ALL.filter(function(c){
+      if(region && String(c.region||'').indexOf(region)<0) return false;
+      if(curCat && c.category!==curCat) return false;
+      if(ch && c.channel!==ch) return false;
+      return true;
+    });
+    if(sort==='deadline') out.sort(function(a,b){ return String(a.deadline||'9999-12-31').localeCompare(String(b.deadline||'9999-12-31')); });
+    else if(sort==='popular') out.sort(function(a,b){ return (b.applied_count||0)-(a.applied_count||0); });
+    else if(sort==='reward') out.sort(function(a,b){ return rewardNum(b.reward_text)-rewardNum(a.reward_text); });
+    else out.sort(function(a,b){ return String(b.created_at||'').localeCompare(String(a.created_at||'')); });
+    return out;
+  }
+  function render(){
+    var out=applyFilters();
+    if(!out.length){ grid.style.display='none'; empty.style.display='block'; }
+    else { grid.style.display='grid'; empty.style.display='none'; grid.innerHTML=out.map(card).join(''); }
+  }
+  function paintTabs(){
+    Array.prototype.forEach.call(tabsEl.querySelectorAll('button'),function(btn){
+      var on=btn.getAttribute('data-cat')===curCat;
+      btn.style.background=on?'var(--brand-gradient)':'transparent';
+      btn.style.color=on?'#fff':'var(--text-muted)';
+    });
+  }
+  function buildTabs(){
+    var counts={}; ALL.forEach(function(c){ var k=c.category||'기타'; counts[k]=(counts[k]||0)+1; });
+    var cats=Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+    var html='<button data-cat="" style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;border:none;cursor:pointer;">전체 ('+ALL.length+')</button>';
+    cats.forEach(function(k){ html+='<span style="width:1px;height:18px;background:var(--border);"></span><button data-cat="'+esc(k)+'" style="padding:7px 15px;border-radius:50px;font-size:12px;font-weight:600;border:none;cursor:pointer;">'+esc(k)+' ('+counts[k]+')</button>'; });
+    tabsEl.innerHTML=html;
+    Array.prototype.forEach.call(tabsEl.querySelectorAll('button'),function(btn){
+      btn.addEventListener('click',function(){ curCat=btn.getAttribute('data-cat'); selCat.value=curCat; paintTabs(); render(); });
+    });
+    var opt='<option value="">전체 카테고리</option>'; cats.forEach(function(k){ opt+='<option value="'+esc(k)+'">'+esc(k)+'</option>'; }); selCat.innerHTML=opt; selCat.value=curCat;
+    paintTabs();
+  }
+  selCat.addEventListener('change',function(){ curCat=selCat.value; paintTabs(); render(); });
+  selRegion.addEventListener('change',render);
+  selChannel.addEventListener('change',render);
+  selSort.addEventListener('change',render);
   (async function(){
-    var grid=document.getElementById('campGrid'), empty=document.getElementById('campEmpty');
     try{
       var r=await OnAuth.listCampaigns();
-      var list=(r&&!r.error)?(r.data||[]):[];
-      if(!list.length){ grid.style.display='none'; empty.style.display='block'; return; }
-      grid.innerHTML=list.map(card).join('');
+      ALL=(r&&!r.error)?(r.data||[]):[];
+      if(!ALL.length){ grid.style.display='none'; empty.style.display='block'; return; }
+      buildTabs(); render();
     }catch(e){ grid.style.display='none'; empty.style.display='block'; }
   })();
 })();
