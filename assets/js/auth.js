@@ -573,6 +573,14 @@
     myContentLicenses: async function () { var r=await sb.rpc('my_content_licenses');return (r&&!r.error)?(r.data||[]):[]; },
     getNotificationPreferences: async function () { var u=await Auth.getUser();if(!u)return null;var r=await sb.from('notification_preferences').select('*').eq('user_id',u.id).maybeSingle();return (r&&!r.error)?r.data:null; },
     saveNotificationPreferences: async function (fields) { var u=await Auth.getUser();if(!u)return {error:{message:'로그인이 필요합니다.'}};fields=fields||{};fields.user_id=u.id;fields.updated_at=new Date().toISOString();return await sb.from('notification_preferences').upsert(fields); },
+    claimMissionReward: async function(id){var r=await sb.rpc('claim_mission_reward',{p_mission:id});if(r.error)return {ok:false,msg:r.error.message};return r.data;},
+    communityPostDetail: async function(id){var r=await sb.rpc('community_post_detail',{p_post:id});return(r&&!r.error)?r.data:null;},
+    createCommunityComment: async function(id,body){var r=await sb.rpc('create_community_comment',{p_post:id,p_body:body});if(r.error)return{ok:false,msg:r.error.message};return r.data;},
+    reportCommunity: async function(postId,commentId,reason){var r=await sb.rpc('report_community',{p_post:postId||null,p_comment:commentId||null,p_reason:reason});if(r.error)return{ok:false,msg:r.error.message};return r.data;},
+    savePushSubscription: async function(sub){var u=await Auth.getUser();if(!u)return{error:{message:'로그인이 필요합니다.'}};var j=sub.toJSON?sub.toJSON():sub;return await sb.from('push_subscriptions').upsert({user_id:u.id,endpoint:j.endpoint,subscription:j,user_agent:navigator.userAgent,active:true},{onConflict:'endpoint'});},
+    adminListCms: async function(){var r=await sb.rpc('admin_list_cms');return(r&&!r.error)?(r.data||[]):[];},
+    adminSaveCms: async function(id,content){var r=await sb.rpc('admin_save_cms',{p_id:id||null,p_content:content||{}});if(r.error)return{ok:false,msg:r.error.message};return r.data;},
+    adminModerationQueue: async function(){var r=await sb.rpc('admin_moderation_queue');return(r&&!r.error)?(r.data||[]):[];},
     // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied) · 리뷰 승인/보완 (completed/reviewing)
     advSelect: async function (appId, status) {
       var r = await sb.rpc('advertiser_select', { p_app: appId, p_status: status });

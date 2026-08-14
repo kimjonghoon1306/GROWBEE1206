@@ -37,3 +37,15 @@ self.addEventListener('fetch', function (e) {
 self.addEventListener('message', function (e) {
   if (e.data === 'skipWaiting') self.skipWaiting();
 });
+
+self.addEventListener('push', function (e) {
+  var data = {}; try { data = e.data ? e.data.json() : {}; } catch (_) { data = { title: '온종일 체험단', body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(data.title || '온종일 체험단', {
+    body: data.body || '새 알림이 있어요.', icon: '/assets/icons/onmi-192.png', badge: '/assets/icons/favicon.png',
+    data: { url: data.url || '/pages/user/messages.html' }, tag: data.tag || 'onjongil-notification'
+  }));
+});
+self.addEventListener('notificationclick', function (e) {
+  e.notification.close(); var url = (e.notification.data && e.notification.data.url) || '/pages/user/messages.html';
+  e.waitUntil(clients.matchAll({ type:'window', includeUncontrolled:true }).then(function (wins) { for (var i=0;i<wins.length;i++) { if ('focus' in wins[i]) { wins[i].navigate(url); return wins[i].focus(); } } return clients.openWindow ? clients.openWindow(url) : null; }));
+});
