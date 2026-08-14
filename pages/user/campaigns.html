@@ -230,7 +230,12 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
       var r=await OnAuth.listCampaigns();
       ALL=(r&&!r.error)?(r.data||[]):[];
       if(!ALL.length){ grid.style.display='none'; empty.style.display='block'; return; }
-      buildTabs(); render();
+      buildTabs();
+      var qs=new URLSearchParams(location.search);
+      var qcat=qs.get('cat'), qch=qs.get('channel');
+      if(qcat){ curCat=qcat; selCat.value=qcat; paintTabs(); }
+      if(qch){ selChannel.value=qch; }
+      render();
     }catch(e){ grid.style.display='none'; empty.style.display='block'; }
   })();
 })();
