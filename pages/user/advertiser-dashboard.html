@@ -188,7 +188,7 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <input id="cf-address" class="fin" placeholder="예: 서울 강남구 테헤란로 123, 2층">
     <div class="frow">
       <div><label class="fl">카테고리</label>
-        <select id="cf-cat" class="fin"><option value="">선택</option><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option><option>숙박</option><option>여행</option><option>기타</option></select></div>
+        <select id="cf-cat" class="fin"><option value="">선택</option><option>맛집</option><option>카페</option><option>디저트</option><option>뷰티</option><option>피트니스</option><option>숙박</option><option>여행</option><option>반려동물</option><option>육아</option><option>패션</option><option>생활용품</option><option>디지털</option><option>건강</option><option>도서</option><option>여가활동</option><option>자기관리</option><option>기타</option></select></div>
       <div><label class="fl">모집 채널 (중복 선택)</label>
         <div id="cf-channels" class="chgrid"></div></div>
     </div>
@@ -322,7 +322,7 @@ function goApplicants(id){ document.querySelector('.tab[data-tab="applicants"]')
 
 // ── 캠페인 폼 ──
 var CHANNELS=['블로그','인스타','클립','유튜브'], _cfChannels=[], _cfImages=[];
-var CAT_IMG={'맛집':'hanwoo','카페':'cafe','디저트':'cafe','뷰티':'skincare','피트니스':'skincare','숙박':'stay','숙소':'stay','여행':'oceanview','기타':'sushi'};
+var CAT_IMG={'맛집':'hanwoo','카페':'cafe','디저트':'dessert','뷰티':'skincare','피트니스':'fitness','숙박':'stay','숙소':'stay','여행':'oceanview','반려동물':'pet','육아':'baby','패션':'fashion','생활용품':'living','디지털':'digital','건강':'health','도서':'book','여가활동':'leisure','자기관리':'selfcare','기타':'sushi'};
 function cfRenderChannels(){ document.getElementById('cf-channels').innerHTML=CHANNELS.map(function(c){return '<div class="chchip'+(_cfChannels.indexOf(c)>=0?' on':'')+'" onclick="cfToggleCh(\''+c+'\')">'+c+'</div>';}).join(''); }
 function cfToggleCh(c){ var i=_cfChannels.indexOf(c); if(i>=0)_cfChannels.splice(i,1); else _cfChannels.push(c); cfRenderChannels(); }
 function cfRenderImgs(){ document.getElementById('cf-imgs').innerHTML=_cfImages.map(function(u,i){return '<div class="imgthumb"><img src="'+u+'"><button type="button" onclick="cfRemoveImg('+i+')">×</button></div>';}).join(''); }
