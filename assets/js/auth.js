@@ -18,6 +18,31 @@
   });
   window.sb = sb;
 
+  // 기존 캠페인 중 대표 이미지가 모두 sushi로 저장된 데이터를 화면에서
+  // 카테고리/영상 채널에 맞게 보정한다. 관리자가 직접 고른 다른 이미지는 유지한다.
+  var CATEGORY_IMAGES = {
+    '맛집': 'hanwoo', '식당': 'hanwoo', '카페': 'cafe', '디저트': 'dessert',
+    '뷰티': 'skincare', '뷰티·헤어': 'skincare', '피트니스': 'fitness',
+    '숙박': 'stay', '숙소': 'stay', '여행': 'oceanview', '반려동물': 'pet',
+    '육아': 'baby', '패션': 'fashion', '생활용품': 'living', '디지털': 'digital',
+    '건강': 'health', '도서': 'book', '여가활동': 'leisure', '자기관리': 'selfcare',
+    '배송형': 'delivery', '방문형': 'visit', '원고형': 'manuscript',
+    '릴스형': 'reels', '클립형': 'clip'
+  };
+  function campaignImageKey(c) {
+    c = c || {};
+    var channel = String(c.channel || '').toLowerCase();
+    var category = String(c.category || '');
+    if (channel.indexOf('릴스') >= 0 || channel.indexOf('reels') >= 0 || category === '릴스형') return 'reels';
+    if (channel.indexOf('클립') >= 0 || channel.indexOf('clip') >= 0 || category === '클립형') return 'clip';
+    if (c.image_key && c.image_key !== 'sushi') return c.image_key;
+    return CATEGORY_IMAGES[category] || c.image_key || 'visit';
+  }
+  function normalizeCampaign(c) {
+    if (c) c.image_key = campaignImageKey(c);
+    return c;
+  }
+
   var Auth = {
     client: sb,
 
@@ -98,14 +123,16 @@
     // ── 캠페인 ──────────────────────────────────────────
     // 모집중 캠페인 목록 (HOT 먼저, 마감 임박순)
     listCampaigns: async function () {
-      return await sb.from('campaigns').select('*')
+      var r = await sb.from('campaigns').select('*')
         .eq('status', 'active')
         .order('is_hot', { ascending: false })
         .order('deadline', { ascending: true });
+      if (r && !r.error) (r.data || []).forEach(normalizeCampaign);
+      return r;
     },
     getCampaign: async function (id) {
       var r = await sb.from('campaigns').select('*').eq('id', id).single();
-      return r.data || null;
+      return normalizeCampaign(r.data || null);
     },
     // 캠페인 신청 (서버 검증: 로그인/중복/마감/정원)
     applyCampaign: async function (id) {
@@ -124,7 +151,9 @@
       var u = await Auth.getUser(); if (!u) return [];
       var r = await sb.from('applications').select('*, campaigns(*)')
         .eq('user_id', u.id).order('created_at', { ascending: false });
-      return (r && !r.error) ? (r.data || []) : [];
+      var rows = (r && !r.error) ? (r.data || []) : [];
+      rows.forEach(function (x) { if (x.campaigns) normalizeCampaign(x.campaigns); });
+      return rows;
     },
     // 손님: 리뷰 URL 제출 (선정된 캠페인) — 단순 저장(폴백)
     submitReview: async function (appId, url) {

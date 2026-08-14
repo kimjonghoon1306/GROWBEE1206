@@ -163,15 +163,18 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
   var IMG='../../assets/img/';
   function dday(dl){ if(!dl) return ''; var t=new Date(); t.setHours(0,0,0,0); var d=new Date(dl+'T00:00:00'); var n=Math.round((d-t)/86400000); return n<=0?'마감':('D-'+n); }
   function chBadge(ch){ if(ch==='블로그') return '<span class="badge badge-green">블로그</span>'; if(ch==='인스타') return '<span class="badge badge-blue">인스타</span>'; if(ch==='클립') return '<span class="badge badge-blue">클립</span>'; return ''; }
+  function videoMark(c){ var s=((c.channel||'')+' '+(c.category||'')).toLowerCase(); if(s.indexOf('릴스')<0&&s.indexOf('reels')<0&&s.indexOf('클립')<0&&s.indexOf('clip')<0)return ''; var label=(s.indexOf('릴스')>=0||s.indexOf('reels')>=0)?'릴스 영상':'클립 영상'; return '<span class="video-cover-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="video-cover-label">'+label+'</span>'; }
+  function videoUrl(c){ var u=c.video_url||''; if(!u&&(c.image_urls||[]).length) u=(c.image_urls||[]).filter(function(x){return /\.(mp4|webm|mov)(\?|$)/i.test(x);})[0]||''; return u; }
   function esc(x){ return (x==null?'':String(x)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
   function card(c){
     var pct = c.capacity>0 ? Math.min(100, Math.round(c.applied_count/c.capacity*100)) : 0;
     var dd = dday(c.deadline);
     var badges = (c.is_hot?'<span class="badge badge-red">HOT</span>':'') + chBadge(c.channel);
     var img = c.image_key ? IMG+esc(c.image_key)+'.jpg' : '';
+    var vid = videoUrl(c);
     return '<a href="campaign-detail.html?id='+encodeURIComponent(c.id)+'" class="card" style="cursor:pointer;text-decoration:none;">'
       + '<div class="camp-img" style="background:'+(img?('url('+img+') center/cover'):'linear-gradient(135deg,#1a0a10,#2a1018)')+';">'
-      + '<div class="camp-badges">'+badges+'</div>'+(dd?('<div class="camp-d">'+dd+'</div>'):'')+'</div>'
+      + (vid?('<video src="'+esc(vid)+'" poster="'+img+'" autoplay muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>'):videoMark(c))+'<div class="camp-badges">'+badges+'</div>'+(dd?('<div class="camp-d">'+dd+'</div>'):'')+'</div>'
       + '<div class="camp-body"><div class="camp-region">'+esc(c.region)+'</div>'
       + '<div class="camp-name">'+esc(c.title)+'</div>'
       + '<div class="camp-desc">'+esc(c.description)+'</div>'
