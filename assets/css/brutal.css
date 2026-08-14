@@ -104,27 +104,9 @@ body{
 
 /* --- MYPAGE THUMBS --- */
 .app-ico{ border:1px solid var(--border)!important; border-radius:12px!important; background-size:cover!important; background-position:center!important; }
-.app-item:nth-of-type(8n+1) .app-ico{ background-image:url(../../assets/img/sushi.jpg)!important; }
-.app-item:nth-of-type(8n+2) .app-ico{ background-image:url(../../assets/img/cafe.jpg)!important; }
-.app-item:nth-of-type(8n+3) .app-ico{ background-image:url(../../assets/img/skincare.jpg)!important; }
-.app-item:nth-of-type(8n+4) .app-ico{ background-image:url(../../assets/img/hanwoo.jpg)!important; }
-.app-item:nth-of-type(8n+5) .app-ico{ background-image:url(../../assets/img/ramen.jpg)!important; }
-.app-item:nth-of-type(8n+6) .app-ico{ background-image:url(../../assets/img/taco.jpg)!important; }
-.app-item:nth-of-type(8n+7) .app-ico{ background-image:url(../../assets/img/winebar.jpg)!important; }
-.app-item:nth-of-type(8n) .app-ico{ background-image:url(../../assets/img/vegan.jpg)!important; }
 
 /* --- REVIEW THUMBS --- */
 .rev-img{ height:150px!important; border-bottom:1px solid var(--border)!important; background-size:cover!important; background-position:center!important; }
-.rev-img{ background-image:url(../../assets/img/ramen.jpg); }
-div>*:nth-child(8n+1)>.rev-img{ background-image:url(../../assets/img/sushi.jpg)!important; }
-div>*:nth-child(8n+2)>.rev-img{ background-image:url(../../assets/img/cafe.jpg)!important; }
-div>*:nth-child(8n+3)>.rev-img{ background-image:url(../../assets/img/hanwoo.jpg)!important; }
-div>*:nth-child(8n+4)>.rev-img{ background-image:url(../../assets/img/taco.jpg)!important; }
-div>*:nth-child(8n+5)>.rev-img{ background-image:url(../../assets/img/winebar.jpg)!important; }
-div>*:nth-child(8n+6)>.rev-img{ background-image:url(../../assets/img/vegan.jpg)!important; }
-div>*:nth-child(8n+7)>.rev-img{ background-image:url(../../assets/img/skincare.jpg)!important; }
-div>*:nth-child(8n)>.rev-img{ background-image:url(../../assets/img/ramen.jpg)!important; }
-
 /* --- avatar circles / gradient chips that used brand-gradient --- */
 /* (brand-gradient now = solid purple; white text on it stays readable) */
 
