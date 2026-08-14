@@ -567,6 +567,12 @@
     adminRiskReport: async function () {
       var r=await sb.rpc('admin_risk_report');return (r&&!r.error)?r.data:null;
     },
+    myMissions: async function () { var r=await sb.rpc('my_missions');return (r&&!r.error)?(r.data||[]):[]; },
+    listCommunityPosts: async function (category) { var r=await sb.rpc('list_community_posts',{p_category:category||null,p_limit:50});return (r&&!r.error)?(r.data||[]):[]; },
+    createCommunityPost: async function (category,title,body) { var r=await sb.rpc('create_community_post',{p_category:category,p_title:title,p_body:body});if(r.error)return {ok:false,msg:r.error.message};return r.data; },
+    myContentLicenses: async function () { var r=await sb.rpc('my_content_licenses');return (r&&!r.error)?(r.data||[]):[]; },
+    getNotificationPreferences: async function () { var u=await Auth.getUser();if(!u)return null;var r=await sb.from('notification_preferences').select('*').eq('user_id',u.id).maybeSingle();return (r&&!r.error)?r.data:null; },
+    saveNotificationPreferences: async function (fields) { var u=await Auth.getUser();if(!u)return {error:{message:'로그인이 필요합니다.'}};fields=fields||{};fields.user_id=u.id;fields.updated_at=new Date().toISOString();return await sb.from('notification_preferences').upsert(fields); },
     // 광고주: 신청 선정/탈락/대기 (selected/rejected/applied) · 리뷰 승인/보완 (completed/reviewing)
     advSelect: async function (appId, status) {
       var r = await sb.rpc('advertiser_select', { p_app: appId, p_status: status });
