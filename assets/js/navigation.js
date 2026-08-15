@@ -39,6 +39,7 @@
       back.setAttribute('data-one-click-back', '1');
       back.addEventListener('click', function (e) {
         e.preventDefault();
+        e.stopImmediatePropagation();
         var fallback = location.pathname.indexOf('/pages/user/') >= 0 ? '../../index.html' : 'index.html';
         try {
           var ref = document.referrer ? new URL(document.referrer) : null;
