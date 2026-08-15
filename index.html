@@ -180,7 +180,8 @@
   .logo-mark, .logo-mark img { width: 38px !important; height: 38px !important; }
   .logo-main { font-size: 18px; }
   .header-right { gap: 4px; }
-  .header-right > *:not(.hamburger) { display: none; }
+  .header-right > *:not(.hamburger):not(#modeBtn) { display: none; }
+  #modeBtn { display:flex; }
   /* categories become a clean swipeable row */
   .catrow { display: flex; grid-template-columns: none; gap: 14px; overflow-x: auto; padding: 4px 0 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .catrow::-webkit-scrollbar { display: none; }
@@ -245,7 +246,6 @@
     <a href="pages/user/review.html">스토리</a>
     <a href="pages/user/advertiser.html">사장님</a>
     <a href="pages/user/mypage.html">마이페이지</a>
-    <a href="#" onclick="toggleMode();return false;">낮 / 밤 모드</a>
     <a href="pages/user/login.html">로그인</a>
     <a href="pages/user/signup.html" class="m-cta-btn">무료 가입하기</a>
   </div>
