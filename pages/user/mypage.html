@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마이페이지 — 온종일 체험단</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
-<link rel="stylesheet" href="../../assets/css/mypage.css?v=20260816b">
+<link rel="stylesheet" href="../../assets/css/mypage.css?v=20260816c">
 <link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
@@ -94,12 +94,12 @@
     </div>
 
     <section class="on-service-links" aria-label="함께 쓰면 좋은 온종일 서비스">
-      <button class="on-service-link partner" type="button" onclick="openOnService('partner')">
+      <button class="on-service-link partner" type="button" onclick="document.getElementById('osModal').dataset.service='partner';openOnService('partner')">
         <span class="osl-icon">🔗</span>
         <span class="osl-copy"><b>온파트너</b><small>소개한 온종일팜 상품이 팔릴 때마다 링크가 나의 수익이 됩니다. 블로그·틱톡·유튜브·개인 홈페이지까지 채널 제약 없이 홍보하세요.</small></span>
         <em>온파트너 시작하기 →</em>
       </button>
-      <button class="on-service-link publy" type="button" onclick="openOnService('publy')">
+      <button class="on-service-link publy" type="button" onclick="document.getElementById('osModal').dataset.service='publy';openOnService('publy')">
         <span class="osl-icon">P</span>
         <span class="osl-copy"><b>퍼블리</b><small>데스크탑·노트북 설치형 네이버 블로그 최적화 자동화 프로그램. AI 글쓰기·발행·서이추·공감·댓글 관리로 체험 리뷰를 더 빠르게 완성하세요.</small></span>
         <em>퍼블리 시작하기 →</em>
