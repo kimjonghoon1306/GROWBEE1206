@@ -179,7 +179,7 @@ function toggleMode(){var n=document.body.classList.toggle('night');localStorage
 function setView(small){document.body.classList.toggle("view-compact",!!small);var L=document.getElementById("vLarge"),S=document.getElementById("vSmall");if(L&&S){L.classList.toggle("active",!small);S.classList.toggle("active",!!small);}localStorage.setItem("onjongil-view",small?"compact":"large");}(function(){if(localStorage.getItem("onjongil-view")==="compact"){setView(1);}})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/auth.js?v=20260816a"></script>
 <script>
 /* 카테고리 타일 개수를 실제 캠페인 데이터로 갱신 */
 (async function(){

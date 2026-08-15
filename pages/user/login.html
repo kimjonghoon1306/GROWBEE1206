@@ -204,7 +204,7 @@ function setLoginType(type, el){
 
 <script>(function(){var c=0,t;var lg=document.querySelector(".logo");if(!lg)return;lg.addEventListener("click",function(e){c++;if(c>=5){e.preventDefault();c=0;location.href="../admin/admin-login.html";return;}clearTimeout(t);t=setTimeout(function(){c=0;},450);});})();</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/auth.js?v=20260816a"></script>
 <script>
 function liMsg(t,ok){var m=document.getElementById('li-msg');m.style.display='block';m.textContent=t;m.style.background=ok?'rgba(60,180,120,.12)':'rgba(236,58,102,.1)';m.style.color=ok?'#2FA46A':'#d61f56';}
 function nextParam(){var m=location.search.match(/[?&]next=([^&]+)/);return m?decodeURIComponent(m[1]):'mypage.html';}

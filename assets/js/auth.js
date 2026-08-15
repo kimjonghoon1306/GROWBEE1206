@@ -692,6 +692,33 @@
       var userBtns = document.querySelectorAll('[data-auth="user"]');
       loginBtns.forEach(function (el) { el.style.display = u ? 'none' : ''; });
       userBtns.forEach(function (el) { el.style.display = u ? '' : 'none'; });
+      // 모바일 메뉴는 여러 페이지에 정적 로그인/가입 링크가 있으므로
+      // 현재 세션에 맞춰 공통으로 마이페이지/로그아웃 메뉴로 교체한다.
+      document.querySelectorAll('.mobile-menu').forEach(function (menu) {
+        Array.prototype.slice.call(menu.querySelectorAll('a')).forEach(function (a) {
+          var href = (a.getAttribute('href') || '').split('?')[0];
+          if (/login\.html$|signup\.html$/.test(href)) a.style.display = u ? 'none' : '';
+          if (/mypage\.html$/.test(href)) a.style.display = u ? '' : 'none';
+        });
+        var logout = menu.querySelector('[data-mobile-logout]');
+        if (!logout) {
+          logout = document.createElement('a');
+          logout.href = '#'; logout.setAttribute('data-mobile-logout', '');
+          logout.textContent = '로그아웃';
+          logout.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (confirm('로그아웃 하시겠어요?')) Auth.signOut();
+          });
+          menu.appendChild(logout);
+        }
+        logout.style.display = u ? '' : 'none';
+        if (u && !menu.querySelector('a[href$="mypage.html"]')) {
+          var mine = document.createElement('a');
+          mine.href = location.pathname.indexOf('/pages/user/') >= 0 ? 'mypage.html' : 'pages/user/mypage.html';
+          mine.textContent = '마이페이지';
+          menu.insertBefore(mine, logout);
+        }
+      });
       // 닉네임 표시
       if (u) {
         var nm = (u.user_metadata && (u.user_metadata.nickname || u.user_metadata.name)) || u.email.split('@')[0];
@@ -747,4 +774,6 @@
   else document.addEventListener('DOMContentLoaded', function () { Auth.refreshMsgCount(); });
 
   window.OnAuth = Auth;
+  if (document.readyState !== 'loading') Auth.reflectHeader();
+  else document.addEventListener('DOMContentLoaded', function () { Auth.reflectHeader(); });
 })();

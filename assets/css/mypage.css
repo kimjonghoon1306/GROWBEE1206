@@ -64,12 +64,13 @@
 .mp-title b { color: var(--accent-text); }
 .mp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); padding: 26px; margin-bottom: 20px; }
 .on-service-links { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px; }
-.on-service-link { min-width:0;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:5px 13px;padding:18px;border:1.5px solid var(--border);border-radius:18px;background:var(--bg-card);box-shadow:var(--shadow);color:var(--text);transition:transform .2s ease,border-color .2s ease; }
+.on-service-link { width:100%;min-width:0;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:5px 13px;padding:18px;border:1.5px solid var(--border);border-radius:18px;background:var(--bg-card);box-shadow:var(--shadow);color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:transform .2s ease,border-color .2s ease; }
 .on-service-link:hover { transform:translateY(-2px);border-color:var(--accent); }
 .osl-icon { grid-row:1/3;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--accent-tint);font-size:23px;font-weight:900; }
 .on-service-link.publy .osl-icon { background:#00df91;color:#062319; }
 .osl-copy { min-width:0; }.osl-copy b { display:block;font-size:16px; }.osl-copy small { display:block;margin-top:4px;color:var(--text-muted);font-size:12px;line-height:1.55; }
 .on-service-link em { grid-column:2;color:var(--accent-text);font-size:13px;font-style:normal;font-weight:800; }
+.os-modal[hidden]{display:none}.os-modal{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;padding:18px}.os-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(7px)}.os-dialog{position:relative;width:min(580px,100%);max-height:88vh;overflow:auto;box-sizing:border-box;padding:27px;border:1px solid #cfe3d7;border-radius:23px;background:#fff;color:#111827;box-shadow:0 25px 80px rgba(15,23,42,.35)}.os-close{position:absolute;right:14px;top:12px;width:38px;height:38px;border:1px solid #d4dde4;border-radius:11px;background:#f3f6f7;color:#111827;font-size:27px;line-height:1;cursor:pointer}.os-kicker{padding-right:42px;color:#087849;font-size:11px;font-weight:900;letter-spacing:.08em}.os-dialog h2{margin:7px 42px 8px 0;color:#111827;font-size:25px}.os-hook{margin:0;color:#40505e;font-size:14px;line-height:1.7}.os-benefits{display:grid;gap:9px;margin:18px 0}.os-benefit{padding:13px;border:1px solid #d9e1e7;border-radius:13px;background:#f4f8f6}.os-benefit b,.os-benefit span{display:block}.os-benefit b{color:#111827;font-size:14px}.os-benefit span{margin-top:4px;color:#465563;font-size:12px;line-height:1.55}.os-flow{padding:13px;border-radius:13px;background:#eaf8f0;color:#087849;font-size:12px;font-weight:850;line-height:1.6}.os-cta{display:flex;justify-content:center;margin-top:19px;padding:14px;border-radius:13px;background:#0b995c;color:#fff;font-size:14px;font-weight:900;text-decoration:none}.night .os-dialog{border-color:#355346;background:#121b17;color:#f3fff8}.night .os-dialog h2,.night .os-benefit b{color:#f3fff8}.night .os-hook,.night .os-benefit span{color:#b5c8bd}.night .os-benefit{border-color:#31463b;background:#17231d}.night .os-close{border-color:#3c5146;background:#1b2922;color:#fff}.night .os-flow{background:#173025;color:#66e2a1}
 
 /* campaign flow */
 .flow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -133,7 +134,7 @@
   .mp-side { position: static; }
   .main-nav { display: none; }
 }
-@media (max-width: 620px) { .on-service-links{grid-template-columns:1fr;gap:10px}.on-service-link{padding:15px}.osl-copy small{font-size:11px} }
+@media (max-width: 620px) { .on-service-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.on-service-link{min-height:92px;padding:10px;grid-template-columns:30px 1fr;gap:3px 7px;border-radius:14px;box-shadow:none}.osl-icon{grid-row:1/4;width:30px;height:30px;border-radius:9px;font-size:16px}.osl-copy b{font-size:12px}.osl-copy small{font-size:10px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.on-service-link em{font-size:10px}.os-dialog{padding:22px 16px;border-radius:19px}.os-dialog h2{font-size:21px}.os-hook{font-size:13px}.os-benefit{padding:11px}.os-cta{margin-top:15px} }
 
 /* 뒤로가기 버튼 */
 .back-bar { max-width: 1240px; margin: 0 auto; padding: 16px 24px 0; }

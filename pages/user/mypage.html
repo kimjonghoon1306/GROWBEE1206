@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마이페이지 — 온종일 체험단</title>
 <link rel="stylesheet" href="../../assets/css/design-system.css">
-<link rel="stylesheet" href="../../assets/css/mypage.css">
+<link rel="stylesheet" href="../../assets/css/mypage.css?v=20260816a">
 <link rel="stylesheet" href="../../assets/css/platform.css">
 </head>
 <body>
@@ -94,17 +94,27 @@
     </div>
 
     <section class="on-service-links" aria-label="함께 쓰면 좋은 온종일 서비스">
-      <a class="on-service-link partner" href="https://partner.yuanfnb.com" target="_blank" rel="noopener">
+      <button class="on-service-link partner" type="button" onclick="openOnService('partner')">
         <span class="osl-icon">🔗</span>
         <span class="osl-copy"><b>온파트너</b><small>소개한 온종일팜 상품이 팔릴 때마다 링크가 나의 수익이 됩니다. 블로그·틱톡·유튜브·개인 홈페이지까지 채널 제약 없이 홍보하세요.</small></span>
         <em>온파트너 시작하기 →</em>
-      </a>
-      <a class="on-service-link publy" href="https://publy.blogautopro.com" target="_blank" rel="noopener">
+      </button>
+      <button class="on-service-link publy" type="button" onclick="openOnService('publy')">
         <span class="osl-icon">P</span>
         <span class="osl-copy"><b>퍼블리</b><small>데스크탑·노트북 설치형 네이버 블로그 최적화 자동화 프로그램. AI 글쓰기·발행·서이추·공감·댓글 관리로 체험 리뷰를 더 빠르게 완성하세요.</small></span>
         <em>퍼블리 시작하기 →</em>
-      </a>
+      </button>
     </section>
+
+    <div class="os-modal" id="osModal" hidden>
+      <div class="os-backdrop" onclick="closeOnService()"></div>
+      <section class="os-dialog" role="dialog" aria-modal="true" aria-labelledby="osTitle">
+        <button class="os-close" type="button" onclick="closeOnService()" aria-label="닫기">×</button>
+        <div class="os-kicker" id="osKicker"></div><h2 id="osTitle"></h2><p class="os-hook" id="osHook"></p>
+        <div class="os-benefits" id="osBenefits"></div><div class="os-flow" id="osFlow"></div>
+        <a class="os-cta" id="osCta" target="_blank" rel="noopener"></a>
+      </section>
+    </div>
 
     <div class="mp-card">
       <div class="flow">
@@ -139,9 +149,17 @@ var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4
 var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
 function toggleMode(){var n=document.body.classList.toggle('night');document.getElementById('modeIcon').innerHTML=n?sun:moon;localStorage.setItem('onjongil-mode',n?'night':'day');}
 if(localStorage.getItem('onjongil-mode')==='night'){document.body.classList.add('night');document.getElementById('modeIcon').innerHTML=sun;}
+var ON_SERVICE_INFO={
+  partner:{kicker:'SELL WITH ONJONGIL',title:'온파트너 알아보기',hook:'내가 소개한 온종일팜 상품이 팔릴 때마다 추천 링크가 수익이 됩니다. 콘텐츠가 있는 곳이라면 플랫폼 제약 없이 시작하세요.',items:[['판매될 때마다 수익','전용 링크의 클릭·구매·예상 수익을 회원 대시보드에서 관리합니다.'],['채널 제약 없이 홍보','네이버 블로그·틱톡·유튜브·인스타그램·개인 홈페이지 어디서든 활용합니다.'],['체험 리뷰를 구매로 연결','직접 경험한 진짜 리뷰에 상품 링크를 더해 자연스럽게 구매를 유도합니다.']],flow:'온종일팜 상품 선택 → 추천 링크 발급 → 리뷰·SNS 홍보 → 판매 수익',cta:'온파트너 시작하기',url:'https://partner.yuanfnb.com'},
+  publy:{kicker:'DESKTOP · LAPTOP APP',title:'퍼블리 알아보기',hook:'체험한 상품을 네이버 검색에 강한 리뷰로 만들고, 반복되는 글쓰기와 블로그 운영 시간을 줄이세요.',items:[['네이버 블로그 최적화 AI 글쓰기','키워드·질문형 소제목·SEO 구조를 반영해 리뷰 초안을 완성합니다.'],['PC 설치형 자동 발행','데스크탑·노트북 앱에서 네이버·티스토리 글 발행을 자동화합니다.'],['관계·소통 자동화','서이추·공감·댓글·인스타 DM을 한곳에서 관리해 리뷰 노출 기회를 넓힙니다.']],flow:'체험 사진 준비 → 퍼블리 글 생성 → PC 앱 발행 → 검색 유입과 구매 연결',cta:'퍼블리 시작하기',url:'https://publy.blogautopro.com'}
+};
+function osEsc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function openOnService(key){var s=ON_SERVICE_INFO[key],m=document.getElementById('osModal');if(!s||!m)return;document.getElementById('osKicker').textContent=s.kicker;document.getElementById('osTitle').textContent=s.title;document.getElementById('osHook').textContent=s.hook;document.getElementById('osBenefits').innerHTML=s.items.map(function(x){return '<div class="os-benefit"><b>✓ '+osEsc(x[0])+'</b><span>'+osEsc(x[1])+'</span></div>';}).join('');document.getElementById('osFlow').textContent=s.flow;var c=document.getElementById('osCta');c.href=s.url;c.textContent=s.cta+' →';m.hidden=false;document.body.style.overflow='hidden';}
+function closeOnService(){var m=document.getElementById('osModal');if(m)m.hidden=true;document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeOnService();});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/auth.js?v=20260816a"></script>
 <script>
 (async function(){
   var u = await OnAuth.requireAuth();   // 미로그인 시 login.html로
