@@ -63,17 +63,23 @@
     return c;
   }
   var expansionCampaignsPromise;
+  function loadOneSeed(url, prefix, defDate) {
+    return fetch(url, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        return (rows || []).map(function (c, i) {
+          c.id = prefix + (i + 1);
+          c.created_at = c.created_at || defDate;
+          return normalizeCampaign(c);
+        });
+      }).catch(function () { return []; });
+  }
   function loadExpansionCampaigns() {
     if (!expansionCampaignsPromise) {
-      expansionCampaignsPromise = fetch('/supabase/seed_campaigns_expansion_20260814.json', { cache: 'no-store' })
-        .then(function (r) { return r.ok ? r.json() : []; })
-        .then(function (rows) {
-          return (rows || []).map(function (c, i) {
-            c.id = 'expansion-20260814-' + (i + 1);
-            c.created_at = c.created_at || '2026-08-14T04:30:00+00:00';
-            return normalizeCampaign(c);
-          });
-        }).catch(function () { return []; });
+      expansionCampaignsPromise = Promise.all([
+        loadOneSeed('/supabase/seed_campaigns_expansion_20260814.json', 'expansion-20260814-', '2026-08-14T04:30:00+00:00'),
+        loadOneSeed('/supabase/seed_delivery_demo.json', 'delivery-demo-', '2026-08-16T04:00:00+00:00')
+      ]).then(function (parts) { return parts[0].concat(parts[1]); }).catch(function () { return []; });
     }
     return expansionCampaignsPromise;
   }
@@ -172,7 +178,7 @@
       return r;
     },
     getCampaign: async function (id) {
-      if (String(id || '').indexOf('expansion-20260814-') === 0) {
+      if (String(id || '').indexOf('expansion-20260814-') === 0 || String(id || '').indexOf('delivery-demo-') === 0) {
         var extra = await loadExpansionCampaigns();
         return extra.filter(function (c) { return c.id === id; })[0] || null;
       }

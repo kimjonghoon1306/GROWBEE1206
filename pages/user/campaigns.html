@@ -285,8 +285,19 @@ function setView(small){document.body.classList.toggle("view-compact",!!small);v
       ALL=(r&&!r.error)?(r.data||[]):[];
       var qs=new URLSearchParams(location.search);
       var qtype=(qs.get('type')||'').trim();
-      curType=(['delivery','manuscript','visit'].indexOf(qtype)>=0)?qtype:'delivery';
       var qcat=qs.get('cat'), qch=qs.get('channel'); query=(qs.get('q')||'').trim().toLowerCase();
+      // 유형이 명시되면 그대로. 카테고리로 들어오면 그 카테고리에 캠페인이 실제로 있는 유형을
+      // 활성 우선(배송>원고>방문)으로 자동 선택 → 뷰티처럼 배송·방문 섞여도 빈 화면 안 뜸.
+      if(['delivery','manuscript','visit'].indexOf(qtype)>=0){ curType=qtype; }
+      else if(qcat){
+        var order=['delivery','manuscript'].concat(visitOn?['visit']:[]);
+        var found=null;
+        for(var i=0;i<order.length;i++){ if(ALL.some(function(c){ return c.category===qcat && (c.campaign_type||'delivery')===order[i]; })){ found=order[i]; break; } }
+        // 활성 유형엔 없고 방문(잠금)만 있는 카테고리(맛집·여가 등)면 → 방문 탭으로 보내 "곧 출시" 안내
+        if(!found && ALL.some(function(c){ return c.category===qcat && (c.campaign_type||'delivery')==='visit'; })) found='visit';
+        curType=found||'delivery';
+      }
+      else { curType='delivery'; }
       paintTypeTabs();
       if(!ALL.length){ render(); return; }
       buildTabs();
