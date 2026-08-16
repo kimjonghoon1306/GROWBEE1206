@@ -43,8 +43,23 @@
     if (channel.indexOf('클립') >= 0 || channel.indexOf('clip') >= 0 || category === '클립형') return 'clip';
     return CATEGORY_IMAGES[category] || imageKey || 'visit';
   }
+  // 유형(배송/방문/원고) 파생 — DB 백필(20260816_delivery_first_pivot)과 동일 규칙.
+  // campaign_type 컬럼이 이미 있으면 그대로 신뢰, 없으면(시드/확장 JSON·구 데이터) category로 추론.
+  var VISIT_CATEGORIES = {
+    '맛집':1,'식당':1,'카페':1,'디저트':1,'뷰티':1,'뷰티·헤어':1,'피트니스':1,
+    '숙박':1,'숙소':1,'여행':1,'여가활동':1,'자기관리':1,'방문형':1
+  };
+  function deriveCampaignType(c) {
+    c = c || {};
+    if (c.campaign_type) return c.campaign_type;
+    var cat = String(c.category || '');
+    if (cat === '원고형') return 'manuscript';
+    if (cat === '배송형') return 'delivery';
+    if (VISIT_CATEGORIES[cat]) return 'visit';
+    return 'delivery';
+  }
   function normalizeCampaign(c) {
-    if (c) c.image_key = campaignImageKey(c);
+    if (c) { c.image_key = campaignImageKey(c); c.campaign_type = deriveCampaignType(c); }
     return c;
   }
   var expansionCampaignsPromise;
@@ -259,6 +274,12 @@
       var m = {};
       if (r && !r.error) (r.data || []).forEach(function (x) { m[x.key] = x.value; });
       return m;
+    },
+    // 방문형 오픈 여부(전역 스위치). 기본 잠금(false) — '곧 출시'.
+    // 설정 로드 실패 시에도 안전하게 잠금 상태로 본다.
+    visitEnabled: async function () {
+      try { var m = await Auth.getSettings(); return String(m.visit_enabled) === 'true'; }
+      catch (e) { return false; }
     },
     // 관리자: 설정 저장(객체 전달, 여러 key 한 번에)
     adminSaveSettings: async function (obj) {

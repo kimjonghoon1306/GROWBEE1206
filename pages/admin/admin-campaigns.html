@@ -188,6 +188,7 @@ textarea.cf-in{resize:vertical;}
       <div><label class="cf-l">채널</label><select id="cf-channel" class="cf-in"><option>블로그</option><option>인스타</option><option>클립</option></select></div>
     </div>
     <div class="cf-row">
+      <div><label class="cf-l">유형 <span style="color:var(--brand-primary);">*</span> (배송/원고=노출, 방문=곧출시 잠금)</label><select id="cf-type" class="cf-in"><option value="delivery">배송형 — 집으로 배송·전국</option><option value="visit">방문형 — 매장 방문 (현재 손님화면 잠금)</option><option value="manuscript">원고형 — 원고 작성·원고료</option></select></div>
       <div><label class="cf-l">대표 이미지</label><select id="cf-img" class="cf-in"><option value="">없음</option><option value="sushi">sushi</option><option value="cafe">cafe</option><option value="hanwoo">hanwoo</option><option value="skincare">skincare</option><option value="taco">taco</option><option value="ramen">ramen</option><option value="winebar">winebar</option><option value="vegan">vegan</option><option value="stay">숙소·펜션 (stay)</option><option value="poolvilla">풀빌라 (poolvilla)</option><option value="hotel">호텔 (hotel)</option><option value="oceanview">오션뷰 (oceanview)</option><option value="dessert">디저트 (dessert)</option><option value="fitness">피트니스 (fitness)</option><option value="pet">반려동물 (pet)</option><option value="baby">육아 (baby)</option><option value="fashion">패션 (fashion)</option><option value="living">생활용품 (living)</option><option value="digital">디지털 (digital)</option><option value="health">건강 (health)</option><option value="book">도서 (book)</option><option value="leisure">여가활동 (leisure)</option><option value="selfcare">자기관리 (selfcare)</option><option value="delivery">배송형 (delivery)</option><option value="visit">방문형 (visit)</option><option value="manuscript">원고형 (manuscript)</option><option value="reels">릴스형 (reels)</option><option value="clip">클립형 (clip)</option></select></div>
       <div><label class="cf-l">상태</label><select id="cf-status" class="cf-in"><option value="active">진행중</option><option value="closed">마감</option></select></div>
     </div>
@@ -265,6 +266,7 @@ function openCampForm(id){
   document.getElementById('cf-region').value=c.region||'';
   document.getElementById('cf-cat').value=c.category||'맛집';
   document.getElementById('cf-channel').value=c.channel||'블로그';
+  document.getElementById('cf-type').value=c.campaign_type||'delivery';
   document.getElementById('cf-img').value=c.image_key||'';
   document.getElementById('cf-status').value=c.status||'active';
   document.getElementById('cf-reward').value=c.reward_text||'';
@@ -292,7 +294,7 @@ function closeCampForm(){ document.getElementById('cfOverlay').style.display='no
 async function saveCampForm(){
   var title=_v('cf-title'); if(!title){ cfMsg('캠페인명을 입력해주세요.'); return; }
   var fields={ title:title, store_name:_v('cf-store')||null, region:_v('cf-region')||null,
-    category:_v('cf-cat'), channel:_v('cf-channel'), image_key:_v('cf-img')||null,
+    category:_v('cf-cat'), channel:_v('cf-channel'), campaign_type:_v('cf-type')||'delivery', image_key:_v('cf-img')||null,
     status:_v('cf-status'), reward_text:_v('cf-reward')||null,
     reward_points:parseInt(_v('cf-points'),10)||0, capacity:parseInt(_v('cf-cap'),10)||0,
     deadline:_v('cf-deadline')||null, description:_v('cf-desc')||null,

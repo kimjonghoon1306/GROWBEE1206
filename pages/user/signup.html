@@ -139,6 +139,12 @@ select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csv
         <label class="form-label">대표 채널 URL</label>
         <input class="form-input" type="url" placeholder="https://blog.naver.com/...">
       </div>
+      <div class="form-group">
+        <label class="form-label">배송지 주소 <span style="color:var(--brand-primary);font-weight:800;letter-spacing:0;text-transform:none;">· 배송 체험단 추천</span></label>
+        <input id="su-addr" class="form-input" type="text" placeholder="도로명 주소 (예: 서울시 강남구 …)">
+        <input id="su-addr2" class="form-input" type="text" placeholder="상세주소 (동/호수 등)" style="margin-top:8px;">
+        <p style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.5;">집에서 받는 <b style="color:var(--brand-primary);">배송 체험단</b> 신청이 한 번에 끝나요. 나중에 마이페이지에서 입력해도 됩니다.</p>
+      </div>
     </div>
 
     <div id="advertiser-section" style="display:none;">
@@ -251,8 +257,12 @@ async function doSignup(){
       setTimeout(function(){ location.replace('advertiser-dashboard.html'); },700);
       return;
     }
-    suMsg('가입 완료! 마이페이지로 이동합니다 :)',true);
-    setTimeout(function(){ location.replace('mypage.html'); },700);
+    // 리뷰어: 배송지 입력했으면 프로필에 저장(배송 체험단 신청 시 자동 사용)
+    var addr=(document.getElementById('su-addr').value||'').trim();
+    var addr2=(document.getElementById('su-addr2').value||'').trim();
+    if(addr){ try{ await OnAuth.updateProfile({ address:addr, address_detail:addr2 }); }catch(e){} }
+    suMsg('가입 완료! 배송 체험단을 둘러볼게요 :)',true);
+    setTimeout(function(){ location.replace('campaigns.html?type=delivery'); },700);
   }catch(e){ suMsg('오류가 발생했어요. 잠시 후 다시 시도해주세요.'); btn.disabled=false; btn.textContent=orig; }
 }
 
